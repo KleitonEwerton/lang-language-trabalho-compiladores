@@ -1,13 +1,25 @@
 public enum TOKEN_TYPE {
     ID,
-    NUM,
+    INT,
+    FLOAT,
     EQ,
     NEQ,
-    PLUS,
-    TIMES,
-    MINUS,
-    DIV,
-    SEMI,
-    OPT, // OPEN parenteses
-    CPT, // Close parenteses
+    PLUS, // +
+    TIMES, // *
+    MINUS, // -
+    DIV, // /
+    SEMI, // ;
+    OPT, // (
+    CPT, // )
+    OCT, // [
+    CCT, // ]
+    OCV, // {
+    CCV, // }
+    LT, // <
+    BT, // >
+    CMA, // ,
+    DOT, // .
+    DDOT, // :
+    DDDOT, // ::
+    EQEQ
 }

@@ -43,9 +43,9 @@
 %init}
 
   
-  /* Agora vamos definir algumas macros */
- identificador = [:lowercase:] ([:letter:] | [:digit:] | "_" )*
-numero = [:digit:] [:digit:]*
+/* Agora vamos definir algumas macros */
+identificador = [:lowercase:] ([:letter:] | [:digit:] | "_" )*
+inteiro = [:digit:] [:digit:]* | "-"[:digit:] [:digit:]*
 tipo = [:uppercase:] ([:letter:] | [:digit:] | "_" )*
 literal_int = [:digit:] [:digit:]*
 literal_float = [:digit:]* "." ([:digit:] [:digit:]*)
@@ -62,36 +62,38 @@ Brancos     = {FimDeLinha} | [ \t\f]
 
 <YYINITIAL>{
     {identificador} { return symbol(TOKEN_TYPE.ID);                                 }
-    {numero}        { return symbol(TOKEN_TYPE.NUM, Integer.parseInt(yytext()) );   }
+    {inteiro}        { return symbol(TOKEN_TYPE.INT, Integer.parseInt(yytext()) );   }
+    {literal_int} {return symbol(TOKEN_TYPE.FLOAT, Integer.parseInt(yytext()) );   }
+    {Brancos}       {                                                               }
+    {LineComment}   {                                                               }
     "="             { return symbol(TOKEN_TYPE.EQ);                                 }
     ";"             { return symbol(TOKEN_TYPE.SEMI);                               }
     "*"             { return symbol(TOKEN_TYPE.TIMES);                              }
     "/"             { return symbol(TOKEN_TYPE.DIV);                                }
     "+"             { return symbol(TOKEN_TYPE.PLUS);                               }
     "-"             { return symbol(TOKEN_TYPE.MINUS);                              }
-    {Brancos}       {                                                               }
-    {LineComment}   {                                                               }
     "("             { return symbol(TOKEN_TYPE.OPT);                                }
     ")"             { return symbol(TOKEN_TYPE.CPT);                                }
-    "["             { return symbol(TOKEN_TYPE.EQ);                                 }
-    "]"             { return symbol(TOKEN_TYPE.EQ);          }
-    "{"             { return symbol(TOKEN_TYPE.EQ);          }
-    "}"             { return symbol(TOKEN_TYPE.EQ);          }
-    ">"             { return symbol(TOKEN_TYPE.EQ);          }
-    ";"             { return symbol(TOKEN_TYPE.EQ);          }
-    ":"             { return symbol(TOKEN_TYPE.EQ);          }
-    "::"             { return symbol(TOKEN_TYPE.EQ);         }
-    "."             { return symbol(TOKEN_TYPE.EQ);          }
-    ","             { return symbol(TOKEN_TYPE.EQ);          }
-    "="             { return symbol(TOKEN_TYPE.EQ);          }
-    "=="             { return symbol(TOKEN_TYPE.EQ);         }
-    "!="             { return symbol(TOKEN_TYPE.NEQ);         }
-    "<"             { return symbol(TOKEN_TYPE.EQ);          }
+    "["             { return symbol(TOKEN_TYPE.OCT);                                }
+    "]"             { return symbol(TOKEN_TYPE.CCT);                                }
+    "{"             { return symbol(TOKEN_TYPE.OCV);                                }
+    "}"             { return symbol(TOKEN_TYPE.CCV);                                }
+    ">"             { return symbol(TOKEN_TYPE.BT);                                 }
+    "<"             { return symbol(TOKEN_TYPE.LT);                                 }
+    ":"             { return symbol(TOKEN_TYPE.DDOT);                               }
+    "::"            { return symbol(TOKEN_TYPE.DDDOT);                              }
+    "."             { return symbol(TOKEN_TYPE.DOT);                                }
+    ","             { return symbol(TOKEN_TYPE.CMA);                                }
+    "="             { return symbol(TOKEN_TYPE.EQ);                                 }
+    "=="            { return symbol(TOKEN_TYPE.EQEQ);                               }
+    "!="            { return symbol(TOKEN_TYPE.NEQ);                                }
+
 }
 
 <COMMENT>{
-   "*/"     { yybegin(YYINITIAL); } 
-   [^"*/"]  {                     }
+   "{-"     { yybegin(YYINITIAL); } 
+   [^"-}"]  { /* Ignora os caracteres dentro do bloco de comentário */ }
+   "-}"     { yybegin(YYINITIAL); } // Termina o bloco de comentário
 }
 
 // erros
