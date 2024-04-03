@@ -1,14 +1,15 @@
-adasasd  = 123;
-b = 456;
-c = -334
-c = a  + b + 789 * 0;
-c;
-d=5.4
-c=.0
--- dadsadsa
---d434
-{- ghj -}
- ==
- 3>4
- 4<6
-
+main () {
+    print fat(10)[0];
+    a = 2 * 4;
+}
+fat (num :: Int ): Int {
+    if (num < 1)
+        return 1 ;
+    else
+        return num * num;
+}
+divmod(num :: Int, div :: Int): Int , Int {
+    q = num / div;
+    r = num % div;
+    return q, r;
+}

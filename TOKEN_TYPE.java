@@ -1,6 +1,8 @@
 public enum TOKEN_TYPE {
     ID,
-    INT,
+    INT, // inteiros
+    MINT, // simbolo Int
+    RET, // return
     FLOAT,
     EQ,
     NEQ,
@@ -8,6 +10,7 @@ public enum TOKEN_TYPE {
     TIMES, // *
     MINUS, // -
     DIV, // /
+    MOD, // %
     SEMI, // ;
     OPT, // (
     CPT, // )
@@ -21,5 +24,8 @@ public enum TOKEN_TYPE {
     DOT, // .
     DDOT, // :
     DDDOT, // ::
-    EQEQ
+    EQEQ, // ==
+    TRUE, // true
+    FALSE, // false
+    IF
 }

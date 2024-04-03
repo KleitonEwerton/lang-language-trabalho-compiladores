@@ -49,7 +49,9 @@ tipo = [:uppercase:] ([:letter:] | [:digit:] | "_" )*
 literal_int = [:digit:] [:digit:]* | "-"[:digit:] [:digit:]*
 literal_float = [:digit:]* "." ([:digit:] [:digit:]*)
 literal_caractere = \n | \t | \b | \r // verificar utilização das barras
-literal_logico = "true" | "false"
+literal_logico_true = "true"
+literal_logico_false = "false"
+literal_logico = {literal_logico_true} | {literal_logico_false}
 literal_nulo = "null"
 FimDeLinha  = \r | \n | \r\n
 LineComment = "--" (.)* {FimDeLinha}
@@ -61,14 +63,21 @@ Brancos     = {FimDeLinha} | [ \t\f]
 
 <YYINITIAL>{
     {identificador} { return symbol(TOKEN_TYPE.ID);                                 }
-    {literal_float} {return symbol(TOKEN_TYPE.FLOAT, Float.parseFloat(yytext()) );   }
+
+    {literal_float} {return symbol(TOKEN_TYPE.FLOAT, Float.parseFloat(yytext()) );  }
     {literal_int}   { return symbol(TOKEN_TYPE.INT, Integer.parseInt(yytext()) );   }
     {Brancos}       {                                                               }
     {LineComment}   {                                                               }
+    {literal_logico_true} {return symbol(TOKEN_TYPE.TRUE);                           }
+    {literal_logico_true} {return symbol(TOKEN_TYPE.FALSE);                          }
+    "Int" {return symbol(TOKEN_TYPE.MINT);                                           }
+    "return" {return symbol(TOKEN_TYPE.RET);}
+    "if" {return symbol(TOKEN_TYPE.IF);                                              }
     "="             { return symbol(TOKEN_TYPE.EQ);                                 }
     ";"             { return symbol(TOKEN_TYPE.SEMI);                               }
     "*"             { return symbol(TOKEN_TYPE.TIMES);                              }
     "/"             { return symbol(TOKEN_TYPE.DIV);                                }
+    "%"             { return symbol(TOKEN_TYPE.MOD);                                }
     "+"             { return symbol(TOKEN_TYPE.PLUS);                               }
     "-"             { return symbol(TOKEN_TYPE.MINUS);                              }
     "("             { return symbol(TOKEN_TYPE.OPT);                                }
