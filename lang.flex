@@ -1,76 +1,95 @@
 
-  /*  Esta seção é copiada antes da declaração da classe do analisador léxico gerado.
+ /*  Esta seção é copiada antes da declaração da classe do analisador léxico.
   *  É nesta seção que se deve incluir imports e declaração de pacotes.
   *  Neste exemplo não temos nada a incluir nesta seção.
   */
-
+  
 %%
-
-  /* Nesta seção são definidas ERs e configurações da ferramenta */
 
 %unicode
 %line
 %column
-%class Lexer
-
-// %function nextToken : nome da funções
-// %type Token : tipo do Token retornado
-%standalone // somente léxico, sem sintático
-
+%class Lext
+%function nextToken
+%type Token
 
 %{
-  private int ntks;
-
-  private void incTks() { ++ntks; }
-  private int numTokens() { return ntks; }
-  
+    
+    /* Código arbitrário pode ser inserido diretamente no analisador dessa forma. 
+     * Aqui podemos declarar variáveis e métodos adicionais que julgarmos necessários. 
+     */
+    private int ntk;
+    
+    public int readedTokens(){
+       return ntk;
+    }
+    private Token symbol(TOKEN_TYPE t) {
+        ntk++;
+        return new Token(t,yytext(), yyline+1, yycolumn+1);
+        
+    }
+    private Token symbol(TOKEN_TYPE t, Object value) {
+        ntk++;
+        return new Token(t, value, yyline+1, yycolumn+1);
+    }
+    
+    private void incTks() { ++ntk; }
+    
+    private int numTokens() { return ntk; }
 %}
 
 %init{
-  ntks = 0; // copiado para o construtor
+    ntk = 0; // Isto é copiado direto no construtor do lexer. 
 %init}
 
-/* Agora vamos definir algumas macros */
-identificador = [:lowercase:] ([:letter:] | [:digit:] | "_" )*
+  
+  /* Agora vamos definir algumas macros */
+ identificador = [:lowercase:] ([:letter:] | [:digit:] | "_" )*
+numero = [:digit:] [:digit:]*
 tipo = [:uppercase:] ([:letter:] | [:digit:] | "_" )*
-
 literal_int = [:digit:] [:digit:]*
 literal_float = [:digit:]* "." ([:digit:] [:digit:]*)
 literal_caractere = \n | \t | \b | \r // verificar utilização das barras
-
 literal_logico = "true" | "false"
 literal_nulo = "null"
-
 FimDeLinha  = \r | \n | \r\n
 LineComment = "--" (.)* {FimDeLinha}
-abre_chave = "{"
-fecha_chave = "}"
-
+Brancos     = {FimDeLinha} | [ \t\f]
+  
 %state COMMENT
 
 %%
 
 <YYINITIAL>{
-    {identificador} { System.out.println("Token VAR: " + yytext());  incTks(); }
-    {numero}        { System.out.println("Token NUM: " + yytext());  incTks(); }
-    "="             { System.out.println("Token EQ");  incTks();               }
-    ";"             { System.out.println("Token SEMI");  incTks();             }
-    "*"             { System.out.println("Token TIMES");  incTks();            }
-    "+"             { System.out.println("Token PLUS");  incTks();             }
-    "/*"            { yybegin(COMMENT);                                        }
-    {Brancos}       { /* Não faz nada - Skip */                                }
-    {LineComment}   {                                                          }
-
-    // Simbolos reservados
-    "("             { System.out.println("Token OPEN_PAREN");  incTks();       }
-    ")"             { System.out.println("Token CLOSE_PAREN");  incTks();      }
-
+    {identificador} { return symbol(TOKEN_TYPE.ID);   }
+    {numero}        { return symbol(TOKEN_TYPE.NUM, Integer.parseInt(yytext()) );  }
+    "="             { return symbol(TOKEN_TYPE.EQ);   }
+    ";"             { return symbol(TOKEN_TYPE.SEMI); }
+    "*"             { return symbol(TOKEN_TYPE.TIMES); }
+    "+"             { return symbol(TOKEN_TYPE.PLUS); }
+    {Brancos}       { /* Não faz nada  */             }
+    {LineComment}   {                       }
+        "("         { System.out.println("Token OPEN_PAREN");  incTks();        }
+    ")"             { System.out.println("Token CLOSE_PAREN");  incTks();       }
+    "["             { System.out.println("Token CLOSE_PAREN");  incTks();       }
+    "]"             { System.out.println("Token CLOSE_PAREN");  incTks();       }
+    "{"             { System.out.println("Token CLOSE_PAREN");  incTks();       }
+    "}"             { System.out.println("Token CLOSE_PAREN");  incTks();       }
+    ">"             { System.out.println("Token CLOSE_PAREN");  incTks();       }
+    ";"             { System.out.println("Token CLOSE_PAREN");  incTks();       }
+    ":"             { System.out.println("Token CLOSE_PAREN");  incTks();       }
+    "."             { System.out.println("Token CLOSE_PAREN");  incTks();       }
+    ","             { System.out.println("Token CLOSE_PAREN");  incTks();       }
+    "="             { System.out.println("Token CLOSE_PAREN");  incTks();       }
+    "<"             { System.out.println("Token CLOSE_PAREN");  incTks();       }
 }
 
 <COMMENT>{
-   abre_chave"-"     { yybegin(YYINITIAL); } 
-   [^"-"fecha_chave]  {                     }
+   "*/"     { yybegin(YYINITIAL); } 
+   [^"*/"]  {                     }
 }
 
 // erros
 [^]                 { throw new RuntimeException("Illegal character <"+yytext()+">"); }
+
+
