@@ -45,9 +45,8 @@
   
 /* Agora vamos definir algumas macros */
 identificador = [:lowercase:] ([:letter:] | [:digit:] | "_" )*
-inteiro = [:digit:] [:digit:]* | "-"[:digit:] [:digit:]*
 tipo = [:uppercase:] ([:letter:] | [:digit:] | "_" )*
-literal_int = [:digit:] [:digit:]*
+literal_int = [:digit:] [:digit:]* | "-"[:digit:] [:digit:]*
 literal_float = [:digit:]* "." ([:digit:] [:digit:]*)
 literal_caractere = \n | \t | \b | \r // verificar utilização das barras
 literal_logico = "true" | "false"
@@ -62,8 +61,8 @@ Brancos     = {FimDeLinha} | [ \t\f]
 
 <YYINITIAL>{
     {identificador} { return symbol(TOKEN_TYPE.ID);                                 }
-    {inteiro}        { return symbol(TOKEN_TYPE.INT, Integer.parseInt(yytext()) );   }
-    {literal_int} {return symbol(TOKEN_TYPE.FLOAT, Integer.parseInt(yytext()) );   }
+    {literal_float} {return symbol(TOKEN_TYPE.FLOAT, Float.parseFloat(yytext()) );   }
+    {literal_int}   { return symbol(TOKEN_TYPE.INT, Integer.parseInt(yytext()) );   }
     {Brancos}       {                                                               }
     {LineComment}   {                                                               }
     "="             { return symbol(TOKEN_TYPE.EQ);                                 }

@@ -1109,7 +1109,7 @@ class Lext {
           // fall through
           case 36: break;
           case 11:
-            { return symbol(TOKEN_TYPE.NUM, Integer.parseInt(yytext()) );
+            { return symbol(TOKEN_TYPE.INT, Integer.parseInt(yytext()) );
             }
           // fall through
           case 37: break;

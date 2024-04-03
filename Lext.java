@@ -430,10 +430,11 @@ class Lext {
     "\2\0\1\1\2\2\1\1\1\3\1\4\1\5\1\6"+
     "\1\7\1\10\1\11\1\12\1\13\1\14\1\15\1\16"+
     "\1\17\1\20\1\21\1\22\1\23\1\24\1\25\1\26"+
-    "\1\1\1\26\1\27\1\0\1\30\1\31\1\32";
+    "\1\1\1\26\1\27\1\0\1\13\1\30\1\0\1\31"+
+    "\1\32\1\33";
 
   private static int [] zzUnpackAction() {
-    int [] result = new int[33];
+    int [] result = new int[36];
     int offset = 0;
     offset = zzUnpackAction(ZZ_ACTION_PACKED_0, offset, result);
     return result;
@@ -459,13 +460,13 @@ class Lext {
 
   private static final String ZZ_ROWMAP_PACKED_0 =
     "\0\0\0\34\0\70\0\70\0\124\0\160\0\70\0\70"+
-    "\0\70\0\70\0\70\0\214\0\70\0\70\0\250\0\304"+
-    "\0\70\0\70\0\340\0\70\0\70\0\70\0\374\0\70"+
-    "\0\70\0\70\0\u0118\0\u0134\0\70\0\u0150\0\70\0\70"+
-    "\0\70";
+    "\0\70\0\70\0\70\0\214\0\250\0\70\0\304\0\340"+
+    "\0\70\0\70\0\374\0\70\0\70\0\70\0\u0118\0\70"+
+    "\0\70\0\70\0\u0134\0\u0150\0\70\0\u016c\0\u0188\0\250"+
+    "\0\250\0\70\0\70\0\70";
 
   private static int [] zzUnpackRowMap() {
-    int [] result = new int[33];
+    int [] result = new int[36];
     int offset = 0;
     offset = zzUnpackRowMap(ZZ_ROWMAP_PACKED_0, offset, result);
     return result;
@@ -493,12 +494,13 @@ class Lext {
     "\1\21\1\22\1\23\1\24\1\3\1\25\1\26\1\27"+
     "\1\30\1\31\1\27\14\32\1\33\14\32\1\34\1\3"+
     "\1\32\36\0\1\4\54\0\1\35\24\0\1\36\2\0"+
-    "\1\17\33\0\1\17\34\0\1\37\36\0\1\40\27\0"+
-    "\1\27\5\0\1\27\2\0\1\27\35\0\1\41\15\0"+
-    "\1\41\17\0\2\36\1\4\2\0\1\5\26\36";
+    "\1\37\33\0\1\40\31\0\1\41\1\0\1\17\34\0"+
+    "\1\42\36\0\1\43\27\0\1\27\5\0\1\27\2\0"+
+    "\1\27\35\0\1\44\15\0\1\44\17\0\2\36\1\4"+
+    "\2\0\1\5\26\36\17\0\1\37\14\0";
 
   private static int [] zzUnpacktrans() {
-    int [] result = new int[364];
+    int [] result = new int[420];
     int offset = 0;
     offset = zzUnpacktrans(ZZ_TRANS_PACKED_0, offset, result);
     return result;
@@ -541,11 +543,12 @@ class Lext {
   private static final int [] ZZ_ATTRIBUTE = zzUnpackAttribute();
 
   private static final String ZZ_ATTRIBUTE_PACKED_0 =
-    "\2\0\2\11\2\1\5\11\1\1\2\11\2\1\2\11"+
-    "\1\1\3\11\1\1\3\11\2\1\1\11\1\0\3\11";
+    "\2\0\2\11\2\1\5\11\2\1\1\11\2\1\2\11"+
+    "\1\1\3\11\1\1\3\11\2\1\1\11\1\0\2\1"+
+    "\1\0\3\11";
 
   private static int [] zzUnpackAttribute() {
-    int [] result = new int[33];
+    int [] result = new int[36];
     int offset = 0;
     offset = zzUnpackAttribute(ZZ_ATTRIBUTE_PACKED_0, offset, result);
     return result;
@@ -1062,132 +1065,137 @@ class Lext {
             { throw new RuntimeException("Illegal character <"+yytext()+">");
             }
           // fall through
-          case 27: break;
+          case 28: break;
           case 2:
             { 
             }
           // fall through
-          case 28: break;
+          case 29: break;
           case 3:
             { return symbol(TOKEN_TYPE.OPT);
             }
           // fall through
-          case 29: break;
+          case 30: break;
           case 4:
             { return symbol(TOKEN_TYPE.CPT);
             }
           // fall through
-          case 30: break;
+          case 31: break;
           case 5:
             { return symbol(TOKEN_TYPE.TIMES);
             }
           // fall through
-          case 31: break;
+          case 32: break;
           case 6:
             { return symbol(TOKEN_TYPE.PLUS);
             }
           // fall through
-          case 32: break;
+          case 33: break;
           case 7:
             { return symbol(TOKEN_TYPE.CMA);
             }
           // fall through
-          case 33: break;
+          case 34: break;
           case 8:
             { return symbol(TOKEN_TYPE.MINUS);
             }
           // fall through
-          case 34: break;
+          case 35: break;
           case 9:
             { return symbol(TOKEN_TYPE.DOT);
             }
           // fall through
-          case 35: break;
+          case 36: break;
           case 10:
             { return symbol(TOKEN_TYPE.DIV);
             }
           // fall through
-          case 36: break;
+          case 37: break;
           case 11:
             { return symbol(TOKEN_TYPE.INT, Integer.parseInt(yytext()) );
             }
           // fall through
-          case 37: break;
+          case 38: break;
           case 12:
             { return symbol(TOKEN_TYPE.DDOT);
             }
           // fall through
-          case 38: break;
+          case 39: break;
           case 13:
             { return symbol(TOKEN_TYPE.SEMI);
             }
           // fall through
-          case 39: break;
+          case 40: break;
           case 14:
             { return symbol(TOKEN_TYPE.LT);
             }
           // fall through
-          case 40: break;
+          case 41: break;
           case 15:
             { return symbol(TOKEN_TYPE.EQ);
             }
           // fall through
-          case 41: break;
+          case 42: break;
           case 16:
             { return symbol(TOKEN_TYPE.BT);
             }
           // fall through
-          case 42: break;
+          case 43: break;
           case 17:
             { return symbol(TOKEN_TYPE.OCT);
             }
           // fall through
-          case 43: break;
+          case 44: break;
           case 18:
             { return symbol(TOKEN_TYPE.CCT);
             }
           // fall through
-          case 44: break;
+          case 45: break;
           case 19:
             { return symbol(TOKEN_TYPE.ID);
             }
           // fall through
-          case 45: break;
+          case 46: break;
           case 20:
             { return symbol(TOKEN_TYPE.OCV);
             }
           // fall through
-          case 46: break;
+          case 47: break;
           case 21:
             { return symbol(TOKEN_TYPE.CCV);
             }
           // fall through
-          case 47: break;
+          case 48: break;
           case 22:
             { /* Ignora os caracteres dentro do bloco de comentário */
             }
           // fall through
-          case 48: break;
+          case 49: break;
           case 23:
             { return symbol(TOKEN_TYPE.NEQ);
             }
           // fall through
-          case 49: break;
-          case 24:
-            { return symbol(TOKEN_TYPE.DDDOT);
-            }
-          // fall through
           case 50: break;
-          case 25:
-            { return symbol(TOKEN_TYPE.EQEQ);
+          case 24:
+            { return symbol(TOKEN_TYPE.FLOAT, Float.parseFloat(yytext()) );
             }
           // fall through
           case 51: break;
-          case 26:
-            { yybegin(YYINITIAL);
+          case 25:
+            { return symbol(TOKEN_TYPE.DDDOT);
             }
           // fall through
           case 52: break;
+          case 26:
+            { return symbol(TOKEN_TYPE.EQEQ);
+            }
+          // fall through
+          case 53: break;
+          case 27:
+            { yybegin(YYINITIAL);
+            }
+          // fall through
+          case 54: break;
           default:
             zzScanError(ZZ_NO_MATCH);
         }
