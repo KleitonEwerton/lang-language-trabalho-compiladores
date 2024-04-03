@@ -25,7 +25,7 @@
     }
     private Token symbol(TOKEN_TYPE t) {
         ntk++;
-        return new Token(t,yytext(), yyline+1, yycolumn+1);
+        return new Token(t, yytext(), yyline+1, yycolumn+1);
         
     }
     private Token symbol(TOKEN_TYPE t, Object value) {
@@ -61,27 +61,32 @@ Brancos     = {FimDeLinha} | [ \t\f]
 %%
 
 <YYINITIAL>{
-    {identificador} { return symbol(TOKEN_TYPE.ID);   }
-    {numero}        { return symbol(TOKEN_TYPE.NUM, Integer.parseInt(yytext()) );  }
-    "="             { return symbol(TOKEN_TYPE.EQ);   }
-    ";"             { return symbol(TOKEN_TYPE.SEMI); }
-    "*"             { return symbol(TOKEN_TYPE.TIMES); }
-    "+"             { return symbol(TOKEN_TYPE.PLUS); }
-    {Brancos}       { /* Não faz nada  */             }
-    {LineComment}   {                       }
-        "("         { System.out.println("Token OPEN_PAREN");  incTks();        }
-    ")"             { System.out.println("Token CLOSE_PAREN");  incTks();       }
-    "["             { System.out.println("Token CLOSE_PAREN");  incTks();       }
-    "]"             { System.out.println("Token CLOSE_PAREN");  incTks();       }
-    "{"             { System.out.println("Token CLOSE_PAREN");  incTks();       }
-    "}"             { System.out.println("Token CLOSE_PAREN");  incTks();       }
-    ">"             { System.out.println("Token CLOSE_PAREN");  incTks();       }
-    ";"             { System.out.println("Token CLOSE_PAREN");  incTks();       }
-    ":"             { System.out.println("Token CLOSE_PAREN");  incTks();       }
-    "."             { System.out.println("Token CLOSE_PAREN");  incTks();       }
-    ","             { System.out.println("Token CLOSE_PAREN");  incTks();       }
-    "="             { System.out.println("Token CLOSE_PAREN");  incTks();       }
-    "<"             { System.out.println("Token CLOSE_PAREN");  incTks();       }
+    {identificador} { return symbol(TOKEN_TYPE.ID);                                 }
+    {numero}        { return symbol(TOKEN_TYPE.NUM, Integer.parseInt(yytext()) );   }
+    "="             { return symbol(TOKEN_TYPE.EQ);                                 }
+    ";"             { return symbol(TOKEN_TYPE.SEMI);                               }
+    "*"             { return symbol(TOKEN_TYPE.TIMES);                              }
+    "/"             { return symbol(TOKEN_TYPE.DIV);                                }
+    "+"             { return symbol(TOKEN_TYPE.PLUS);                               }
+    "-"             { return symbol(TOKEN_TYPE.MINUS);                              }
+    {Brancos}       {                                                               }
+    {LineComment}   {                                                               }
+    "("             { return symbol(TOKEN_TYPE.OPT);                                }
+    ")"             { return symbol(TOKEN_TYPE.CPT);                                }
+    "["             { return symbol(TOKEN_TYPE.EQ);                                 }
+    "]"             { return symbol(TOKEN_TYPE.EQ);          }
+    "{"             { return symbol(TOKEN_TYPE.EQ);          }
+    "}"             { return symbol(TOKEN_TYPE.EQ);          }
+    ">"             { return symbol(TOKEN_TYPE.EQ);          }
+    ";"             { return symbol(TOKEN_TYPE.EQ);          }
+    ":"             { return symbol(TOKEN_TYPE.EQ);          }
+    "::"             { return symbol(TOKEN_TYPE.EQ);         }
+    "."             { return symbol(TOKEN_TYPE.EQ);          }
+    ","             { return symbol(TOKEN_TYPE.EQ);          }
+    "="             { return symbol(TOKEN_TYPE.EQ);          }
+    "=="             { return symbol(TOKEN_TYPE.EQ);         }
+    "!="             { return symbol(TOKEN_TYPE.NEQ);         }
+    "<"             { return symbol(TOKEN_TYPE.EQ);          }
 }
 
 <COMMENT>{

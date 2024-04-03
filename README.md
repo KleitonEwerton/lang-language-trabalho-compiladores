@@ -2,7 +2,7 @@
 
 1ª
 
-    java -jar jflex-full-1.9.1.jar lang.flex
+    'java -jar jflex-full-1.9.1.jar lang.flex'
 
 2ª
 

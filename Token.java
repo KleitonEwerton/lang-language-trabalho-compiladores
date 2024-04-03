@@ -7,30 +7,35 @@ public class Token {
 
       public Token(TOKEN_TYPE t, String lex, Object o, int l, int c) {
             this.t = t;
-            lexeme = lex;
-            info = o;
+            this.lexeme = lex;
+            this.info = o;
             this.l = l;
             this.c = c;
       }
 
       public Token(TOKEN_TYPE t, String lex, int l, int c) {
             this.t = t;
-            lexeme = lex;
-            info = null;
+            this.lexeme = lex;
+            this.info = null;
             this.l = l;
             this.c = c;
       }
 
       public Token(TOKEN_TYPE t, Object o, int l, int c) {
             this.t = t;
-            lexeme = "";
-            info = o;
+            this.lexeme = "";
+            this.info = o;
             this.l = l;
             this.c = c;
       }
 
       @Override
       public String toString() {
-            return this.lexeme;
+            if (lexeme.equals("")) {
+                  return info.toString();
+            } else {
+                  return lexeme;
+            }
       }
+
 }
