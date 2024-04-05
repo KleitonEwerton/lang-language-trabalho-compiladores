@@ -62,17 +62,34 @@ Brancos     = {FimDeLinha} | [ \t\f]
 %%
 
 <YYINITIAL>{
-    {identificador} { return symbol(TOKEN_TYPE.ID);                                 }
 
-    {literal_float} {return symbol(TOKEN_TYPE.FLOAT, Float.parseFloat(yytext()) );  }
-    {literal_int}   { return symbol(TOKEN_TYPE.INT, Integer.parseInt(yytext()) );   }
+    //btype
+    "Int"           { return symbol(TOKEN_TYPE.INT);                                }
+    "Char"          { return symbol(TOKEN_TYPE.CHAR);                               }
+    "Bool"          { return symbol(TOKEN_TYPE.BOOL);                               }
+    "Float"         { return symbol(TOKEN_TYPE.FLOAT);                              }
+
+    //data
+    "data"          { return symbol(TOKEN_TYPE.DATA);                               }
+
+    //cmd
+    "if"            { return symbol(TOKEN_TYPE.IF);                                 }
+    "else"          { return symbol(TOKEN_TYPE.ELSE);                               }
+    "iterate"       { return symbol(TOKEN_TYPE.ITERATE);                            }
+    "read"          { return symbol(TOKEN_TYPE.READ);                               }
+    "print"         { return symbol(TOKEN_TYPE.PRINT);                              }
+    "return"        { return symbol(TOKEN_TYPE.RET);}
+    
+    //linguagem
+    {identificador} { System.out.print("ID: "); return symbol(TOKEN_TYPE.ID);                                 }
+    {literal_float} { System.out.print("FLOAT: "); return symbol(TOKEN_TYPE.VAL_FLOAT, Float.parseFloat(yytext()));}
+    {literal_int}   { System.out.print("INT: "); return symbol(TOKEN_TYPE.VAL_INT, Integer.parseInt(yytext()));}
     {Brancos}       {                                                               }
     {LineComment}   {                                                               }
-    {literal_logico_true} {return symbol(TOKEN_TYPE.TRUE);                           }
-    {literal_logico_true} {return symbol(TOKEN_TYPE.FALSE);                          }
-    "Int" {return symbol(TOKEN_TYPE.MINT);                                           }
-    "return" {return symbol(TOKEN_TYPE.RET);}
-    "if" {return symbol(TOKEN_TYPE.IF);                                              }
+    {literal_logico_true} { return symbol(TOKEN_TYPE.TRUE);                         }
+    {literal_logico_false} { return symbol(TOKEN_TYPE.FALSE);                       }
+    
+    //operadores e separadores
     "="             { return symbol(TOKEN_TYPE.EQ);                                 }
     ";"             { return symbol(TOKEN_TYPE.SEMI);                               }
     "*"             { return symbol(TOKEN_TYPE.TIMES);                              }

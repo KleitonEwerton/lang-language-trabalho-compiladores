@@ -1,9 +1,13 @@
 public enum TOKEN_TYPE {
     ID,
-    INT, // inteiros
-    MINT, // simbolo Int
+    VAL_INT, // inteiros
+    VAL_FLOAT, // reais
     RET, // return
+    INT,
     FLOAT,
+    CHAR,
+    BOOL,
+    DATA,
     EQ,
     NEQ,
     PLUS, // +
@@ -27,5 +31,9 @@ public enum TOKEN_TYPE {
     EQEQ, // ==
     TRUE, // true
     FALSE, // false
-    IF
+    IF,
+    ELSE,
+    ITERATE,
+    READ,
+    PRINT
 }
