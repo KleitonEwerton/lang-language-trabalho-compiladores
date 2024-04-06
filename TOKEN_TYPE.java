@@ -29,6 +29,8 @@ public enum TOKEN_TYPE {
     DDOT, // :
     DDDOT, // ::
     EQEQ, // ==
+    NOT, // !
+    AND, // &&
     TRUE, // true
     FALSE, // false
     IF,

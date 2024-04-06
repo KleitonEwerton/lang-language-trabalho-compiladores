@@ -89,30 +89,45 @@ Brancos     = {FimDeLinha} | [ \t\f]
     {literal_logico_true} { return symbol(TOKEN_TYPE.TRUE);                         }
     {literal_logico_false} { return symbol(TOKEN_TYPE.FALSE);                       }
     
-    //operadores e separadores
-    "="             { return symbol(TOKEN_TYPE.EQ);                                 }
-    ";"             { return symbol(TOKEN_TYPE.SEMI);                               }
+    // operadores e separadores
+
+    // nivel 7
+    "["             { return symbol(TOKEN_TYPE.OCT);                                }
+    "]"             { return symbol(TOKEN_TYPE.CCT);                                }
+    "."             { return symbol(TOKEN_TYPE.DOT);                                }
+    "("             { return symbol(TOKEN_TYPE.OPT);                                }
+    ")"             { return symbol(TOKEN_TYPE.CPT);                                }
+    "{"             { return symbol(TOKEN_TYPE.OCV);                                }
+    "}"             { return symbol(TOKEN_TYPE.CCV);                                }
+
+    // nivel 6
+    "!"             { return symbol(TOKEN_TYPE.NOT);                                }
+
+    // nivel 5
     "*"             { return symbol(TOKEN_TYPE.TIMES);                              }
     "/"             { return symbol(TOKEN_TYPE.DIV);                                }
     "%"             { return symbol(TOKEN_TYPE.MOD);                                }
+
+    // nivel 4
     "+"             { return symbol(TOKEN_TYPE.PLUS);                               }
-    "-"             { return symbol(TOKEN_TYPE.MINUS);                              }
-    "("             { return symbol(TOKEN_TYPE.OPT);                                }
-    ")"             { return symbol(TOKEN_TYPE.CPT);                                }
-    "["             { return symbol(TOKEN_TYPE.OCT);                                }
-    "]"             { return symbol(TOKEN_TYPE.CCT);                                }
-    "{"             { return symbol(TOKEN_TYPE.OCV);                                }
-    "}"             { return symbol(TOKEN_TYPE.CCV);                                }
-    ">"             { return symbol(TOKEN_TYPE.BT);                                 }
+    "-"             { return symbol(TOKEN_TYPE.MINUS);                              }    
+    
+    // nivel 3
     "<"             { return symbol(TOKEN_TYPE.LT);                                 }
-    ":"             { return symbol(TOKEN_TYPE.DDOT);                               }
-    "::"            { return symbol(TOKEN_TYPE.DDDOT);                              }
-    "."             { return symbol(TOKEN_TYPE.DOT);                                }
-    ","             { return symbol(TOKEN_TYPE.CMA);                                }
-    "="             { return symbol(TOKEN_TYPE.EQ);                                 }
+    ">"             { return symbol(TOKEN_TYPE.BT);                                 }
+
+    // nivel 2
     "=="            { return symbol(TOKEN_TYPE.EQEQ);                               }
     "!="            { return symbol(TOKEN_TYPE.NEQ);                                }
-
+    
+    // nivel 1
+    "&&"            { return symbol(TOKEN_TYPE.AND);                                }
+    ";"             { return symbol(TOKEN_TYPE.SEMI);                               }
+    ":"             { return symbol(TOKEN_TYPE.DDOT);                               }
+    "::"            { return symbol(TOKEN_TYPE.DDDOT);                              }
+    ","             { return symbol(TOKEN_TYPE.CMA);                                }
+    "="             { return symbol(TOKEN_TYPE.EQ);                                 }
+        
 }
 
 <COMMENT>{
