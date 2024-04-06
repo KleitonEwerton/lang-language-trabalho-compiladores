@@ -46,8 +46,8 @@
 /* Agora vamos definir algumas macros */
 identificador = [:lowercase:] ([:letter:] | [:digit:] | "_" )*
 tipo = [:uppercase:] ([:letter:] | [:digit:] | "_" )*
-literal_int = [:digit:] [:digit:]* | "-"[:digit:] [:digit:]*
-literal_float = [:digit:]* "." ([:digit:] [:digit:]*)
+literal_int = ("-")? [:digit:] [:digit:]*
+literal_float = ("-")? [:digit:]* "." ([:digit:] [:digit:]*)
 literal_caractere = \n | \t | \b | \r // verificar utilização das barras
 literal_logico_true = "true"
 literal_logico_false = "false"
