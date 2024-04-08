@@ -48,10 +48,8 @@ identificador = [:lowercase:] ([:letter:] | [:digit:] | "_" )*
 tipo = [:uppercase:] ([:letter:] | [:digit:] | "_" )*
 literal_int = ("-")? [:digit:] [:digit:]*
 literal_float = ("-")? [:digit:]* "." ([:digit:] [:digit:]*)
-literal_caractere = \n | \t | \b | \r // verificar utilização das barras
-literal_logico_true = "true"
-literal_logico_false = "false"
-literal_logico = {literal_logico_true} | {literal_logico_false}
+literal_caractere = "\'" ([:letter:]) "\'" | "\'\\n\'" | "\'\\t\'" | "\'\\b\'" | "\'\\r\'" // verificar utilização das barras
+literal_logico = "true" | "false"
 literal_nulo = "null"
 FimDeLinha  = \r | \n | \r\n
 LineComment = "--" (.)* {FimDeLinha}
@@ -78,16 +76,18 @@ Brancos     = {FimDeLinha} | [ \t\f]
     "iterate"       { return symbol(TOKEN_TYPE.ITERATE);                            }
     "read"          { return symbol(TOKEN_TYPE.READ);                               }
     "print"         { return symbol(TOKEN_TYPE.PRINT);                              }
-    "return"        { return symbol(TOKEN_TYPE.RET);}
-    
+    "return"        { return symbol(TOKEN_TYPE.RET);                                }
+
     //linguagem
     {identificador} { System.out.print("ID: "); return symbol(TOKEN_TYPE.ID);                                 }
     {literal_float} { System.out.print("FLOAT: "); return symbol(TOKEN_TYPE.VAL_FLOAT, Float.parseFloat(yytext()));}
     {literal_int}   { System.out.print("INT: "); return symbol(TOKEN_TYPE.VAL_INT, Integer.parseInt(yytext()));}
     {Brancos}       {                                                               }
     {LineComment}   {                                                               }
-    {literal_logico_true} { return symbol(TOKEN_TYPE.TRUE);                         }
-    {literal_logico_false} { return symbol(TOKEN_TYPE.FALSE);                       }
+    {literal_logico} { return symbol(TOKEN_TYPE.LITERAL_LOGICO);                         }
+    {literal_caractere}  { return symbol(TOKEN_TYPE.LITERAL_CARACTERE); }
+    {tipo} {return symbol(TOKEN_TYPE.TYPE);                                         }   
+                                     
     
     // operadores e separadores
 

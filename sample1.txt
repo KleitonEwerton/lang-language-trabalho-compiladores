@@ -1,15 +1,15 @@
-main () {
-    print fat(10)[0];
-    a = 2 * 4;
+data Ponto {
+   x :: Float;
+   y :: Float;
 }
-fat (num :: Int ): Int {
-    if (num < 1)
-        return 1 ;
-    else
-        return num * num;
-}
-divmod(num :: Int, div :: Int): Int , Int {
-    q = num / div;
-    r = num % div;
-    return q, r;
+
+f(d :: Int ) : Int, Char{
+    return 0, '\n';
+     return 0, 'Z';
+      return 0, 'D';
+}  
+
+main(x :: Ponto){
+   print x.x;
+   z = f(0)[0] + 2;
 }
