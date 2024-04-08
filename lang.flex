@@ -44,16 +44,18 @@
 
   
 /* Agora vamos definir algumas macros */
+ASCII = [\x00-\x7F]
 identificador = [:lowercase:] ([:letter:] | [:digit:] | "_" )*
 tipo = [:uppercase:] ([:letter:] | [:digit:] | "_" )*
 literal_int = ("-")? [:digit:] [:digit:]*
 literal_float = ("-")? [:digit:]* "." ([:digit:] [:digit:]*)
-literal_caractere = "\'" ([:letter:]) "\'" | "\'\\n\'" | "\'\\t\'" | "\'\\b\'" | "\'\\r\'" // verificar utilização das barras
+literal_caractere = "\'" ([:letter:]) "\'" | "\'\\n\'" | "\'\\t\'" | "\'\\b\'" | "\'\\r\'" | "\'" "\\" "\\" "\'" | "\'" {ASCII} "\'" 
 literal_logico = "true" | "false"
 literal_nulo = "null"
 FimDeLinha  = \r | \n | \r\n
 LineComment = "--" (.)* {FimDeLinha}
 Brancos     = {FimDeLinha} | [ \t\f]
+
   
 %state COMMENT
 

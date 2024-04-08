@@ -11,4 +11,5 @@ public class Teste {
           }
           System.out.println("Total de tokens lidos " + lx.readedTokens());
      }
+
 }
