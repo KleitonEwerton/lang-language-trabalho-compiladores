@@ -50,8 +50,6 @@ tipo = [:uppercase:] ([:letter:] | [:digit:] | "_" )*
 literal_int = ("-")? [:digit:] [:digit:]*
 literal_float = ("-")? [:digit:]* "." ([:digit:] [:digit:]*)
 literal_caractere = "\'" ([:letter:]) "\'" | "\'\\n\'" | "\'\\t\'" | "\'\\b\'" | "\'\\r\'" | "\'" "\\" "\\" "\'" | "\'" {ASCII} "\'" 
-literal_logico = "true" | "false"
-literal_nulo = "null"
 FimDeLinha  = \r | \n | \r\n
 LineComment = "--" (.)* {FimDeLinha}
 Brancos     = {FimDeLinha} | [ \t\f]
@@ -63,8 +61,7 @@ Brancos     = {FimDeLinha} | [ \t\f]
 
 <YYINITIAL>{
 
-
-    //btype
+    //palavras reservadas
     "Int"           { return symbol(TOKEN_TYPE.INT);                                }
     "Char"          { return symbol(TOKEN_TYPE.CHAR);                               }
     "Bool"          { return symbol(TOKEN_TYPE.BOOL);                               }
@@ -80,12 +77,14 @@ Brancos     = {FimDeLinha} | [ \t\f]
     "read"          { return symbol(TOKEN_TYPE.READ);                               }
     "print"         { return symbol(TOKEN_TYPE.PRINT);                              }
     "return"        { return symbol(TOKEN_TYPE.RET);                                }
+    "null"          { return symbol(TOKEN_TYPE.NULL);                               }
+    "true"          { return symbol(TOKEN_TYPE.TRUE);                     }
+    "false"         { return symbol(TOKEN_TYPE.FALSE);                     }
 
     //linguagem
     {identificador} { System.out.print("ID: "); return symbol(TOKEN_TYPE.ID);                                       }
     {literal_float} { System.out.print("FLOAT: "); return symbol(TOKEN_TYPE.VAL_FLOAT, Float.parseFloat(yytext())); }
     {literal_int}   { System.out.print("INT: "); return symbol(TOKEN_TYPE.VAL_INT, Integer.parseInt(yytext()));     }
-    {literal_logico} { return symbol(TOKEN_TYPE.LITERAL_LOGICO);                                                    }
     {literal_caractere}  { return symbol(TOKEN_TYPE.LITERAL_CARACTERE);                                             }
     {tipo} {return symbol(TOKEN_TYPE.TYPE);                                                                         }   
     "{-"            { yybegin(COMMENT);                                                                             }

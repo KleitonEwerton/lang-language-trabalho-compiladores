@@ -1,6 +1,6 @@
 data Ponto {
    x :: Float;
-   
+   a = null;
    {- Esse é um comentario 2*2 -}
    
    y :: Float;
@@ -11,6 +11,10 @@ f(d :: Int ) : Int, Char{
      return 0, 'Z';
       return 0, 'D';
 }  
+
+teste(a :: Float) : Bool {
+   return true;
+}
 
 main(x :: Ponto){
    {-

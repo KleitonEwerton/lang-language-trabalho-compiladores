@@ -38,5 +38,7 @@ public enum TOKEN_TYPE {
     READ,
     PRINT,
     LITERAL_CARACTERE,
-    LITERAL_LOGICO,
+    TRUE,
+    FALSE,
+    NULL
 }
