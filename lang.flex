@@ -63,6 +63,7 @@ Brancos     = {FimDeLinha} | [ \t\f]
 
 <YYINITIAL>{
 
+
     //btype
     "Int"           { return symbol(TOKEN_TYPE.INT);                                }
     "Char"          { return symbol(TOKEN_TYPE.CHAR);                               }
@@ -81,16 +82,16 @@ Brancos     = {FimDeLinha} | [ \t\f]
     "return"        { return symbol(TOKEN_TYPE.RET);                                }
 
     //linguagem
-    {identificador} { System.out.print("ID: "); return symbol(TOKEN_TYPE.ID);                                 }
-    {literal_float} { System.out.print("FLOAT: "); return symbol(TOKEN_TYPE.VAL_FLOAT, Float.parseFloat(yytext()));}
-    {literal_int}   { System.out.print("INT: "); return symbol(TOKEN_TYPE.VAL_INT, Integer.parseInt(yytext()));}
-    {Brancos}       {                                                               }
-    {LineComment}   {                                                               }
-    {literal_logico} { return symbol(TOKEN_TYPE.LITERAL_LOGICO);                         }
-    {literal_caractere}  { return symbol(TOKEN_TYPE.LITERAL_CARACTERE); }
-    {tipo} {return symbol(TOKEN_TYPE.TYPE);                                         }   
-                                     
-    
+    {identificador} { System.out.print("ID: "); return symbol(TOKEN_TYPE.ID);                                       }
+    {literal_float} { System.out.print("FLOAT: "); return symbol(TOKEN_TYPE.VAL_FLOAT, Float.parseFloat(yytext())); }
+    {literal_int}   { System.out.print("INT: "); return symbol(TOKEN_TYPE.VAL_INT, Integer.parseInt(yytext()));     }
+    {literal_logico} { return symbol(TOKEN_TYPE.LITERAL_LOGICO);                                                    }
+    {literal_caractere}  { return symbol(TOKEN_TYPE.LITERAL_CARACTERE);                                             }
+    {tipo} {return symbol(TOKEN_TYPE.TYPE);                                                                         }   
+    "{-"            { yybegin(COMMENT);                                                                             }
+    {Brancos}       {                                                                                               }
+    {LineComment}   {                                                                                               }
+
     // operadores e separadores
 
     // nivel 7
