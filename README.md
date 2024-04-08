@@ -2,7 +2,7 @@
 
 <p align="center">Trabalho desenvolvido em Java durante a disciplina de Teoria dos Compiladores, ministrada pelo professor Leonardo Vieira dos Santos Reis</p>
 
-## 🎮 Rodando aplicação no Linux
+## 🎮 Rodando aplicação no Linux para um único arquivo .lan
 
 ```bash
 # Abra o terminal e instale o JFlex
@@ -21,10 +21,10 @@ jflex lang.flex
 javac Teste.java
 
 # Rode o programa
-java Teste sample1.txt
+java Teste sample1.lan
 
 ```
-## 🎮 Rodando aplicação no Windows
+## 🎮 Rodando aplicação no Windows para um único arquivo .lan
 
 ```bash
 # Clone este repositório
@@ -39,11 +39,11 @@ java -jar jflex-full-1.9.1.jar lang.flex
 # Compile
 javac Teste.java
 
-# Rode o programa, subistitua sample1.txt para o arquivo de preferência
-java Teste sample1.txt
+# Rode o programa, subistitua sample1.lan para o arquivo de preferência
+java Teste sample1.lan
 ```
 
-## 🎮 Rodando Todos os arquivos .lan de uma pasta na aplicação no Linux
+## 🎮 Rodando aplicação no Linux para múltiplos arquivos .lan
 
 ```bash
 # Abra o terminal e instale o JFlex
@@ -61,11 +61,11 @@ jflex lang.flex
 # Compile
 javac TesteAllFiles.java
 
-# Rode o programa
+# Rode o programa, subistitua 'exemplos/semantica/certo' para o caminho de preferência contendo os arquvios .lan
 java TesteAllFiles exemplos/semantica/certo
 
 ```
-## 🎮 Rodando Todos os arquivos .lan de uma pasta na aplicação no Windows
+## 🎮 Rodando aplicação no Windowns para múltiplos arquivos .lan
 
 ```bash
 # Clone este repositório
@@ -80,8 +80,25 @@ java -jar jflex-full-1.9.1.jar lang.flex
 # Compile
 javac TesteAllFiles.java
 
-# Rode o programa, subistitua sample1.txt para o arquivo de preferência
+# Rode o programa, subistitua 'exemplos/semantica/certo' para o caminho de preferência contendo os arquvios .lan
 java TesteAllFiles exemplos/semantica/certo
 ```
 
+## 🛠 Tecnologias
+
+As seguintes ferramentas foram usadas na construção do projeto:
+
+
+- [Git](https://git-scm.com/)
+- [JFlex](https://jflex.de/)
+- [Java](https://www.java.com/pt-BR/)
+
+## 👨‍💻 Autores
+- Kleiton Ewerton de Oliveira - [GitHub](https://github.com/KleitonEwerton)
+- Nikolas
+
+
+## 📞 Contatos
+- kleitonewertonoliveira@gmail.com  
+- nikolasgenesio@gmail.com
 
