@@ -2,7 +2,9 @@ data Ponto {
    x :: Float;
    a = null;
    {- Esse é um comentario 2*2 -}
-   
+   z = '\'';
+   t = '*';
+   n = '\\'
    y :: Float;
 }
 

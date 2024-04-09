@@ -1,3 +1,8 @@
+ /*  Trabalho da disciplina DCC045 - Teoria dos Compiladores
+  *  Kleiton Ewerton de Oliveira - MAT 202065050C
+  *  Nikolas Oliver Sales Genesio - MAT 202065072C
+  */
+ 
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;

@@ -1,7 +1,7 @@
 
- /*  Esta seção é copiada antes da declaração da classe do analisador léxico.
-  *  É nesta seção que se deve incluir imports e declaração de pacotes.
-  *  Neste exemplo não temos nada a incluir nesta seção.
+ /*  Trabalho da disciplina DCC045 - Teoria dos Compiladores
+  *  Kleiton Ewerton de Oliveira - MAT 202065050C
+  *  Nikolas Oliver Sales Genesio - MAT 202065072C
   */
   
 %%
@@ -49,7 +49,7 @@ identificador = [:lowercase:] ([:letter:] | [:digit:] | "_" )*
 tipo = [:uppercase:] ([:letter:] | [:digit:] | "_" )*
 literal_int = ("-")? [:digit:] [:digit:]*
 literal_float = ("-")? [:digit:]* "." ([:digit:] [:digit:]*)
-literal_caractere = "\'" ([:letter:]) "\'" | "\'\\n\'" | "\'\\t\'" | "\'\\b\'" | "\'\\r\'" | "\'" "\\" "\\" "\'" | "\'" {ASCII} "\'" 
+literal_caractere = "\'\\n\'" | "\'\\t\'" | "\'\\b\'" | "\'\\r\'" | "\'" "\\" "\\" "\'" | "\'" {ASCII} "\'" | "\'" "\\'" "\'"
 FimDeLinha  = \r | \n | \r\n
 LineComment = "--" (.)* {FimDeLinha}
 Brancos     = {FimDeLinha} | [ \t\f]
@@ -86,7 +86,7 @@ Brancos     = {FimDeLinha} | [ \t\f]
     {literal_float} { System.out.print("FLOAT: "); return symbol(TOKEN_TYPE.VAL_FLOAT, Float.parseFloat(yytext())); }
     {literal_int}   { System.out.print("INT: "); return symbol(TOKEN_TYPE.VAL_INT, Integer.parseInt(yytext()));     }
     {literal_caractere}  { return symbol(TOKEN_TYPE.LITERAL_CARACTERE);                                             }
-    {tipo} {return symbol(TOKEN_TYPE.TYPE);                                                                         }   
+    {tipo} {System.out.print("TYPE: "); return symbol(TOKEN_TYPE.TYPE);                                             }   
     "{-"            { yybegin(COMMENT);                                                                             }
     {Brancos}       {                                                                                               }
     {LineComment}   {                                                                                               }
