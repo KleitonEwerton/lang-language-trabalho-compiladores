@@ -87,6 +87,8 @@ Brancos     = {FimDeLinha} | [ \t\f]
     {literal_int}   { System.out.print("INT: "); return symbol(TOKEN_TYPE.VAL_INT, Integer.parseInt(yytext()));     }
     {literal_caractere}  { return symbol(TOKEN_TYPE.LITERAL_CARACTERE);                                             }
     {tipo} {System.out.print("TYPE: "); return symbol(TOKEN_TYPE.TYPE);                                             }   
+
+    // none
     "{-"            { yybegin(COMMENT);                                                                             }
     {Brancos}       {                                                                                               }
     {LineComment}   {                                                                                               }
@@ -94,13 +96,13 @@ Brancos     = {FimDeLinha} | [ \t\f]
     // operadores e separadores
 
     // nivel 7
-    "["             { return symbol(TOKEN_TYPE.OCT);                                }
-    "]"             { return symbol(TOKEN_TYPE.CCT);                                }
-    "."             { return symbol(TOKEN_TYPE.DOT);                                }
-    "("             { return symbol(TOKEN_TYPE.OPT);                                }
-    ")"             { return symbol(TOKEN_TYPE.CPT);                                }
-    "{"             { return symbol(TOKEN_TYPE.OCV);                                }
-    "}"             { return symbol(TOKEN_TYPE.CCV);                                }
+    "["             { return symbol(TOKEN_TYPE.LB);                                }
+    "]"             { return symbol(TOKEN_TYPE.RB);                                }
+    "."             { return symbol(TOKEN_TYPE.DOT);                               }
+    "("             { return symbol(TOKEN_TYPE.LP);                                }
+    ")"             { return symbol(TOKEN_TYPE.RP);                                }
+    "{"             { return symbol(TOKEN_TYPE.LC);                                }
+    "}"             { return symbol(TOKEN_TYPE.RC);                                }
 
     // nivel 6
     "!"             { return symbol(TOKEN_TYPE.NOT);                                }
@@ -125,8 +127,8 @@ Brancos     = {FimDeLinha} | [ \t\f]
     // nivel 1
     "&&"            { return symbol(TOKEN_TYPE.AND);                                }
     ";"             { return symbol(TOKEN_TYPE.SEMI);                               }
-    ":"             { return symbol(TOKEN_TYPE.DDOT);                               }
-    "::"            { return symbol(TOKEN_TYPE.DDDOT);                              }
+    ":"             { return symbol(TOKEN_TYPE.COLON);                               }
+    "::"            { return symbol(TOKEN_TYPE.SRO);                              }
     ","             { return symbol(TOKEN_TYPE.CMA);                                }
     "="             { return symbol(TOKEN_TYPE.EQ);                                 }
         
