@@ -5,42 +5,21 @@
 ## 🎮 Rodando aplicação no Linux para um único arquivo .lan
 
 ```bash
-# Abra o terminal e instale o JFlex
-sudo apt-get install jflex
-
-# Clone este repositório
-git clone https://github.com/KleitonEwerton/lang-language-trabalho-compiladores.git
-
 # Acesse a pasta do projeto no terminal/cmd
 cd lang-language-trabalho-compiladores
 
-# Execute o JFlex
-jflex lang.flex
-
-# Compile
-javac Teste.java
-
-# Rode o programa
-java Teste sample1.lan
+# Execute o Script
+bash Linux.sh
 
 ```
 ## 🎮 Rodando aplicação no Windows para um único arquivo .lan
 
 ```bash
-# Clone este repositório
-git clone https://github.com/KleitonEwerton/lang-language-trabalho-compiladores.git
-
 # Acesse a pasta do projeto no terminal/cmd
 cd lang-language-trabalho-compiladores
 
-# Execute o JFlex
-java -jar jflex-full-1.9.1.jar lang.flex
-
-# Compile
-javac Teste.java
-
-# Rode o programa, subistitua sample1.lan para o arquivo de preferência
-java Teste sample1.lan
+# Execute o Script
+windows.bat
 ```
 
 ## 🎮 Rodando aplicação no Linux para múltiplos arquivos .lan
