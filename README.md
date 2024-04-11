@@ -19,7 +19,7 @@ bash Linux.sh
 cd lang-language-trabalho-compiladores
 
 # Execute o Script
-windows.bat
+Windows.bat
 ```
 
 ## 🎮 Rodando aplicação no Linux para múltiplos arquivos .lan

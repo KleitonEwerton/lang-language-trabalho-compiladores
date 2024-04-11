@@ -1,7 +1,7 @@
 echo "Deletando arquivos .class..."
 rm -f *.class
 
-echo "Deletando arquivo Lext"
+echo "Deletando arquivo Lext..."
 rm -f Lext.*
 
 echo "Executando o JFlex..."
