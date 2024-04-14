@@ -40,7 +40,7 @@ jflex lang.flex
 javac Teste.java
 
 # Rode o programa
-java Teste sample1.lan
+java Teste sample1.lan, substitua sample1.lan para o arquivo de preferência
 
 ```
 ## 🎮 Rodando aplicação no Windows para um único arquivo .lan
@@ -58,7 +58,7 @@ java -jar jflex-full-1.9.1.jar lang.flex
 # Compile
 javac Teste.java
 
-# Rode o programa, subistitua sample1.lan para o arquivo de preferência
+# Rode o programa, substitua sample1.lan para o arquivo de preferência
 java Teste sample1.lan
 ```
 
@@ -80,7 +80,7 @@ jflex lang.flex
 # Compile
 javac TesteAllFiles.java
 
-# Rode o programa, subistitua 'exemplos/semantica/certo' para o caminho de preferência contendo os arquvios .lan
+# Rode o programa, substitua 'exemplos/semantica/certo' para o caminho de preferência contendo os arquvios .lan
 java TesteAllFiles exemplos/semantica/certo
 
 ```
@@ -99,7 +99,7 @@ java -jar jflex-full-1.9.1.jar lang.flex
 # Compile
 javac TesteAllFiles.java
 
-# Rode o programa, subistitua 'exemplos/semantica/certo' para o caminho de preferência contendo os arquvios .lan
+# Rode o programa, substitua 'exemplos/semantica/certo' para o caminho de preferência contendo os arquvios .lan
 java TesteAllFiles exemplos/semantica/certo
 ```
 
@@ -114,7 +114,7 @@ As seguintes ferramentas foram usadas na construção do projeto:
 
 ## 👨‍💻 Autores
 - Kleiton Ewerton de Oliveira - [GitHub](https://github.com/KleitonEwerton)
-- Nikolas
+- Nikolas Oliver Sales Genesio - [GitHub](https://github.com/nikolasgenesio)
 
 
 ## 📞 Contatos
