@@ -39,8 +39,8 @@ jflex lang.flex
 # Compile
 javac Teste.java
 
-# Rode o programa
-java Teste sample1.lan, substitua sample1.lan para o arquivo de preferência
+# Rode o programa, substitua sample1.lan para o arquivo de preferência
+java Teste sample1.lan
 
 ```
 ## 🎮 Rodando aplicação no Windows para um único arquivo .lan
