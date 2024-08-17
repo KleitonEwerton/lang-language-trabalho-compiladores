@@ -20,8 +20,10 @@ public class langParser extends Parser {
 	protected static final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
 	public static final int
-		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, T__6=7, T__7=8, INT_TYPE=9, 
-		ID=10, INT=11, NEWLINE=12, WS=13, LINE_COMMENT=14, COMMENT=15;
+		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, T__6=7, TYPE_INT=8, TYPE_CHAR=9, 
+		TYPE_BOOL=10, TYPE_FLOAT=11, TYPE_DATA=12, TYPE_IF=13, TYPE_ELSE=14, TYPE_ITERATE=15, 
+		TYPE_READ=16, TYPE_PRINT=17, TYPE_RET=18, TYPE_NULL=19, TYPE_TRUE=20, 
+		TYPE_FALSE=21, ID=22, INT=23, NEWLINE=24, WS=25, LINE_COMMENT=26, COMMENT=27;
 	public static final int
 		RULE_prog = 0, RULE_stmt = 1, RULE_expr = 2, RULE_term = 3, RULE_factor = 4;
 	private static String[] makeRuleNames() {
@@ -33,14 +35,18 @@ public class langParser extends Parser {
 
 	private static String[] makeLiteralNames() {
 		return new String[] {
-			null, "';'", "'='", "'?'", "'['", "']'", "':'", "'+'", "'*'", "'int'"
+			null, "';'", "'='", "'['", "']'", "':'", "'+'", "'*'", "'int'", "'Char'", 
+			"'Bool'", "'Float'", "'data'", "'if'", "'else'", "'iterate'", "'read'", 
+			"'print'", "'return'", "'null'", "'true'", "'false'"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
 	private static String[] makeSymbolicNames() {
 		return new String[] {
-			null, null, null, null, null, null, null, null, null, "INT_TYPE", "ID", 
-			"INT", "NEWLINE", "WS", "LINE_COMMENT", "COMMENT"
+			null, null, null, null, null, null, null, null, "TYPE_INT", "TYPE_CHAR", 
+			"TYPE_BOOL", "TYPE_FLOAT", "TYPE_DATA", "TYPE_IF", "TYPE_ELSE", "TYPE_ITERATE", 
+			"TYPE_READ", "TYPE_PRINT", "TYPE_RET", "TYPE_NULL", "TYPE_TRUE", "TYPE_FALSE", 
+			"ID", "INT", "NEWLINE", "WS", "LINE_COMMENT", "COMMENT"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -133,7 +139,7 @@ public class langParser extends Parser {
 			setState(19);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << INT_TYPE) | (1L << ID) | (1L << INT))) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << TYPE_INT) | (1L << ID) | (1L << INT))) != 0)) {
 				{
 				{
 				setState(13);
@@ -162,17 +168,18 @@ public class langParser extends Parser {
 
 	public static class StmtContext extends ParserRuleContext {
 		public Node ast;
-		public Token INT_TYPE;
+		public Token TYPE_INT;
 		public Token ID;
 		public ExprContext expr;
 		public Token op;
 		public StmtContext s1;
 		public StmtContext s2;
-		public TerminalNode INT_TYPE() { return getToken(langParser.INT_TYPE, 0); }
+		public TerminalNode TYPE_INT() { return getToken(langParser.TYPE_INT, 0); }
 		public TerminalNode ID() { return getToken(langParser.ID, 0); }
 		public ExprContext expr() {
 			return getRuleContext(ExprContext.class,0);
 		}
+		public TerminalNode TYPE_IF() { return getToken(langParser.TYPE_IF, 0); }
 		public List<StmtContext> stmt() {
 			return getRuleContexts(StmtContext.class);
 		}
@@ -204,14 +211,14 @@ public class langParser extends Parser {
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(22);
-				((StmtContext)_localctx).INT_TYPE = match(INT_TYPE);
+				((StmtContext)_localctx).TYPE_INT = match(TYPE_INT);
 				setState(23);
 				((StmtContext)_localctx).ID = match(ID);
 				setState(24);
 				match(T__1);
 				setState(25);
 				((StmtContext)_localctx).expr = expr();
-				((StmtContext)_localctx).ast =  new VarDecl((((StmtContext)_localctx).INT_TYPE!=null?((StmtContext)_localctx).INT_TYPE.getLine():0), (((StmtContext)_localctx).INT_TYPE!=null?((StmtContext)_localctx).INT_TYPE.getCharPositionInLine():0), new ID((((StmtContext)_localctx).ID!=null?((StmtContext)_localctx).ID.getLine():0), (((StmtContext)_localctx).ID!=null?((StmtContext)_localctx).ID.getCharPositionInLine():0), (((StmtContext)_localctx).ID!=null?((StmtContext)_localctx).ID.getText():null)), ((StmtContext)_localctx).expr.ast);
+				((StmtContext)_localctx).ast =  new VarDecl((((StmtContext)_localctx).TYPE_INT!=null?((StmtContext)_localctx).TYPE_INT.getLine():0), (((StmtContext)_localctx).TYPE_INT!=null?((StmtContext)_localctx).TYPE_INT.getCharPositionInLine():0), new ID((((StmtContext)_localctx).ID!=null?((StmtContext)_localctx).ID.getLine():0), (((StmtContext)_localctx).ID!=null?((StmtContext)_localctx).ID.getCharPositionInLine():0), (((StmtContext)_localctx).ID!=null?((StmtContext)_localctx).ID.getText():null)), ((StmtContext)_localctx).expr.ast);
 				}
 				break;
 			case 2:
@@ -232,21 +239,21 @@ public class langParser extends Parser {
 				setState(33);
 				((StmtContext)_localctx).expr = expr();
 				setState(34);
-				((StmtContext)_localctx).op = match(T__2);
+				((StmtContext)_localctx).op = match(TYPE_IF);
 				setState(35);
-				match(T__3);
+				match(T__2);
 				setState(36);
 				((StmtContext)_localctx).s1 = stmt();
 				setState(37);
-				match(T__4);
-				setState(38);
-				match(T__5);
-				setState(39);
 				match(T__3);
+				setState(38);
+				match(T__4);
+				setState(39);
+				match(T__2);
 				setState(40);
 				((StmtContext)_localctx).s2 = stmt();
 				setState(41);
-				match(T__4);
+				match(T__3);
 				((StmtContext)_localctx).ast =  new If((((StmtContext)_localctx).op!=null?((StmtContext)_localctx).op.getLine():0), (((StmtContext)_localctx).op!=null?((StmtContext)_localctx).op.getCharPositionInLine():0), ((StmtContext)_localctx).expr.ast, ((StmtContext)_localctx).s1.ast, ((StmtContext)_localctx).s2.ast);
 				}
 				break;
@@ -256,13 +263,13 @@ public class langParser extends Parser {
 				setState(44);
 				((StmtContext)_localctx).expr = expr();
 				setState(45);
-				((StmtContext)_localctx).op = match(T__2);
+				((StmtContext)_localctx).op = match(TYPE_IF);
 				setState(46);
-				match(T__3);
+				match(T__2);
 				setState(47);
 				((StmtContext)_localctx).s1 = stmt();
 				setState(48);
-				match(T__4);
+				match(T__3);
 				((StmtContext)_localctx).ast =  new If((((StmtContext)_localctx).op!=null?((StmtContext)_localctx).op.getLine():0), (((StmtContext)_localctx).op!=null?((StmtContext)_localctx).op.getCharPositionInLine():0), ((StmtContext)_localctx).expr.ast, ((StmtContext)_localctx).s1.ast);
 				}
 				break;
@@ -325,7 +332,7 @@ public class langParser extends Parser {
 				setState(56);
 				((ExprContext)_localctx).term = term();
 				setState(57);
-				((ExprContext)_localctx).op = match(T__6);
+				((ExprContext)_localctx).op = match(T__5);
 				setState(58);
 				((ExprContext)_localctx).e = expr();
 				((ExprContext)_localctx).ast =  new Add((((ExprContext)_localctx).op!=null?((ExprContext)_localctx).op.getLine():0), (((ExprContext)_localctx).op!=null?((ExprContext)_localctx).op.getCharPositionInLine():0), ((ExprContext)_localctx).term.ast, ((ExprContext)_localctx).e.ast);
@@ -390,7 +397,7 @@ public class langParser extends Parser {
 				setState(66);
 				((TermContext)_localctx).factor = factor();
 				setState(67);
-				((TermContext)_localctx).op = match(T__7);
+				((TermContext)_localctx).op = match(T__6);
 				setState(68);
 				((TermContext)_localctx).e = term();
 				((TermContext)_localctx).ast =  new Mul((((TermContext)_localctx).op!=null?((TermContext)_localctx).op.getLine():0), (((TermContext)_localctx).op!=null?((TermContext)_localctx).op.getCharPositionInLine():0), ((TermContext)_localctx).factor.ast, ((TermContext)_localctx).e.ast);
@@ -476,7 +483,7 @@ public class langParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\21U\4\2\t\2\4\3\t"+
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\35U\4\2\t\2\4\3\t"+
 		"\3\4\4\t\4\4\5\t\5\4\6\t\6\3\2\3\2\3\2\3\2\3\2\3\2\3\2\7\2\24\n\2\f\2"+
 		"\16\2\27\13\2\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3"+
 		"\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3"+
@@ -485,18 +492,18 @@ public class langParser extends Parser {
 		"\2\2W\2\f\3\2\2\2\48\3\2\2\2\6B\3\2\2\2\bL\3\2\2\2\nR\3\2\2\2\f\r\5\4"+
 		"\3\2\r\16\7\3\2\2\16\25\b\2\1\2\17\20\5\4\3\2\20\21\7\3\2\2\21\22\b\2"+
 		"\1\2\22\24\3\2\2\2\23\17\3\2\2\2\24\27\3\2\2\2\25\23\3\2\2\2\25\26\3\2"+
-		"\2\2\26\3\3\2\2\2\27\25\3\2\2\2\30\31\7\13\2\2\31\32\7\f\2\2\32\33\7\4"+
-		"\2\2\33\34\5\6\4\2\34\35\b\3\1\2\359\3\2\2\2\36\37\7\f\2\2\37 \7\4\2\2"+
-		" !\5\6\4\2!\"\b\3\1\2\"9\3\2\2\2#$\5\6\4\2$%\7\5\2\2%&\7\6\2\2&\'\5\4"+
-		"\3\2\'(\7\7\2\2()\7\b\2\2)*\7\6\2\2*+\5\4\3\2+,\7\7\2\2,-\b\3\1\2-9\3"+
-		"\2\2\2./\5\6\4\2/\60\7\5\2\2\60\61\7\6\2\2\61\62\5\4\3\2\62\63\7\7\2\2"+
-		"\63\64\b\3\1\2\649\3\2\2\2\65\66\5\6\4\2\66\67\b\3\1\2\679\3\2\2\28\30"+
-		"\3\2\2\28\36\3\2\2\28#\3\2\2\28.\3\2\2\28\65\3\2\2\29\5\3\2\2\2:;\5\b"+
-		"\5\2;<\7\t\2\2<=\5\6\4\2=>\b\4\1\2>C\3\2\2\2?@\5\b\5\2@A\b\4\1\2AC\3\2"+
-		"\2\2B:\3\2\2\2B?\3\2\2\2C\7\3\2\2\2DE\5\n\6\2EF\7\n\2\2FG\5\b\5\2GH\b"+
-		"\5\1\2HM\3\2\2\2IJ\5\n\6\2JK\b\5\1\2KM\3\2\2\2LD\3\2\2\2LI\3\2\2\2M\t"+
-		"\3\2\2\2NO\7\f\2\2OS\b\6\1\2PQ\7\r\2\2QS\b\6\1\2RN\3\2\2\2RP\3\2\2\2S"+
-		"\13\3\2\2\2\7\258BLR";
+		"\2\2\26\3\3\2\2\2\27\25\3\2\2\2\30\31\7\n\2\2\31\32\7\30\2\2\32\33\7\4"+
+		"\2\2\33\34\5\6\4\2\34\35\b\3\1\2\359\3\2\2\2\36\37\7\30\2\2\37 \7\4\2"+
+		"\2 !\5\6\4\2!\"\b\3\1\2\"9\3\2\2\2#$\5\6\4\2$%\7\17\2\2%&\7\5\2\2&\'\5"+
+		"\4\3\2\'(\7\6\2\2()\7\7\2\2)*\7\5\2\2*+\5\4\3\2+,\7\6\2\2,-\b\3\1\2-9"+
+		"\3\2\2\2./\5\6\4\2/\60\7\17\2\2\60\61\7\5\2\2\61\62\5\4\3\2\62\63\7\6"+
+		"\2\2\63\64\b\3\1\2\649\3\2\2\2\65\66\5\6\4\2\66\67\b\3\1\2\679\3\2\2\2"+
+		"8\30\3\2\2\28\36\3\2\2\28#\3\2\2\28.\3\2\2\28\65\3\2\2\29\5\3\2\2\2:;"+
+		"\5\b\5\2;<\7\b\2\2<=\5\6\4\2=>\b\4\1\2>C\3\2\2\2?@\5\b\5\2@A\b\4\1\2A"+
+		"C\3\2\2\2B:\3\2\2\2B?\3\2\2\2C\7\3\2\2\2DE\5\n\6\2EF\7\t\2\2FG\5\b\5\2"+
+		"GH\b\5\1\2HM\3\2\2\2IJ\5\n\6\2JK\b\5\1\2KM\3\2\2\2LD\3\2\2\2LI\3\2\2\2"+
+		"M\t\3\2\2\2NO\7\30\2\2OS\b\6\1\2PQ\7\31\2\2QS\b\6\1\2RN\3\2\2\2RP\3\2"+
+		"\2\2S\13\3\2\2\2\7\258BLR";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

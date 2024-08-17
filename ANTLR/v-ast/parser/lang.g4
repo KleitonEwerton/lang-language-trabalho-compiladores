@@ -15,13 +15,13 @@ prog returns [StmtList ast]:
 ;
 
 stmt returns [Node ast]:
-  INT_TYPE ID '=' expr {$ast = new VarDecl($INT_TYPE.line, $INT_TYPE.pos, new ID($ID.line, $ID.pos, $ID.text), $expr.ast);}
+  TYPE_INT ID '=' expr {$ast = new VarDecl($TYPE_INT.line, $TYPE_INT.pos, new ID($ID.line, $ID.pos, $ID.text), $expr.ast);}
 |
   ID '=' expr {$ast = new Attr($ID.line, $ID.pos, new ID($ID.line, $ID.pos, $ID.text), $expr.ast);}
 |
-  expr op='?' '[' s1=stmt ']' ':' '[' s2=stmt ']' {$ast = new If($op.line, $op.pos, $expr.ast, $s1.ast, $s2.ast);}
+  expr op='if' '[' s1=stmt ']' ':' '[' s2=stmt ']' {$ast = new If($op.line, $op.pos, $expr.ast, $s1.ast, $s2.ast);}
 |
-  expr op='?' '[' s1=stmt ']' {$ast = new If($op.line, $op.pos, $expr.ast, $s1.ast);}
+  expr op='if' '[' s1=stmt ']' {$ast = new If($op.line, $op.pos, $expr.ast, $s1.ast);}
 |
   expr {$ast = new Print($expr.ast.getLine(), $expr.ast.getCol(), $expr.ast);}
 ;
@@ -44,7 +44,25 @@ factor returns [Expr ast]:
   INT {$ast = new Num($INT.line, $INT.pos, Integer.parseInt($INT.text));}
 ;
 
-INT_TYPE: 'int';
+TYPE_INT: 'int';
+TYPE_CHAR: 'Char';
+TYPE_BOOL: 'Bool';
+TYPE_FLOAT: 'Float';
+
+/* data */ 
+TYPE_DATA: 'data';
+
+/* cmd */ 
+TYPE_IF: 'if';
+TYPE_ELSE: 'else';
+TYPE_ITERATE: 'iterate';
+TYPE_READ: 'read';
+TYPE_PRINT: 'print';
+TYPE_RET: 'return';
+TYPE_NULL: 'null';
+TYPE_TRUE: 'true';
+TYPE_FALSE: 'false';
+
 
 ID: [a-z]+;
 INT: [0-9]+;
