@@ -24,6 +24,10 @@ stmt returns [Node ast]:
   expr op='if' '[' s1=stmt ']' {$ast = new If($op.line, $op.pos, $expr.ast, $s1.ast);}
 |
 
+  op='iterate' '(' expr ')' '[' s1=stmt ']' {$ast = new Iterate($op.line, $op.pos, $expr.ast, $s1.ast);}
+
+
+|
   op='print' '(' expr ')' {$ast = new Print($expr.ast.getLine(), $expr.ast.getCol(), $expr.ast);}
 ;
 
