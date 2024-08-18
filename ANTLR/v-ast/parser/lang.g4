@@ -23,7 +23,13 @@ stmt returns [Node ast]:
 |
   expr op='if' '[' s1=stmt ']' {$ast = new If($op.line, $op.pos, $expr.ast, $s1.ast);}
 |
-  expr {$ast = new Print($expr.ast.getLine(), $expr.ast.getCol(), $expr.ast);}
+
+  op='print' '(' expr ')' {$ast = new Print($expr.ast.getLine(), $expr.ast.getCol(), $expr.ast);}
+;
+
+stmtList returns [StmtList ast]:
+  s1=stmt ';' {$ast = new StmtList($s1.ast.getLine(), $s1.ast.getCol(), $s1.ast);}
+  (s2=stmt ';' {$ast = new StmtList($s2.ast.getLine(), $s2.ast.getCol(), $ast, $s2.ast);})*
 ;
 
 expr returns [Expr ast]:
@@ -62,7 +68,6 @@ TYPE_RET: 'return';
 TYPE_NULL: 'null';
 TYPE_TRUE: 'true';
 TYPE_FALSE: 'false';
-
 
 ID: [a-z]+;
 INT: [0-9]+;

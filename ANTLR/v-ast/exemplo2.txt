@@ -1,4 +1,8 @@
-int x = 0;
-int y = 10   * 4 + 5;
-x if [x=x+1] : [2 if [ x ] : [y = 2]];
-y;
+int i = 0;
+int x = 2;
+
+print(i);
+
+x  if [x = 10] : [ 0 ];
+
+print(x);

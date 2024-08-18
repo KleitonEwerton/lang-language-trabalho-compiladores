@@ -11,3 +11,12 @@ clean:
 	rm -R parser/*Listener.java parser/langLexer* parser/langParser.java parser/lang.interp parser/lang.tokens
 	find . -type f -name "*.class" -delete
 	find . -type f -name "*~" -delete
+
+exemplo1:
+	java -cp .:antlr-4.8-complete.jar Teste $(filter-out $@,$(MAKECMDGOALS)) exemplo1.txt
+
+exemplo2:
+	java -cp .:antlr-4.8-complete.jar Teste $(filter-out $@,$(MAKECMDGOALS)) exemplo2.txt
+
+exemplo3:
+	java -cp .:antlr-4.8-complete.jar Teste $(filter-out $@,$(MAKECMDGOALS)) exemplo3.txt

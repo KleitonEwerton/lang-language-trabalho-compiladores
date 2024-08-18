@@ -25,6 +25,11 @@ public class ID extends Expr {
         return l;
     }
 
+    @Override
+    public Expr evaluate() {
+        return this;
+    }
+
     public int interpret(HashMap<String, Integer> m) {
         return m.get(l);
     }
