@@ -18,18 +18,18 @@ import java.math.BigDecimal;
 %type Symbol
 %yylexthrow Scanner.Exception
 %eofval{
-	return newToken(Terminals.EOF, "end-of-file");
+	return symbol(Terminals.EOF, "end-of-file");
 %eofval}
 %unicode
 %line
 %column
 %{
-	private Symbol newToken(short id)
+	private Symbol symbol(short id)
 	{
 		return new Symbol(id, yyline + 1, yycolumn + 1, yylength());
 	}
 
-	private Symbol newToken(short id, Object value)
+	private Symbol symbol(short id, Object value)
 	{
 		return new Symbol(id, yyline + 1, yycolumn + 1, yylength(), value);
 	}
@@ -49,43 +49,43 @@ import java.math.BigDecimal;
 %%
 
 <YYINITIAL>{
-    "false"         { return newToken(Terminals.FALSE, false ); }
-    "true"          { return newToken(Terminals.TRUE, true );   }
-    "::"            { return newToken(Terminals.ATTR);          }
-    "$"             { return newToken(Terminals.INST);   }
-    "return"        { return newToken(Terminals.RET);    }
-    "if"            { return newToken(Terminals.IF);     }
-    "print"         { return newToken(Terminals.PRINT);  }
+    "false"         { return symbol(Terminals.FALSE, false ); }
+    "true"          { return symbol(Terminals.TRUE, true );   }
+    "::"            { return symbol(Terminals.ATTR);          }
+    "$"             { return symbol(Terminals.INST);   }
+    "return"        { return symbol(Terminals.RET);    }
+    "if"            { return symbol(Terminals.IF);     }
+    "print"         { return symbol(Terminals.PRINT);  }
     
-    "=="            { return newToken(Terminals.EQ);     }
-    ";"             { return newToken(Terminals.SEMI);   }
-    ","             { return newToken(Terminals.COMMA);  }
-    ":"             { return newToken(Terminals.COLON);  }
-    "("             { return newToken(Terminals.AP);     }
-    ")"             { return newToken(Terminals.FP);     }
-    "["             { return newToken(Terminals.LB);     }
-    "]"             { return newToken(Terminals.RB);     }
-    "{"             { return newToken(Terminals.LBRACE); }
-    "}"             { return newToken(Terminals.RBRACE); }
+    "=="            { return symbol(Terminals.EQ);     }
+    ";"             { return symbol(Terminals.SEMI);   }
+    ","             { return symbol(Terminals.COMMA);  }
+    ":"             { return symbol(Terminals.COLON);  }
+    "("             { return symbol(Terminals.AP);     }
+    ")"             { return symbol(Terminals.FP);     }
+    "["             { return symbol(Terminals.LB);     }
+    "]"             { return symbol(Terminals.RB);     }
+    "{"             { return symbol(Terminals.LBRACE); }
+    "}"             { return symbol(Terminals.RBRACE); }
     
-    "*"             { return newToken(Terminals.MULT);   }
-    "/"             { return newToken(Terminals.DIV);    }
-    "%"             { return newToken(Terminals.MOD);    }
-    "&"             { return newToken(Terminals.AND);    }
-    "!"             { return newToken(Terminals.NOT);    }
-    "+"             { return newToken(Terminals.PLUS);   }
-    "-"             { return newToken(Terminals.MINUS);  }
-    "<"             { return newToken(Terminals.LT);     }
+    "*"             { return symbol(Terminals.MULT);   }
+    "/"             { return symbol(Terminals.DIV);    }
+    "%"             { return symbol(Terminals.MOD);    }
+    "&"             { return symbol(Terminals.AND);    }
+    "!"             { return symbol(Terminals.NOT);    }
+    "+"             { return symbol(Terminals.PLUS);   }
+    "-"             { return symbol(Terminals.MINUS);  }
+    "<"             { return symbol(Terminals.LT);     }
     
     
     "/*"            { yybegin(COMMENT);                  }
-    "Int"           { return newToken(Terminals.TYINT);  }
-    "Float"         { return newToken(Terminals.TYFLOAT);  } 
-    "Bool"          { return newToken(Terminals.TYBOOL);  } 
+    "Int"           { return symbol(Terminals.TYINT);  }
+    "Float"         { return symbol(Terminals.TYFLOAT);  } 
+    "Bool"          { return symbol(Terminals.TYBOOL);  } 
     
-    {identificador} { return newToken(Terminals.ID, yytext());   }
-    {float}         { return newToken(Terminals.FLOAT, Float.parseFloat(yytext()) );  }
-    {int}           { return newToken(Terminals.INT, Integer.parseInt(yytext()) );  }
+    {identificador} { return symbol(Terminals.ID, yytext());   }
+    {float}         { return symbol(Terminals.FLOAT, Float.parseFloat(yytext()) );  }
+    {int}           { return symbol(Terminals.INT, Integer.parseInt(yytext()) );  }
     {Brancos}       { /* Não faz nada  */                }
     {lineCmt}       { /* Não faz nada  */                }
 

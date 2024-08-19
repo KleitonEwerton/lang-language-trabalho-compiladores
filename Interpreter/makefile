@@ -35,3 +35,6 @@ cleanParser:
 	rm -f parsers/MiniLangParser.java
 	rm -f parsers/MiniLangLex.java
 	rm -f parsers/Terminals.java
+
+exemplo1:
+	java -cp .:beaver-rt-0.9.11.jar MiniLang -i exemplo1.txt
