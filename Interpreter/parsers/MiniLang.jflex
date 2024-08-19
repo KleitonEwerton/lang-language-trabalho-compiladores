@@ -82,6 +82,8 @@ import java.math.BigDecimal;
     "Int"           { return symbol(Terminals.TYINT);  }
     "Float"         { return symbol(Terminals.TYFLOAT);  } 
     "Bool"          { return symbol(Terminals.TYBOOL);  } 
+
+    "Data"  { return symbol(Terminals.DATA);  } 
     
     {identificador} { return symbol(Terminals.ID, yytext());   }
     {float}         { return symbol(Terminals.FLOAT, Float.parseFloat(yytext()) );  }

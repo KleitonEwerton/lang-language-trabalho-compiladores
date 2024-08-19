@@ -4,7 +4,7 @@
 
 %class "MiniLangParser";
 
-%terminals INT, FLOAT, ID, TRUE, FALSE,  
+%terminals INT, FLOAT, ID, TRUE, FALSE, DATA,
            MULT, PLUS, MINUS, DIV, LT, AND, MOD, EQ, NOT,
            ATTR, IF, PRINT, WHILE, INST, RET,
            TYINT, TYFLOAT, TYBOOL,
@@ -106,8 +106,8 @@ Expr = Expr.a MULT  Expr.b             {: return new Mul(a,b);  :}
      | TRUE                            {: return new True();    :}
      | FALSE                           {: return new False();   :}
      | AP CExpr.e FP                   {: return e;             :}
+     | DATA {: return e :} 
      ;
-
  
 
 argList = CExpr
