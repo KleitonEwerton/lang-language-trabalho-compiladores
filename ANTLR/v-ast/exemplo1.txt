@@ -1,5 +1,5 @@
-int a = 3;
-int b = 4;
-int c = a + b;
+Int a::3.0;
+Int b::4;
+Int c::a + b;
 
-c;
+print(c);

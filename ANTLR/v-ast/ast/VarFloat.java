@@ -2,11 +2,11 @@ package ast;
 
 import java.util.HashMap;
 
-public class VarDecl extends Node {
+public class VarFloat extends Node {
     private ID id;
     private Expr expr;
 
-    public VarDecl(int line, int col, ID id, Expr expr) {
+    public VarFloat(int line, int col, ID id, Expr expr) {
         super(line, col);
         this.id = id;
         this.expr = expr;

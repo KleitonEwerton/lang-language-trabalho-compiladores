@@ -1,6 +1,6 @@
 package ast;
 
-import java.util.HashMap;
+import java.util.Map;
 
 public abstract class Node {
 
@@ -19,5 +19,6 @@ public abstract class Node {
             return col;
       }
 
-      public abstract int interpret(HashMap<String, Integer> m);
+      public abstract int interpret(Map<String, Integer> m);
+
 }

@@ -14,10 +14,16 @@ prog returns [StmtList ast]:
   (s2=stmt ';' {$ast = new StmtList($s2.ast.getLine(), $s2.ast.getCol(), $ast, $s2.ast);})*
 ;
 
+// def returns [Node ast]:
+//   TYPE_DATA ID '{' f1=fieldList '}' {$ast = new DataDecl($TYPE_DATA.line, $TYPE_DATA.pos, new ID($ID.line, $ID.pos, $ID.text), $f1.ast);}
+
+decl returns [Node ast]:
+  TYPE_INT ID TYPE_SRO expr {$ast = new VarInt($TYPE_INT.line, $TYPE_INT.pos, new ID($ID.line, $ID.pos, $ID.text), $expr.ast);};
+  
+
+
 stmt returns [Node ast]:
-  TYPE_INT ID '=' expr {$ast = new VarDecl($TYPE_INT.line, $TYPE_INT.pos, new ID($ID.line, $ID.pos, $ID.text), $expr.ast);}
-|
-  ID '=' expr {$ast = new Attr($ID.line, $ID.pos, new ID($ID.line, $ID.pos, $ID.text), $expr.ast);}
+  decl {$ast = $decl.ast;}
 |
   expr op='if' '[' s1=stmt ']' ':' '[' s2=stmt ']' {$ast = new If($op.line, $op.pos, $expr.ast, $s1.ast, $s2.ast);}
 |
@@ -25,7 +31,6 @@ stmt returns [Node ast]:
 |
 
   op='iterate' '(' expr ')' '[' s1=stmt ']' {$ast = new Iterate($op.line, $op.pos, $expr.ast, $s1.ast);}
-
 
 |
   op='print' '(' expr ')' {$ast = new Print($expr.ast.getLine(), $expr.ast.getCol(), $expr.ast);}
@@ -54,12 +59,13 @@ factor returns [Expr ast]:
   INT {$ast = new Num($INT.line, $INT.pos, Integer.parseInt($INT.text));}
 ;
 
-TYPE_INT: 'int';
+
+TYPE_INT: 'Int';
 TYPE_CHAR: 'Char';
 TYPE_BOOL: 'Bool';
 TYPE_FLOAT: 'Float';
-
-/* data */ 
+TYPE_NEW: 'new';
+ 
 TYPE_DATA: 'data';
 
 /* cmd */ 
@@ -73,10 +79,64 @@ TYPE_NULL: 'null';
 TYPE_TRUE: 'true';
 TYPE_FALSE: 'false';
 
-ID: [a-z]+;
-INT: [0-9]+;
+
+/* linguagem */
+ID: [a-z][a-zA-Z0-9_]* ;
+NAME: [A-Z][a-zA-Z0-9_]* ;
+INT: '-'? [0-9]+ ;
+FLOAT: '-'? [0-9]* '.' ([0-9] [0-9]*) ;
+CHAR: ('\'' '\\n' '\'')
+    | ('\'' '\\t' '\'')
+    | ('\'' '\\b' '\'') 
+    | ('\'' '\\r' '\'') 
+    | ('\'' '\\' '\\' '\'') 
+    | ('\'' [\u0000-\u007F] '\'') 
+    | ('\'' '\\' '\'') 
+    ;
+    
+/* none */ 
 
 NEWLINE: '\r'? '\n' -> skip;
-WS: [ \t]+ -> skip;
-LINE_COMMENT: '//' ~('\r' | '\n')* NEWLINE -> skip;
+WS : [ \t]+ -> skip;
+LINE_COMMENT : '//' ~('\r' | '\n')* NEWLINE -> skip;
 COMMENT: '/*' .*?  '*/' -> skip;
+
+
+/* operadores e separadores */
+
+/* nivel 7 */
+TYPE_OPEN_BRACKET: '[';
+TYPE_CLOSE_BRACKET: ']';
+TYPE_DOT: '.';
+TYPE_OPEN_PARENTHESIS: '(';
+TYPE_CLOSE_PARENTHESIS: ')';
+TYPE_OPEN_BRACE: '{';
+TYPE_CLOSE_BRACE: '}';
+
+/* nivel 6 */
+TYPE_EXCLAMATION: '!';
+
+/* nivel 5 */
+TYPE_ASTERISK: '*';
+TYPE_DIV: '/';
+TYPE_MOD: '%';
+
+/* nivel 4 */
+TYPE_PLUS: '+';
+TYPE_MINUS: '-';
+
+/* nivel 3 */
+TYPE_LESS_THAN: '<';
+TYPE_GREATER_THAN: '>';
+
+/* nivel 2 */
+TYPE_EQUAL_EQUAL: '==';
+TYPE_NO_EQUAL: '!=';
+
+/* nivel 1 */
+TYPE_AND: '&&';
+TYPE_SEMI: ';';
+TYPE_COLON: ':';
+TYPE_SRO: '::';
+TYPE_COMMA: ',';
+TYPE_EQUAL: '=';
