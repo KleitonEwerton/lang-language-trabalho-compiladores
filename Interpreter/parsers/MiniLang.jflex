@@ -57,7 +57,7 @@ import java.math.BigDecimal;
     "if"            { return newToken(Terminals.IF);     }
     "print"         { return newToken(Terminals.PRINT);  }
     
-    "=="             { return newToken(Terminals.EQ);     }
+    "=="            { return newToken(Terminals.EQ);     }
     ";"             { return newToken(Terminals.SEMI);   }
     ","             { return newToken(Terminals.COMMA);  }
     ":"             { return newToken(Terminals.COLON);  }
@@ -69,15 +69,14 @@ import java.math.BigDecimal;
     "}"             { return newToken(Terminals.RBRACE); }
     
     "*"             { return newToken(Terminals.MULT);   }
+    "/"             { return newToken(Terminals.DIV);    }
+    "%"             { return newToken(Terminals.MOD);    }
     "&"             { return newToken(Terminals.AND);    }
     "!"             { return newToken(Terminals.NOT);    }
     "+"             { return newToken(Terminals.PLUS);   }
     "-"             { return newToken(Terminals.MINUS);  }
     "<"             { return newToken(Terminals.LT);     }
-    "/"             { return newToken(Terminals.DIV);    }
-    "%"             { return newToken(Terminals.MOD);    }
     
-
     
     "/*"            { yybegin(COMMENT);                  }
     "Int"           { return newToken(Terminals.TYINT);  }

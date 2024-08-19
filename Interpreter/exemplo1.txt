@@ -10,14 +10,7 @@ fat(Int : n) : Int{
 
 inicio(): Int{
 
-  y :: 3;
+  print((3 + 2) / 2);
 
-   if(0 == 0){
-      print(1);
-    }:{
-      print(2);
-    }
-
-  print fat(10) ;
 }
  

@@ -100,7 +100,7 @@ Expr = Expr.a MULT  Expr.b             {: return new Mul(a,b);  :}
      | Expr.a MOD  Expr.b              {: return new Mod(a, b); :}
      | NOT CExpr.e                     {: return new Not(e);    :}
      | Var.v                           {: return v;             :}
-     | ID.v AP argList.e? FP            {: return new Call(v,e); :}
+     | ID.v AP argList.e? FP           {: return new Call(v,e); :}
      | INT.n                           {: return new NInt(n);   :}
      | FLOAT.f                         {: return new NFloat(f); :}
      | TRUE                            {: return new True();    :}
