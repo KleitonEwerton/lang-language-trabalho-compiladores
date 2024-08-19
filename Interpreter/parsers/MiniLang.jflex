@@ -56,7 +56,7 @@ import java.math.BigDecimal;
     "@"             { return newToken(Terminals.RET);    }
     "?"             { return newToken(Terminals.IF);     }
     "?["            { return newToken(Terminals.WHILE);  }
-    "#"             { return newToken(Terminals.PRINT);  }
+    "print"         { return newToken(Terminals.PRINT);  }
     
     "="             { return newToken(Terminals.EQ);     }
     ";"             { return newToken(Terminals.SEMI);   }

@@ -29,6 +29,6 @@ dumy(Int: x, Int : y) : Int{
 
 inicio(): Int{
   x <- 1 + 2 * f(10) ;  
-  # x ;
+  print f(10) ;
 }
  
