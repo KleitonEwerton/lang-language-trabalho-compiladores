@@ -51,14 +51,13 @@ import java.math.BigDecimal;
 <YYINITIAL>{
     "false"         { return newToken(Terminals.FALSE, false ); }
     "true"          { return newToken(Terminals.TRUE, true );   }
-    "<-"            { return newToken(Terminals.ATTR);          }
+    "::"            { return newToken(Terminals.ATTR);          }
     "$"             { return newToken(Terminals.INST);   }
-    "@"             { return newToken(Terminals.RET);    }
-    "?"             { return newToken(Terminals.IF);     }
-    "?["            { return newToken(Terminals.WHILE);  }
+    "return"        { return newToken(Terminals.RET);    }
+    "if"            { return newToken(Terminals.IF);     }
     "print"         { return newToken(Terminals.PRINT);  }
     
-    "="             { return newToken(Terminals.EQ);     }
+    "=="             { return newToken(Terminals.EQ);     }
     ";"             { return newToken(Terminals.SEMI);   }
     ","             { return newToken(Terminals.COMMA);  }
     ":"             { return newToken(Terminals.COLON);  }
