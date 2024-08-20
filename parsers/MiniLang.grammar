@@ -109,9 +109,9 @@ Btype =  TYPE_INT                                                  {: return new
       ;
 
 Cmd = OPEN_BRACE Cmd.c* CLOSE_BRACE                                {: return new Block(c); :}
-    | IF AP Exp.e FP Cmd.c            {: return new If(e, c); :}       
-    | IF AP Exp.e FP Cmd.c1 ELSE Cmd.c2 {: return new If(e,c1,c2); :}
-    | ITERATE AP Exp.e FP Cmd.c       {: return new While(e, c); :}
+    | IF AP Exp.e FP Cmd.c                                         {: return new If(e, c); :}       
+    | IF AP Exp.e FP Cmd.c1 ELSE Cmd.c2                            {: return new If(e,c1,c2); :}
+    | ITERATE AP Exp.e FP Cmd.c                                    {: return new While(e, c); :}
     | READ Lvalue.l SEMI                                           {: return new Read(l); :}
     | PRINT Exp.e SEMI                                             {: return new Print(e); :}
     | RETURN Exp.e AP COMMA Exp FP* SEMI                           {: return new Return(e); :}
@@ -122,7 +122,7 @@ Cmd = OPEN_BRACE Cmd.c* CLOSE_BRACE                                {: return new
 CExpr = Exp.e1 AND Exp.e2                                           {: return new And(e1,e2);  :}
       | Exp.e1 LESS_THAN Exp.e2                                     {: return new Lt(e1,e2);   :}
       | Exp.e1 EQUAL_EQUAL Exp.e2                                   {: return new EqEq(e1,e2);   :}
-      | Exp.e1 NO_EQUAL Exp.e2                                      {: return new Neq(e1, e2); :}
+      | Exp.e1 NO_EQUAL Exp.e2                                      {: return new neg(e1, e2); :}
       | Exp.e                                                       {: return e; :}
       ; 
 

@@ -1,5 +1,8 @@
 package ast;
 
+import java.util.HashMap;
+import visitors.Visitor;
+
 public class Index extends Node {
     private Node index;
     private Node indexList;

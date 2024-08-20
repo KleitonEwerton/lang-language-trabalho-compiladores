@@ -378,4 +378,26 @@ public class InterpretVisitor extends Visitor {
 
     public void visit(Index t) {
     }
+
+    public void visit(Field t) {
+    }
+
+    public void visit(CExpr t) {
+    }
+
+    public void visit(Neg e) {
+
+    }
+
+    public void visit(Equal e) {
+
+    }
+
+    public void visit(NotEqual e) {
+
+    }
+
+    public void visit(EqEq e) {
+
+    }
 }

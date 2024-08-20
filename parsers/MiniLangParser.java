@@ -322,7 +322,7 @@ public class MiniLangParser extends Parser {
 					final Expr e1 = (Expr) _symbol_e1.value;
 					final Symbol _symbol_e2 = _symbols[offset + 3];
 					final Expr e2 = (Expr) _symbol_e2.value;
-					 return new Neq(e1, e2);
+					 return new neg(e1, e2);
 				}
 			},
 			new Action() {	// [45] CExpr = Exp.e

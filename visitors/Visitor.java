@@ -7,6 +7,8 @@ public abstract class Visitor {
 
      public abstract void visit(Add e);
 
+     public abstract void visit(Neg t);
+
      public abstract void visit(Sub e);
 
      public abstract void visit(Mul e);
@@ -66,4 +68,15 @@ public abstract class Visitor {
      public abstract void visit(TyChar t);
 
      public abstract void visit(Index t);
+
+     public abstract void visit(Field t);
+
+     public abstract void visit(CExpr t);
+
+     public abstract void visit(Equal t);
+
+     public abstract void visit(NotEqual t);
+
+     public abstract void visit(EqEq t);
+
 }
