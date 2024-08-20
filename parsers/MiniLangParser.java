@@ -442,7 +442,7 @@ public class MiniLangParser extends Parser {
 					final Symbol _symbol_t = _symbols[offset + 2];
 					final Node t = (Node) _symbol_t.value;
 					final Symbol e = _symbols[offset + 5];
-					 return new New(t, e);
+					 return e;
 				}
 			},
 			Action.NONE,  	// [62] opt$Exps = 
