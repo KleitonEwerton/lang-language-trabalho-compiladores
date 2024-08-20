@@ -16,7 +16,7 @@ public class TyChar extends Tipo {
       }
 
       public void accept(Visitor v) {
-            // v.visit(this);
+            v.visit(this);
       }
 
 }

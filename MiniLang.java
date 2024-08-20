@@ -20,14 +20,10 @@ public class MiniLang {
 
          if (p.isGood()) {
             System.out.println("parsing ... [ ok ]");
+
             if (args[0].equals("-i")) {
                InterpretVisitor iv = new InterpretVisitor(true);
                result.accept(iv);
-
-            } else if (args[0].equals("-dot")) {
-               GraphVisitor gv = new GraphVisitor();
-               result.accept(gv);
-               gv.saveToFile("tree.graphviz");
             }
 
          } else {
