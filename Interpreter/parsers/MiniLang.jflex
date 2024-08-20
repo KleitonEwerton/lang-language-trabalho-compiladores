@@ -49,6 +49,10 @@ import java.math.BigDecimal;
 %%
 
 <YYINITIAL>{
+    
+    
+    
+    
     "false"         { return newToken(Terminals.FALSE, false ); }
     "true"          { return newToken(Terminals.TRUE, true );   }
     "<-"            { return newToken(Terminals.ATTR);          }
