@@ -4,7 +4,6 @@
 
 %class "MiniLangParser";
 
-<<<<<<< HEAD
 %terminals TYPE_INT, TYPE_CHAR, TYPE_BOOL, TYPE_FLOAT, TYPE_DATA,
            IF, ELSE, ITERATE, READ, PRINT, RETURN, NULL, TRUE, FALSE,
            ID, NAME, INT, FLOAT, CHAR,
@@ -13,13 +12,6 @@
            LESS_THAN, GREATER_THAN, EQUAL_EQUAL, NO_EQUAL,
            AND, SEMI, COLON, SRO, COMMA, EQUAL,
            AP, FP, TYPE_NEW;
-=======
-%terminals INT, FLOAT, ID, TRUE, FALSE, DATA,
-           MULT, PLUS, MINUS, DIV, LT, AND, MOD, EQ, NOT,
-           ATTR, IF, PRINT, WHILE, INST, RET,
-           TYINT, TYFLOAT, TYBOOL,
-           RB, LB, AP, FP, LBRACE, RBRACE, COLON, SEMI, COMMA;
->>>>>>> 0d1bb07f9c860d76d9a359065f50ae3fdde2fd9d
 
 %left PLUS, MINUS;      
 %left MULT, DIV, MOD;   
@@ -92,34 +84,9 @@ Def = Data.d                                                {: return d; :}
     | Func.fn                                               {: return fn; :}
     ;
 
-<<<<<<< HEAD
 Data = TYPE_DATA NAME.nm OPEN_BRACE Decl.dl* CLOSE_BRACE     {: return new Data(nm, dl); :}
      ;
 
-=======
-CExpr = Expr.a EQ Expr.b               {: return new Eq(a,b);   :}
-      | CExpr.a AND CExpr.b            {: return new And(a,b);  :}
-      | Expr.a LT Expr.b               {: return new Lt(a,b);   :}
-      | Expr.e                         {: return e;             :}
-      ;
-      
-Expr = Expr.a MULT  Expr.b             {: return new Mul(a,b);  :}
-     | Expr.a PLUS  Expr.b             {: return new Add(a, b); :}
-     | Expr.a MINUS  Expr.b            {: return new Sub(a, b); :}
-     | Expr.a DIV  Expr.b              {: return new Div(a, b); :}
-     | Expr.a MOD  Expr.b              {: return new Mod(a, b); :}
-     | NOT CExpr.e                     {: return new Not(e);    :}
-     | Var.v                           {: return v;             :}
-     | ID.v AP argList.e? FP           {: return new Call(v,e); :}
-     | INT.n                           {: return new NInt(n);   :}
-     | FLOAT.f                         {: return new NFloat(f); :}
-     | TRUE                            {: return new True();    :}
-     | FALSE                           {: return new False();   :}
-     | AP CExpr.e FP                   {: return e;             :}
-     | DATA {: return e :} 
-     ;
- 
->>>>>>> 0d1bb07f9c860d76d9a359065f50ae3fdde2fd9d
 
 Decl = ID.v SRO Type.t SEMI                         {: return new Decl(v, t); :}
      ;

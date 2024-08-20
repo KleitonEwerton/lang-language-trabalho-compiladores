@@ -49,7 +49,6 @@ import java.math.BigDecimal;
 %%
 
 <YYINITIAL>{
-<<<<<<< HEAD
     
     
     
@@ -62,15 +61,6 @@ import java.math.BigDecimal;
     "?"             { return newToken(Terminals.IF);     }
     "?["            { return newToken(Terminals.WHILE);  }
     "#"             { return newToken(Terminals.PRINT);  }
-=======
-    "false"         { return symbol(Terminals.FALSE, false ); }
-    "true"          { return symbol(Terminals.TRUE, true );   }
-    "::"            { return symbol(Terminals.ATTR);          }
-    "$"             { return symbol(Terminals.INST);   }
-    "return"        { return symbol(Terminals.RET);    }
-    "if"            { return symbol(Terminals.IF);     }
-    "print"         { return symbol(Terminals.PRINT);  }
->>>>>>> 0d1bb07f9c860d76d9a359065f50ae3fdde2fd9d
     
     "=="            { return symbol(Terminals.EQ);     }
     ";"             { return symbol(Terminals.SEMI);   }
