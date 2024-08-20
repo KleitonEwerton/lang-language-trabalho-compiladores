@@ -1,5 +1,0 @@
-Int a::3.0;
-Int b::4;
-Int c::a + b;
-
-print(c);
