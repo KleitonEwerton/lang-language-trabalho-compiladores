@@ -950,12 +950,12 @@ public class MiniLangLex extends Scanner {
             // fall through
           case 42: break;
           case 5:
-            { return newToken(Terminals.PRINT);
+            { return symbol(Terminals.PRINT);
             }
             // fall through
           case 43: break;
           case 6:
-            { return newToken(Terminals.INST);
+            { return symbol(Terminals.INST);
             }
             // fall through
           case 44: break;
@@ -1025,12 +1025,12 @@ public class MiniLangLex extends Scanner {
             // fall through
           case 57: break;
           case 20:
-            { return newToken(Terminals.IF);
+            { return symbol(Terminals.IF);
             }
             // fall through
           case 58: break;
           case 21:
-            { return newToken(Terminals.RET);
+            { return symbol(Terminals.RET);
             }
             // fall through
           case 59: break;
@@ -1065,7 +1065,7 @@ public class MiniLangLex extends Scanner {
             // fall through
           case 65: break;
           case 28:
-            { return newToken(Terminals.ATTR);
+            { return symbol(Terminals.ATTR);
             }
             // fall through
           case 66: break;
@@ -1075,7 +1075,7 @@ public class MiniLangLex extends Scanner {
             // fall through
           case 67: break;
           case 30:
-            { return newToken(Terminals.WHILE);
+            { return symbol(Terminals.WHILE);
             }
             // fall through
           case 68: break;
@@ -1105,7 +1105,7 @@ public class MiniLangLex extends Scanner {
             // fall through
           case 73: break;
           case 36:
-            { return newToken(Terminals.TRUE, true );
+            { return symbol(Terminals.TRUE, true );
             }
             // fall through
           case 74: break;
@@ -1115,7 +1115,7 @@ public class MiniLangLex extends Scanner {
             // fall through
           case 75: break;
           case 38:
-            { return newToken(Terminals.FALSE, false );
+            { return symbol(Terminals.FALSE, false );
             }
             // fall through
           case 76: break;

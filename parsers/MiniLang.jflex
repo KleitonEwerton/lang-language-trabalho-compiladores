@@ -53,14 +53,14 @@ import java.math.BigDecimal;
     
     
     
-    "false"         { return newToken(Terminals.FALSE, false ); }
-    "true"          { return newToken(Terminals.TRUE, true );   }
-    "<-"            { return newToken(Terminals.ATTR);          }
-    "$"             { return newToken(Terminals.INST);   }
-    "@"             { return newToken(Terminals.RET);    }
-    "?"             { return newToken(Terminals.IF);     }
-    "?["            { return newToken(Terminals.WHILE);  }
-    "#"             { return newToken(Terminals.PRINT);  }
+    "false"         { return symbol(Terminals.FALSE, false ); }
+    "true"          { return symbol(Terminals.TRUE, true );   }
+    "<-"            { return symbol(Terminals.ATTR);          }
+    "$"             { return symbol(Terminals.INST);   }
+    "@"             { return symbol(Terminals.RET);    }
+    "?"             { return symbol(Terminals.IF);     }
+    "?["            { return symbol(Terminals.WHILE);  }
+    "#"             { return symbol(Terminals.PRINT);  }
     
     "=="            { return symbol(Terminals.EQ);     }
     ";"             { return symbol(Terminals.SEMI);   }

@@ -12,6 +12,7 @@ import visitors.*;
 public class MiniLang {
    public static void main(String[] args) {
       HashMap<String, Integer> h = new HashMap<String, Integer>();
+
       try {
          MiniLangLex input = new MiniLangLex(new FileReader(args[1]));
          MiniLangParser p = new MiniLangParser();
