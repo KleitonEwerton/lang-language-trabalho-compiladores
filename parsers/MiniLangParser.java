@@ -13,35 +13,35 @@ import java.util.ArrayList;
 public class MiniLangParser extends Parser {
 
 	static final ParsingTables PARSING_TABLES = new ParsingTables(
-		"U9pjbsbm54KSnT$C8W6I1JUR10nN0BaC178G0W598Yg8Scl2ZOg8e88GL50H1I$mnlj21Is" +
-		"jiihog$UDW0S2deYeA9uW22AYqFvcjdSpMPTK#PLojbw$r$#ZfxkdksTMSfVgF8tGU4tIQH" +
-		"gbqHgZiJfJPodDl7O4p$$MezzQfUNca79rebQ1EzL8nwX2hWRh50rHs3oliFA9gZ4$gKQzj" +
-		"5YbAjTLMguAizj6pJS7L6l#m1PHOvsXoxH0nv9LhOlCZrZhil9reQfeAMWx7sk5Mc2BrekC" +
-		"q7wjcjIpLIbF6VNYcf5RPViHGjLw8o2pGaNMMg5#LbNfEFfqEkFquj8rJ4tnDa$4nTkfGMN" +
-		"gObffXJKtuR$2gglnjzArQgDES5HjTJ#M2dJCdwLivQWbbcNMShnQQovp4$V4sMideCqkJG" +
-		"lqOp8wchXxEwlQq$zupa1rJEWR#7LM0RyQEygkwg4k6gdk$3nB71FKJMSJDTD$Ghlr05p8i" +
-		"xkHMOde5jhf04um#rGCLwjCVNmUfFwKbU0aS38ubRvMQwXV3YUtMdCqXRxsr2MKSwbV2Yu7" +
-		"2y4YS0rOgklKs$VUfBiPyLmznCYZvFVLOteOzRXAi5wf0HgdgPgeSuWwLzCrGnTebcQRLpN" +
-		"FlA0bkbctwNhTgjk9lKChAE$IlRhFxDLAtME#L#nw13oe#FMe7DPto5$fZPN62clAAafdJi" +
-		"97yFnlFVgjBdQ12AT5X3qrWBsLmOflpibqBFR189Ee3kos3kosLfmbkUngXwYmZJeUNnHuh" +
-		"NJXjEh1FiWXgu3pohFMPMMofzmaMoNM3FQ5myaLZ8o0A0ZQNEBwrulB9jUr$UY7YleZo0dq" +
-		"hawvv7fzYlXn5UorAhoT4d7nTZgWlFEbipzA9#7lQ5MEFsjPd3InNeSv5zn0P1jEndQSLnb" +
-		"4nYp5p7mVvYRkYRFNJb1x8wxhHszqKUBkMLPrfV$nd1pU2t7jdO2bd6U5z3ysohxyCXbbEJ" +
-		"$F4aS9irP2L8bVytP$BFu4$omgevO52l4K#gtsgiUzwi4Db16$pAAlsOmuWn4dHySHcu#OY" +
-		"g9wCv8YyaEeB5Gn9tSVlr$UcWepyr765a95q7bm5EHXoI8pp0hqOlFyijItE3oziF4lvO5E" +
-		"nbuyRsdrOlz8T1u06PwEWu3js8Q0Lk1C6vThUGQu3#JPUcqmDnM8UK5oq#6LO3ru4Jo1ZNt" +
-		"dh0DFWrF0A#07q0pijhcTBVSYFg#kJVSaYWpiCq5$wZtXmTOtdA8bzTbWkBLLepV5DFCdPn" +
-		"7SqzRBBDEcKmcJxtQ3ny7vy3JRXoOKNflFm0iR7hCCkUEilWuzmhRnBBezE8tAxN0v61OOr" +
-		"oJ$2SaT2qR9VtkvbTPNG$uIU32L9z6jqUF1cC1zdyE#1lRc#3qOxMmC#3TIlzNghUWLvFEi" +
-		"vStx57JyUU#Ws0klilUUJd4OzcBE0aF1HTWEmIF176BdmQD16PXiyrWlxWHyQ#51O2AO3wP" +
-		"Y#m1uRSuAzEzZR7rJpwbpQa1t3#Xs3JsB8xGrCwbU5D0Bm39ltThwQm7V3iklfsXpc#KVBF" +
-		"yIyEsqRDUrcn$mxR6yp$9#omSi7xHyoFBOkbmttiQQ$p3s3G7zL41lj6rsJufl5j2RKxVfX" +
-		"ZoaiATR3bjkaUIF17GqeBD1Pb9iRbA$jYJvAmEQFUAsj7fWYdwrJM7hwA6khjKnCeVDt#Ol" +
-		"sSli1tzQ$JlOORuptvhjvXlpjVdA75G3bs6NcPzzjStyah1#2ROcQb$uvHPR#n1i0EmLypv" +
-		"WJvjt3RlOi5FCUhFEh3Nlc3NcRVEMUHFBYtxM6u5xxZAlcvtcvO3bbNfz#jNiCR$17u7DO9" +
-		"DvAHPjFgyNzvdbJuDj9OtlavHMpZF#CmpYZJJ8$t$fy9qIGuKFbwyG0OSlbsFuGcd4TuM0u" +
-		"xy1##0lfbwCBeLBuN8VBczt0OVldHQStarvTuRi5yc$KOYlaFOB#VQBSSZ2gpS2pVaU22N1" +
-		"uGqTIW7Nmca0NboQl3TAfLzFyz$c1Toh05yPVJZv7snVH4a=");
+		"U9pjbscOZbKOn$$Fyv9j1kyO8Xb3KXWpOwnb34QAYb8oMOf2Yr2XHIYX54gBzhH8VUbBdxf" +
+		"QQPVsVQLKA2rQA2gSVkVCcVSzyngkgw$blQx$#T$tVUxxViv#pYl5ypHH9scKpj3n6gPJTA" +
+		"g6wpIDCC$NR3zW$HzOoxNOxDOXUaXtgqorL5jz5AkVZj6n6cIUCjlnw6I#r#agqbprK6$Dq" +
+		"MBDgFBG9KgGuHSNUP26w3BDfBwJsKBET8JDi3ZKLQUQVgYIoiRQM7TLyoedPrelDpjLLoMf" +
+		"RvThWeuAjAbcgze4UeMw15estqYtUnQMUK5jSsNfAhCZPMck#e7SGWsro7arKWCrKJsDLQw" +
+		"QgfaEJdbLwULy9ordUjaSwRmBQMCl5QOi#Jg2x3Dqc3h02vLaP3kcShHCIJPk2d4v#5ReHC" +
+		"QXWDcRh1FKWJ6m5eiodQkJrKgZcJshtq8sosUf7PPfckIoLAWl#SfqdRh22tM3kkjehFt10" +
+		"30GNpkMnxboi2k7udychMwYFCeANKHviLgJiqANkgzT3gu0LuAhmG9Te#Mk$dhTfdkHckX1" +
+		"jNMzFLmh6BDfu4YrLx4wgvjwQhPADL9ZD4vdqx$nEaVdcUTqWSxNXUPfJTTyBT6DMgfhyRn" +
+		"9DrCkqnswNNUQRRhVV2lxkrLLl$jqZ#C75B6#4twzrc4zrMEc6p3xDTiFMF$xrXYxG4#GPE" +
+		"ttPf$ruRneo6vlp7hFmYE7bThQxpvx7aHOgppQkiXS5zcEdTkHaojo4L4GiRVUlffUohTjL" +
+		"2uxB$IAoPdMOxBa1D#EaKCjGNmYq0lOJMdDzY$jdU$ymzfUH3T9MQ9gSY$ErbpdLSZkBsR7" +
+		"9pZZMt9sjqfvLUantqdBcLusHpflWMjZKSfIoFbJJ2iBETkBgKlItw9KZlGtg#BoyRLI5d5" +
+		"9ReeIudASnIB9wLP2NGcpP$K4Pwlb4kw6rfnu9IdF0dV#5BcyFU2YeAOplfLZ6PP9sfXD6#" +
+		"qOLevp5ywohju$ZAv25toxUgaGgPWop$Ms6vOabgIRtmJb4PHsTEnAIxfUTiDYPpiVFSz9U" +
+		"SvYvpnY5HOu$sxqCDUTPrc6d$AC$#7Tnd4RLllAkUuuZBg31bQk0dfhS18O0kPxsnpFiy4I" +
+		"KEhrLyFOce3FEf0DjafnUr0VUHcOYjmHlXki0HlG#yBru3u#jgrd$E9#wPmnxMFdAXe1Ij0" +
+		"xmpucFeMY6VePOA2tdKQnfrAs$OycmWLUx#cv7Bz3OFeTju9FX$FXyRuDTIXeSxGSdhd$Fi" +
+		"UveCBdNO0ynEUu7wn07uoo5EuDJWxYHhiPKdmg68Q1iOdx#xhXn4w61w8yZ3m3sRPnP3fUZ" +
+		"s47UXf#77u5NXtKlui#oyjsNcpR1Y5pNqRDaKVuTcwc#0rUvByzWM8tF0QS0uu7awZV1Oy2" +
+		"Kv3NmqDXwtEcZpiNs7bu7Yu5Oy5qC0uRROlBmFb1#pu2sseUqsX288y8vEdxcujzv6gSeQy" +
+		"8v4V0#xJhOA$V6zGzwlc96dAUu7c3vur1tNBFc$ouT0hgll2ynVCFdd$o$AldxPvN1R4xFA" +
+		"$v5trV6yWx0$bTtxOE6VvF1lA7#yZ9cersxssFQtkkwxb#HdrM83SCvCOWEyEtQSOtrsNKz" +
+		"m$a0I37owKrjAjP3ROMe6LQryfACdlCBlEt$C$y0VxqykzWizbaDfflpDVcAxF1$ANz$Cnt" +
+		"u0SdVMb#J5c$0EjJsZfNVkurzgjv1xmDtW9lWZVCUvJi5FEwUSsiDQ#QDUOLyx9v2SipBkh" +
+		"5u9jRpGlc9xCgiAokrgQVpQ#6dMu#11#0zyspbTxcisf#dth#9CoLqR#FQxIoDlWNqOSRoV" +
+		"wtBFSlBOio1$j$Ko3Y1LMRTqOjta824VUXHSpTA11njmb4tF0MCJU#GCIxgn6lfdhSfWaGS" +
+		"QFkZIBgYiXVnCklaXCULgy56l8QI6GWSc#6lH5xHFk1zQl3#qCWSdBb3LqB97XZrDQ0Vm2W" +
+		"P3g1");
  private boolean good;
           
           public boolean isGood(){ return good;}
@@ -147,7 +147,7 @@ public class MiniLangParser extends Parser {
 			},
 			Action.NONE,  	// [21] opt$lst$Cmd = 
 			Action.RETURN,	// [22] opt$lst$Cmd = lst$Cmd
-			new Action() {	// [23] Func = ID.v OPEN_PARENTHESIS opt$Params.p CLOSE_PARENTHESIS AP COLON Type.t AP COMMA Type.t opt$lst$FP opt$FP OPEN_BRACE opt$lst$Cmd.c CLOSE_BRACE
+			new Action() {	// [23] Func = ID.v AP opt$Params.p FP AP COLON Type.t AP COMMA Type.t opt$lst$FP opt$FP OPEN_BRACE opt$lst$Cmd.c CLOSE_BRACE
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					final Symbol _symbol_v = _symbols[offset + 1];
 					final String v = (String) _symbol_v.value;
@@ -225,7 +225,7 @@ public class MiniLangParser extends Parser {
 					 return new Block(c);
 				}
 			},
-			new Action() {	// [33] Cmd = IF OPEN_PARENTHESIS Exp.e CLOSE_PARENTHESIS Cmd.c
+			new Action() {	// [33] Cmd = IF AP Exp.e FP Cmd.c
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					final Symbol _symbol_e = _symbols[offset + 3];
 					final Expr e = (Expr) _symbol_e.value;
@@ -234,7 +234,7 @@ public class MiniLangParser extends Parser {
 					 return new If(e, c);
 				}
 			},
-			new Action() {	// [34] Cmd = IF OPEN_PARENTHESIS Exp.e CLOSE_PARENTHESIS Cmd.c1 ELSE Cmd.c2
+			new Action() {	// [34] Cmd = IF AP Exp.e FP Cmd.c1 ELSE Cmd.c2
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					final Symbol _symbol_e = _symbols[offset + 3];
 					final Expr e = (Expr) _symbol_e.value;
@@ -245,7 +245,7 @@ public class MiniLangParser extends Parser {
 					 return new If(e,c1,c2);
 				}
 			},
-			new Action() {	// [35] Cmd = ITERATE OPEN_PARENTHESIS Exp.e CLOSE_PARENTHESIS Cmd.c
+			new Action() {	// [35] Cmd = ITERATE AP Exp.e FP Cmd.c
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					final Symbol _symbol_e = _symbols[offset + 3];
 					final Expr e = (Expr) _symbol_e.value;
@@ -284,7 +284,7 @@ public class MiniLangParser extends Parser {
 					 return new Equal(l, e);
 				}
 			},
-			new Action() {	// [40] Cmd = ID OPEN_PARENTHESIS Exps CLOSE_PARENTHESIS AP LESS_THAN Lvalue AP COMMA Lvalue opt$lst$FP GREATER_THAN opt$FP SEMI
+			new Action() {	// [40] Cmd = ID AP Exps FP AP LESS_THAN Lvalue AP COMMA Lvalue opt$lst$FP GREATER_THAN opt$FP SEMI
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					 return new Call(fn, e, l);
 				}
@@ -432,7 +432,7 @@ public class MiniLangParser extends Parser {
 					 return l;
 				}
 			},
-			new Action() {	// [60] Exp = OPEN_PARENTHESIS CExpr.e CLOSE_PARENTHESIS
+			new Action() {	// [60] Exp = AP CExpr.e FP
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					final Symbol e = _symbols[offset + 2];
 					 return e;
@@ -448,7 +448,7 @@ public class MiniLangParser extends Parser {
 			},
 			Action.NONE,  	// [62] opt$Exps = 
 			Action.RETURN,	// [63] opt$Exps = Exps
-			new Action() {	// [64] Exp = ID.v OPEN_PARENTHESIS opt$Exps.e CLOSE_PARENTHESIS OPEN_BRACKET CExpr.ce CLOSE_BRACKET
+			new Action() {	// [64] Exp = ID.v AP opt$Exps.e FP OPEN_BRACKET CExpr.ce CLOSE_BRACKET
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					final Symbol _symbol_v = _symbols[offset + 1];
 					final String v = (String) _symbol_v.value;
