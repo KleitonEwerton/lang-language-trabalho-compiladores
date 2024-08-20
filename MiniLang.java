@@ -23,29 +23,13 @@ public class MiniLang {
             if (args[0].equals("-i")) {
                InterpretVisitor iv = new InterpretVisitor(true);
                result.accept(iv);
+
             } else if (args[0].equals("-dot")) {
                GraphVisitor gv = new GraphVisitor();
                result.accept(gv);
                gv.saveToFile("tree.graphviz");
-            } else if (args[0].equals("-ty")) {
-               TypeCheckVisitor ty = new TypeCheckVisitor();
-               result.accept(ty);
-               if (ty.getNumErrors() > 0) {
-                  ty.printErrors();
-               } else {
-                  System.out.println("typing  ... [ ok ]");
-               }
-            } else if (args[0].equals("-tyi")) {
-               TypeCheckVisitor ty = new TypeCheckVisitor();
-               result.accept(ty);
-               if (ty.getNumErrors() > 0) {
-                  ty.printErrors();
-               } else {
-                  System.out.println("typing  ... [ ok ]");
-                  InterpretVisitor iv = new InterpretVisitor(true);
-                  result.accept(iv);
-               }
             }
+
          } else {
             System.out.println(" Erros ocorreram durante o parser.\nAbortando");
          }
