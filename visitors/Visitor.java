@@ -81,4 +81,6 @@ public abstract class Visitor {
 
      public abstract void visit(Data t);
 
+     public abstract void visit(Read t);
+
 }
