@@ -117,7 +117,6 @@ Cmd = OPEN_BRACE Cmd.c* CLOSE_BRACE                                {: return new
     | PRINT Exp.e SEMI                                             {: return new Print(e); :}
     | RETURN Exp.e AP COMMA Exp FP* SEMI                           {: return new Return(e); :}
     | Lvalue.l EQUAL Exp.e SEMI                                    {: return new Equal(l, e); :}
-    | ID AP Exps FP AP LESS_THAN Lvalue  AP COMMA Lvalue FP* GREATER_THAN FP? SEMI {: return new Call(fn, e, l); :}
     ;
 
 CExpr = Exp.e1 AND Exp.e2                                           {: return new And(e1,e2);  :}
@@ -133,8 +132,8 @@ Exp = Exp.e1 PLUS Exp.e2                                            {: return ne
     | Exp.e1 MULT Exp.e2                                            {: return new Mul(e1, e2);  :}
     | Exp.e1 DIV Exp.e2                                             {: return new Div(e1, e2); :}
     | Exp.e1 MOD Exp.e2                                             {: return new Mod(e1, e2); :}
-    | NOT CExpr.e                                                   {: return new Not(e);    :}
-    | MINUS CExpr.e                                                 {: return new Neg(e); :}
+    | NOT CExpr.e                                                   {: return new Not((Expr) e);:}
+    | MINUS CExpr.e                                                 {: return new Neg((Expr) e);:}
     | INT.n                                                         {: return new NInt(n);   :}
     | FLOAT.f                                                       {: return new NFloat(f); :}
     | CHAR.c                                                        {: return new NChar(c); :}
