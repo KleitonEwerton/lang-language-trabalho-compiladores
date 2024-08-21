@@ -83,4 +83,5 @@ public abstract class Visitor {
 
      public abstract void visit(Read t);
 
+     public abstract void visit(CustomType t);
 }

@@ -310,14 +310,14 @@ public class MiniLangLex extends Scanner {
   private static final String ZZ_ACTION_PACKED_0 =
     "\1\0\1\1\1\2\2\3\1\4\1\5\1\6\1\7"+
     "\1\10\1\11\1\12\1\13\1\14\1\15\1\16\1\17"+
-    "\1\20\1\21\6\2\1\22\1\23\5\24\1\25\1\26"+
-    "\1\1\1\2\1\27\2\0\1\30\5\0\1\24\1\31"+
-    "\3\24\1\32\1\33\4\0\1\34\4\24\1\35\1\36"+
-    "\1\37\1\0\3\24\1\40\1\41\1\42\1\24\1\43"+
-    "\1\24\1\44";
+    "\1\20\1\21\1\2\6\22\1\23\1\24\5\25\1\26"+
+    "\1\27\1\1\1\2\1\30\2\0\1\31\5\22\1\25"+
+    "\1\32\3\25\1\33\1\34\4\22\1\35\4\25\1\36"+
+    "\1\37\1\40\1\22\3\25\1\41\1\42\1\43\1\25"+
+    "\1\44\1\25\1\45";
 
   private static int [] zzUnpackAction() {
-    int [] result = new int[75];
+    int [] result = new int[76];
     int offset = 0;
     offset = zzUnpackAction(ZZ_ACTION_PACKED_0, offset, result);
     return result;
@@ -345,16 +345,16 @@ public class MiniLangLex extends Scanner {
     "\0\0\0\56\0\134\0\134\0\212\0\134\0\134\0\134"+
     "\0\134\0\134\0\134\0\134\0\134\0\134\0\270\0\346"+
     "\0\134\0\134\0\134\0\u0114\0\u0142\0\u0170\0\u019e\0\u01cc"+
-    "\0\u01fa\0\134\0\134\0\u0228\0\u0256\0\u0284\0\u02b2\0\u02e0"+
-    "\0\134\0\134\0\u030e\0\u033c\0\134\0\u036a\0\u0398\0\134"+
-    "\0\u03c6\0\u03f4\0\u0422\0\u0450\0\u047e\0\u04ac\0\u0228\0\u04da"+
-    "\0\u0508\0\u0536\0\134\0\u0398\0\u0564\0\u0592\0\u05c0\0\u05ee"+
-    "\0\134\0\u061c\0\u064a\0\u0678\0\u06a6\0\134\0\134\0\134"+
-    "\0\u06d4\0\u0702\0\u0730\0\u075e\0\u0228\0\134\0\u0228\0\u078c"+
-    "\0\u0228\0\u07ba\0\u0228";
+    "\0\u01fa\0\u0228\0\134\0\134\0\u0256\0\u0284\0\u02b2\0\u02e0"+
+    "\0\u030e\0\134\0\134\0\u033c\0\u036a\0\134\0\u0398\0\u03c6"+
+    "\0\134\0\u03f4\0\u0422\0\u0450\0\u047e\0\u04ac\0\u04da\0\u0256"+
+    "\0\u0508\0\u0536\0\u0564\0\134\0\u03c6\0\u0592\0\u05c0\0\u05ee"+
+    "\0\u061c\0\u0142\0\u064a\0\u0678\0\u06a6\0\u06d4\0\u0142\0\u0142"+
+    "\0\u0142\0\u0702\0\u0730\0\u075e\0\u078c\0\u0256\0\u0142\0\u0256"+
+    "\0\u07ba\0\u0256\0\u07e8\0\u0256";
 
   private static int [] zzUnpackRowMap() {
-    int [] result = new int[75];
+    int [] result = new int[76];
     int offset = 0;
     offset = zzUnpackRowMap(ZZ_ROWMAP_PACKED_0, offset, result);
     return result;
@@ -379,38 +379,50 @@ public class MiniLangLex extends Scanner {
   private static final String ZZ_TRANS_PACKED_0 =
     "\1\3\2\4\1\3\1\4\1\5\1\6\1\7\1\10"+
     "\1\11\1\12\1\13\1\14\1\15\1\16\1\3\1\17"+
-    "\1\20\1\21\1\22\1\23\1\24\1\3\1\25\1\26"+
-    "\1\27\1\30\1\31\1\32\1\33\3\34\1\35\1\34"+
-    "\1\36\3\34\1\37\2\34\1\40\1\34\1\41\1\42"+
-    "\13\43\1\44\4\43\1\3\35\43\60\0\1\4\66\0"+
-    "\1\45\4\0\1\46\54\0\1\47\1\0\1\20\61\0"+
-    "\1\50\76\0\1\51\51\0\1\52\51\0\1\53\63\0"+
-    "\1\54\56\0\1\55\31\0\1\34\4\0\6\34\2\0"+
-    "\16\34\23\0\1\34\4\0\6\34\2\0\1\56\15\34"+
-    "\23\0\1\34\4\0\6\34\2\0\3\34\1\57\10\34"+
-    "\1\60\1\34\23\0\1\34\4\0\6\34\2\0\12\34"+
-    "\1\61\3\34\23\0\1\34\4\0\6\34\2\0\12\34"+
-    "\1\62\3\34\2\0\13\43\1\0\4\43\1\0\35\43"+
-    "\20\0\1\63\35\0\2\46\1\4\2\0\1\5\50\46"+
-    "\21\0\1\64\102\0\1\65\45\0\1\66\71\0\1\67"+
-    "\51\0\1\70\61\0\1\71\24\0\1\34\4\0\6\34"+
-    "\2\0\6\34\1\72\7\34\23\0\1\34\4\0\6\34"+
-    "\2\0\2\34\1\73\13\34\23\0\1\34\4\0\6\34"+
-    "\2\0\5\34\1\74\10\34\23\0\1\34\4\0\6\34"+
-    "\2\0\15\34\1\75\46\0\1\76\61\0\1\77\43\0"+
-    "\1\100\55\0\1\101\40\0\1\34\4\0\6\34\2\0"+
-    "\13\34\1\102\2\34\23\0\1\34\4\0\6\34\2\0"+
-    "\12\34\1\103\3\34\23\0\1\34\4\0\6\34\2\0"+
-    "\7\34\1\104\6\34\23\0\1\34\4\0\6\34\2\0"+
-    "\2\34\1\105\13\34\54\0\1\106\24\0\1\34\4\0"+
-    "\6\34\2\0\2\34\1\107\13\34\23\0\1\34\4\0"+
-    "\6\34\2\0\1\110\15\34\23\0\1\34\4\0\6\34"+
-    "\2\0\14\34\1\111\1\34\23\0\1\34\4\0\6\34"+
-    "\2\0\14\34\1\112\1\34\23\0\1\34\4\0\6\34"+
-    "\2\0\2\34\1\113\13\34\2\0";
+    "\1\20\1\21\1\22\1\23\1\24\1\25\1\26\1\27"+
+    "\1\30\1\31\1\32\1\33\1\34\3\35\1\36\1\35"+
+    "\1\37\3\35\1\40\2\35\1\41\1\35\1\42\1\43"+
+    "\13\44\1\45\4\44\1\3\35\44\60\0\1\4\66\0"+
+    "\1\46\4\0\1\47\54\0\1\50\1\0\1\20\61\0"+
+    "\1\51\51\0\1\25\4\0\6\25\2\0\16\25\23\0"+
+    "\1\25\4\0\6\25\2\0\10\25\1\52\5\25\23\0"+
+    "\1\25\4\0\6\25\2\0\4\25\1\53\11\25\23\0"+
+    "\1\25\4\0\6\25\2\0\1\54\15\25\23\0\1\25"+
+    "\4\0\6\25\2\0\6\25\1\55\7\25\23\0\1\25"+
+    "\4\0\6\25\2\0\7\25\1\56\6\25\23\0\1\35"+
+    "\4\0\6\35\2\0\16\35\23\0\1\35\4\0\6\35"+
+    "\2\0\1\57\15\35\23\0\1\35\4\0\6\35\2\0"+
+    "\3\35\1\60\10\35\1\61\1\35\23\0\1\35\4\0"+
+    "\6\35\2\0\12\35\1\62\3\35\23\0\1\35\4\0"+
+    "\6\35\2\0\12\35\1\63\3\35\2\0\13\44\1\0"+
+    "\4\44\1\0\35\44\20\0\1\64\35\0\2\47\1\4"+
+    "\2\0\1\5\50\47\21\0\1\65\55\0\1\25\4\0"+
+    "\6\25\2\0\10\25\1\66\5\25\23\0\1\25\4\0"+
+    "\6\25\2\0\1\67\15\25\23\0\1\25\4\0\6\25"+
+    "\2\0\14\25\1\70\1\25\23\0\1\25\4\0\6\25"+
+    "\2\0\10\25\1\71\5\25\23\0\1\25\4\0\6\25"+
+    "\2\0\14\25\1\72\1\25\23\0\1\35\4\0\6\35"+
+    "\2\0\6\35\1\73\7\35\23\0\1\35\4\0\6\35"+
+    "\2\0\2\35\1\74\13\35\23\0\1\35\4\0\6\35"+
+    "\2\0\5\35\1\75\10\35\23\0\1\35\4\0\6\35"+
+    "\2\0\15\35\1\76\23\0\1\25\4\0\6\25\2\0"+
+    "\6\25\1\77\7\25\23\0\1\25\4\0\6\25\2\0"+
+    "\12\25\1\100\3\25\23\0\1\25\4\0\6\25\2\0"+
+    "\1\101\15\25\23\0\1\25\4\0\6\25\2\0\1\102"+
+    "\15\25\23\0\1\35\4\0\6\35\2\0\13\35\1\103"+
+    "\2\35\23\0\1\35\4\0\6\35\2\0\12\35\1\104"+
+    "\3\35\23\0\1\35\4\0\6\35\2\0\7\35\1\105"+
+    "\6\35\23\0\1\35\4\0\6\35\2\0\2\35\1\106"+
+    "\13\35\23\0\1\25\4\0\6\25\2\0\14\25\1\107"+
+    "\1\25\23\0\1\35\4\0\6\35\2\0\2\35\1\110"+
+    "\13\35\23\0\1\35\4\0\6\35\2\0\1\111\15\35"+
+    "\23\0\1\35\4\0\6\35\2\0\14\35\1\112\1\35"+
+    "\23\0\1\35\4\0\6\35\2\0\14\35\1\113\1\35"+
+    "\23\0\1\35\4\0\6\35\2\0\2\35\1\114\13\35"+
+    "\2\0";
 
   private static int [] zzUnpackTrans() {
-    int [] result = new int[2024];
+    int [] result = new int[2070];
     int offset = 0;
     offset = zzUnpackTrans(ZZ_TRANS_PACKED_0, offset, result);
     return result;
@@ -453,13 +465,12 @@ public class MiniLangLex extends Scanner {
   private static final int [] ZZ_ATTRIBUTE = zzUnpackAttribute();
 
   private static final String ZZ_ATTRIBUTE_PACKED_0 =
-    "\1\0\1\1\2\11\1\1\11\11\2\1\3\11\6\1"+
-    "\2\11\5\1\2\11\2\1\1\11\2\0\1\11\5\0"+
-    "\5\1\1\11\1\1\4\0\1\11\4\1\3\11\1\0"+
-    "\4\1\1\11\5\1";
+    "\1\0\1\1\2\11\1\1\11\11\2\1\3\11\7\1"+
+    "\2\11\5\1\2\11\2\1\1\11\2\0\1\11\12\1"+
+    "\1\11\30\1";
 
   private static int [] zzUnpackAttribute() {
-    int [] result = new int[75];
+    int [] result = new int[76];
     int offset = 0;
     offset = zzUnpackAttribute(ZZ_ATTRIBUTE_PACKED_0, offset, result);
     return result;
@@ -945,182 +956,187 @@ public class MiniLangLex extends Scanner {
             { 
             }
             // fall through
-          case 37: break;
+          case 38: break;
           case 2:
             { throw new RuntimeException("Illegal character <"+yytext()+">");
             }
             // fall through
-          case 38: break;
+          case 39: break;
           case 3:
             { /* Não faz nada  */
             }
             // fall through
-          case 39: break;
+          case 40: break;
           case 4:
             { return symbol(Terminals.NOT);
             }
             // fall through
-          case 40: break;
+          case 41: break;
           case 5:
             { return symbol(Terminals.MOD);
             }
             // fall through
-          case 41: break;
+          case 42: break;
           case 6:
             { return symbol(Terminals.AND);
             }
             // fall through
-          case 42: break;
+          case 43: break;
           case 7:
             { return symbol(Terminals.AP);
             }
             // fall through
-          case 43: break;
+          case 44: break;
           case 8:
             { return symbol(Terminals.FP);
             }
             // fall through
-          case 44: break;
+          case 45: break;
           case 9:
             { return symbol(Terminals.MULT);
             }
             // fall through
-          case 45: break;
+          case 46: break;
           case 10:
             { return symbol(Terminals.PLUS);
             }
             // fall through
-          case 46: break;
+          case 47: break;
           case 11:
             { return symbol(Terminals.COMMA);
             }
             // fall through
-          case 47: break;
+          case 48: break;
           case 12:
             { return symbol(Terminals.MINUS);
             }
             // fall through
-          case 48: break;
+          case 49: break;
           case 13:
             { return symbol(Terminals.DIV);
             }
             // fall through
-          case 49: break;
+          case 50: break;
           case 14:
             { return symbol(Terminals.INT, Integer.parseInt(yytext()) );
             }
             // fall through
-          case 50: break;
+          case 51: break;
           case 15:
             { return symbol(Terminals.COLON);
             }
             // fall through
-          case 51: break;
+          case 52: break;
           case 16:
             { return symbol(Terminals.SEMI);
             }
             // fall through
-          case 52: break;
+          case 53: break;
           case 17:
             { return symbol(Terminals.LESS_THAN);
             }
             // fall through
-          case 53: break;
-          case 18:
-            { return symbol(Terminals.OPEN_BRACKET);
-            }
-            // fall through
           case 54: break;
-          case 19:
-            { return symbol(Terminals.CLOSE_BRACKET);
+          case 18:
+            { return symbol(Terminals.NAME, yytext());
             }
             // fall through
           case 55: break;
-          case 20:
-            { return symbol(Terminals.ID, yytext());
+          case 19:
+            { return symbol(Terminals.OPEN_BRACKET);
             }
             // fall through
           case 56: break;
-          case 21:
-            { return symbol(Terminals.OPEN_BRACE);
+          case 20:
+            { return symbol(Terminals.CLOSE_BRACKET);
             }
             // fall through
           case 57: break;
-          case 22:
-            { return symbol(Terminals.CLOSE_BRACE);
+          case 21:
+            { return symbol(Terminals.ID, yytext());
             }
             // fall through
           case 58: break;
-          case 23:
-            { yybegin(COMMENT);
+          case 22:
+            { return symbol(Terminals.OPEN_BRACE);
             }
             // fall through
           case 59: break;
-          case 24:
-            { return symbol(Terminals.EQUAL_EQUAL);
+          case 23:
+            { return symbol(Terminals.CLOSE_BRACE);
             }
             // fall through
           case 60: break;
-          case 25:
-            { return symbol(Terminals.IF);
+          case 24:
+            { yybegin(COMMENT);
             }
             // fall through
           case 61: break;
-          case 26:
-            { yybegin(YYINITIAL);
+          case 25:
+            { return symbol(Terminals.EQUAL_EQUAL);
             }
             // fall through
           case 62: break;
-          case 27:
-            { return symbol(Terminals.FLOAT, Float.parseFloat(yytext()) );
+          case 26:
+            { return symbol(Terminals.IF);
             }
             // fall through
           case 63: break;
-          case 28:
-            { return symbol(Terminals.TYPE_INT);
+          case 27:
+            { yybegin(YYINITIAL);
             }
             // fall through
           case 64: break;
-          case 29:
-            { return symbol(Terminals.TYPE_BOOL);
+          case 28:
+            { return symbol(Terminals.FLOAT, Float.parseFloat(yytext()) );
             }
             // fall through
           case 65: break;
-          case 30:
-            { return symbol(Terminals.TYPE_CHAR);
+          case 29:
+            { return symbol(Terminals.TYPE_INT);
             }
             // fall through
           case 66: break;
-          case 31:
-            { return symbol(Terminals.TYPE_DATA);
+          case 30:
+            { return symbol(Terminals.TYPE_BOOL);
             }
             // fall through
           case 67: break;
-          case 32:
-            { return symbol(Terminals.TRUE, true );
+          case 31:
+            { return symbol(Terminals.TYPE_CHAR);
             }
             // fall through
           case 68: break;
-          case 33:
-            { return symbol(Terminals.TYPE_FLOAT);
+          case 32:
+            { return symbol(Terminals.TYPE_DATA);
             }
             // fall through
           case 69: break;
-          case 34:
-            { return symbol(Terminals.FALSE, false );
+          case 33:
+            { return symbol(Terminals.TRUE, true );
             }
             // fall through
           case 70: break;
-          case 35:
-            { return symbol(Terminals.PRINT);
+          case 34:
+            { return symbol(Terminals.TYPE_FLOAT);
             }
             // fall through
           case 71: break;
-          case 36:
-            { return symbol(Terminals.ITERATE);
+          case 35:
+            { return symbol(Terminals.FALSE, false );
             }
             // fall through
           case 72: break;
+          case 36:
+            { return symbol(Terminals.PRINT);
+            }
+            // fall through
+          case 73: break;
+          case 37:
+            { return symbol(Terminals.ITERATE);
+            }
+            // fall through
+          case 74: break;
           default:
             zzScanError(ZZ_NO_MATCH);
         }

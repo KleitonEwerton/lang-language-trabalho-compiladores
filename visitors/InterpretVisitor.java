@@ -409,4 +409,7 @@ public class InterpretVisitor extends Visitor {
 
     }
 
+    public void visit(CustomType e) {
+
+    }
 }

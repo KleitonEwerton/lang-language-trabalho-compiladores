@@ -13,29 +13,34 @@ import java.util.ArrayList;
 public class MiniLangParser extends Parser {
 
 	static final ParsingTables PARSING_TABLES = new ParsingTables(
-		"U9pjbcbiL5KKn$zlXXQehT2fg8134GN4ARIMWeLI15nGHCGY0Yek82YRYb11HLOnnaHZD24" +
-		"Q4sCCCNumDV63YKiCeg2uRw2oMWekhEwubUlllZaT7XseVEG3h$dT$pdddhkyDtUf53HgX6" +
-		"xIM8tNnHgfApHALsgqhZeHFUwZrQwHU4SLm0DOhPIZpgfIJ1Teg2xKlUujjqjnzwUlSJ$gN" +
-		"CtGUUglso9MjN9fcQjBTRCcQmf#Q$mgpRK#sgd8$OJVs$neopPaHlrY5P5POPdTyAhnyx9Q" +
-		"LX5FnsgnfckMUkdMC3VVubNgch6QSa$6cgyQ3LTXc7j99YEHiJgPTOeww5ITbgMrj4sglUx" +
-		"9gXcW7ghKwJed4pc9Rz3MnXkWCReyj3q5kaRtwNg#orcwIpVIwnZY9UhZVjFTgdK7yFggZ7" +
-		"YD1hfzweSEWi4mXBdNQ5XONXIMbz7xjSnzGlZrQZGfB6#1gJ2DqNtlC#4EtSbuDPgd#ybTg" +
-		"AMKSxMCs1baTT6PEblTrLCfl5ALy#kShwirJjSnnucwGRThaMPhiUPeWVjLIzpt2bWhyN3T" +
-		"vFAxj#5zytZl4z7ZFohYwRyAwCylNSdk6SWkQSVw7im#I52J26iIhEkEx8tEh9D3Li0EZK5" +
-		"FrdmlTcV0wedHHu7rqLjzM5#7$6ZB99bHt#SUtZB0JsIrp2UUZgMmYdYpKdQwp#rdyNnYJL" +
-		"PJRd6OcsA75OQvPPcChbcjZhRp$Pw8qqjfLetVtKMCFoWJgU9DgcsyGdPLMMXxOjYU92TPE" +
-		"LafQdsy5Bi7LiAyLAZ9q2h946ILVaxvzlMydtzOVg7rxl7ZUVMvyR0ii3aKSWfruRn9CdeS" +
-		"hpjbZDnOM5V0D#fBVHVUqKUA3MdvOeNFDjZYxIPu6i31LYb8fcF12jCA60jJp1yIRTiSwYV" +
-		"1a$0bp8LLC066mrgO28lWSLX7WyteUfj7lVMnq$6WEJW7qJMGQtK$KEIXdQ2pnNR1REkZ0t" +
-		"OtjAlvATF#n5z1XwAleYFHDz1nLhy9$DmhqLd$yuulmHvhDnzxkyMdmflWl$4oz7FOqUnRF" +
-		"qfi5FeKEWPTYOwtEjzlYTclOLV31cpUNutO3JRExiXSl7oA3el4zi96c0vVmrVmE$XlFGS#" +
-		"W$sHETN1wqTvrz4HktsaJNrBtoYx7zKrymz4RFyRpuINRPmHaJ4J4NkUQQtfWaZTGjCbfgi" +
-		"ZTKjD7pHzoFHXqqTC7pDDHTe#OJhvsDyrc1QnLqJi6QQhckK$RVgCwREHkkSYzlCH#mLOsS" +
-		"8SNZpMkAtdkaE#bgV57NJ$kdzaZ$i3$ZARrUI#SplT3jVWjhjwzxTQU1nxrktEUD$2jeotD" +
-		"IotcCUfuRu0TevZbJfMjll4hQVy1Zvs7xaFtGVkVRVElUVU9R8wRBKsCjO#jyRjTUzWiV8T" +
-		"AzzjS6#7DPiFczCcjz$zx7unRwFRSyIP#rDnCFTi0Fx$x81RDarLI8oRGn1mlkHmgxIIFpy" +
-		"gySj3OfpQWe1JMH1mxtXYt4A2WFkw7IEqvOptvtmGtgLHIkctbFy5qXetlD#AcodUZ80x8t" +
-		"u4OaRG0ZwlTNXJf#WxXJ$aFmBPnwG=");
+		"U9pjbdcOJbKSnx$lVMaChsKM#pR6DXYCMPWPPcIRhA6La6Gg5D4cAY6bgD1cAKdqJy$JK$$" +
+		"rb90A9QL5sYGXXIIKadJwt3ldlNFVyTB$vJxFztn$s$dTtptddaLo9kXYvQc7UYjBNPIl0X" +
+		"MggxgPD#FRprl$1zOCSrgZLAHipT1qbQYJffiZQgMsobG7fIbP6RHDbAePvW3jM5KYihuVS" +
+		"Rtgw5OrqqsQR7vKZiPfWiOIELhNQ8okrGNb$e2KeK6yDHfJJ1M7qQCvCrHA3Iq2#fM1cgOJ" +
+		"$QSg1xorTM5CxzkL6D2ATOicHNLZw5dgUnVZluTl2iDLz9GSLTKZvZNVxsSnnucArfk1l49" +
+		"BVEzOnkyANxDHvdTTxlTm$KC2MhQ7cUgi#zNJrulLNwjqgH8KqN9LHo$LqtfOrNIrQe2Qw2" +
+		"EOeoBLeuQxuEQWDMW3sc5h1RS77P6Bb4k6lfwjk$hGlnPoATfmNQKac#a6C1xS2AQ0sy1Kt" +
+		"SdyZ42wMmzgeKOmEmle$mGOfIVvThTlYPu7Ax6bgAuQgB4QWaPggdHp0gcbUkaYzTC0SWtK" +
+		"O0tL9RhCh3UlQvX6wZhTh8cQfNjrXsPh6jfzcgC7uBcQf$dcc1xIergan$IusM$#rZDQPdx" +
+		"JitAVfIf$dbE8MGlpLrRcNqjW5XEPmsgCO7pxUUj$t#hmNqHOY#tnP$AdTw9DPJtLO0NLOX" +
+		"ViJ8JR5k9Fzjfy4F4Zqlbxc$0Vfx5R9REsshAstCZQx61rMNlXWBzSSiWGyMEIq5C3EHrMI" +
+		"4gC7cRrHhLCh#PGm9l7QegD3WUq97Ab#BhRiu6lvUDFmTBDgwWxUsCBj5w#lpoBkqQYzJh8" +
+		"8TPir1lonY#gHQEIEJkYikilZj5ST66qmzw8b#dkw1U0hbYBE3UIgBG7Uru7zYWNMUZPMDr" +
+		"OXrqhsYyAXnhAvRACOMjp##SWD$2qBCOxcYaUilZUR2k5aLBy6Y9OGbvVTroJF5ioCRbaR0" +
+		"roFItPaoBCIv8tDpdO8bQEy6KHRmGpuJ1Qs9k3TFJwdZN7c$tcx8#ktWXPNaQfmF2ebV4Vl" +
+		"DBgcTxs5fe5ge9IgtS6Yy1iC0LC16dWOx0MP1Dau09m55INdFgsR#CoTjhGL4ElXzm0L06D" +
+		"R4mwSfehszWicZhO#oCtAxCfofcMk#3V2$U43yE3uEFmC9ipWMOiF1UU5CqT3yJyG3CD7cf" +
+		"pp#6zxQnl7ZY17lsE39e5S5FGCL1peJUASXWBfmE6PN1BwyiZnt2uBSeBo6EG6LCd$rnrsR" +
+		"wzRKslq6y#l0OcjpR1A$7tWSUNnykTat5MteaycPXEo7nZYB5o2knthQCv1a#rxocXEGrt0" +
+		"tr19XY8d$SuZBKp1BaGpW69e8VjrmzqnRSShWkwWs6W6Digk3OO34RQ#2B0l8PMmmF0Q91k" +
+		"VUuSlWYdLfYV8VPx3WPiIoh4l1IGNxROQllj3VWw1#HNBP#qVDh6xpzp7a9hR8sErTTQNcz" +
+		"vW#MDbZVRNBi3ERPONbmnVvptRGl8I#FP0xOLjhR42lQP0NdbMTwp0sp$jthYzDjfUPVbtR" +
+		"Q6XXNYzWJaVG5vVr2tjaCLz8MnkjCy8BV2Vy3AQS4us$T879kxDnqxo$SiAPUTrW7xgTWuh" +
+		"PPzp2cTup6iDtFGrxu1EprfbpdaMxy67u5ju4Fm0TWAtZUiOlCPs6BUC##QpMQJsMZUCMzx" +
+		"lTxmshTiZkyj7pORp4zcRQ22TJ7r$6n#CKVDFhFNx37VcTtcMspi9MOx#1HyuaLzLPR1V1d" +
+		"JzmlBdmVpL$ZU7MUn$nMZ$M7vLtCIAk6U8E3U5DoxGzdzmPMBF3YSsW8XRXILET4hSQ8BkE" +
+		"Uc2qVkIU6Ue#nA8EJTgmgnixi2zuvLanCYaTCr34ASiMSY5ryU#VEupPLnsCBLAu4QzduHH" +
+		"8WpFHm7ZaNe773Z4hZ728GyETCxhok1C2TRPVN#1n3z5nC=");
  private boolean good;
           
           public boolean isGood(){ return good;}
@@ -50,51 +55,46 @@ public class MiniLangParser extends Parser {
 	public MiniLangParser() {
 		super(PARSING_TABLES);
 		actions = new Action[] {
-			new Action() {	// [0] lst$Def = Def
-				public Symbol reduce(Symbol[] _symbols, int offset) {
-					ArrayList lst = new ArrayList(); lst.add(_symbols[offset + 1].value); return new Symbol(lst);
-				}
-			},
-			new Action() {	// [1] lst$Def = lst$Def Def
-				public Symbol reduce(Symbol[] _symbols, int offset) {
-					((ArrayList) _symbols[offset + 1].value).add(_symbols[offset + 2].value); return _symbols[offset + 1];
-				}
-			},
-			new Action() {	// [2] Prog = lst$Def.s
-				public Symbol reduce(Symbol[] _symbols, int offset) {
-					final Symbol _symbol_s = _symbols[offset + 1];
-					final ArrayList _list_s = (ArrayList) _symbol_s.value;
-					final Node[] s = _list_s == null ? new Node[0] : (Node[]) _list_s.toArray(new Node[_list_s.size()]);
-					 return new Program(s);
-				}
-			},
-			new Action() {	// [3] Def = Data.d
+			Action.NONE,  	// [0] opt$Data = 
+			Action.RETURN,	// [1] opt$Data = Data
+			new Action() {	// [2] Def = opt$Data.d
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					final Symbol _symbol_d = _symbols[offset + 1];
 					final Node d = (Node) _symbol_d.value;
 					 return d;
 				}
 			},
-			new Action() {	// [4] Def = Func.fn
-				public Symbol reduce(Symbol[] _symbols, int offset) {
-					final Symbol _symbol_fn = _symbols[offset + 1];
-					final Node fn = (Node) _symbol_fn.value;
-					 return fn;
-				}
-			},
-			new Action() {	// [5] lst$Decl = Decl
+			new Action() {	// [3] lst$Func = Func
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					ArrayList lst = new ArrayList(); lst.add(_symbols[offset + 1].value); return new Symbol(lst);
 				}
 			},
-			new Action() {	// [6] lst$Decl = lst$Decl Decl
+			new Action() {	// [4] lst$Func = lst$Func Func
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					((ArrayList) _symbols[offset + 1].value).add(_symbols[offset + 2].value); return _symbols[offset + 1];
 				}
 			},
-			Action.NONE,  	// [7] opt$lst$Decl = 
-			Action.RETURN,	// [8] opt$lst$Decl = lst$Decl
-			new Action() {	// [9] Data = TYPE_DATA NAME.nm OPEN_BRACE opt$lst$Decl.dl CLOSE_BRACE
+			new Action() {	// [5] Def = lst$Func.fn
+				public Symbol reduce(Symbol[] _symbols, int offset) {
+					final Symbol _symbol_fn = _symbols[offset + 1];
+					final ArrayList _list_fn = (ArrayList) _symbol_fn.value;
+					final Node[] fn = _list_fn == null ? new Node[0] : (Node[]) _list_fn.toArray(new Node[_list_fn.size()]);
+					 return fn;
+				}
+			},
+			new Action() {	// [6] lst$Decl = Decl
+				public Symbol reduce(Symbol[] _symbols, int offset) {
+					ArrayList lst = new ArrayList(); lst.add(_symbols[offset + 1].value); return new Symbol(lst);
+				}
+			},
+			new Action() {	// [7] lst$Decl = lst$Decl Decl
+				public Symbol reduce(Symbol[] _symbols, int offset) {
+					((ArrayList) _symbols[offset + 1].value).add(_symbols[offset + 2].value); return _symbols[offset + 1];
+				}
+			},
+			Action.NONE,  	// [8] opt$lst$Decl = 
+			Action.RETURN,	// [9] opt$lst$Decl = lst$Decl
+			new Action() {	// [10] Data = TYPE_DATA NAME.nm OPEN_BRACE opt$lst$Decl.dl CLOSE_BRACE
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					final Symbol _symbol_nm = _symbols[offset + 2];
 					final String nm = (String) _symbol_nm.value;
@@ -104,7 +104,7 @@ public class MiniLangParser extends Parser {
 					 return new Data(nm, dl);
 				}
 			},
-			new Action() {	// [10] Decl = ID.v SRO Type.t SEMI
+			new Action() {	// [11] Decl = ID.v SRO Type.t SEMI
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					final Symbol _symbol_v = _symbols[offset + 1];
 					final String v = (String) _symbol_v.value;
@@ -113,35 +113,35 @@ public class MiniLangParser extends Parser {
 					 return new Decl(v, t);
 				}
 			},
-			Action.NONE,  	// [11] opt$Param = 
-			Action.RETURN,	// [12] opt$Param = Param
-			new Action() {	// [13] lst$FP = FP
+			Action.NONE,  	// [12] opt$Param = 
+			Action.RETURN,	// [13] opt$Param = Param
+			new Action() {	// [14] lst$FP = FP
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					ArrayList lst = new ArrayList(); lst.add(_symbols[offset + 1].value); return new Symbol(lst);
 				}
 			},
-			new Action() {	// [14] lst$FP = lst$FP FP
+			new Action() {	// [15] lst$FP = lst$FP FP
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					((ArrayList) _symbols[offset + 1].value).add(_symbols[offset + 2].value); return _symbols[offset + 1];
 				}
 			},
-			Action.NONE,  	// [15] opt$lst$FP = 
-			Action.RETURN,	// [16] opt$lst$FP = lst$FP
-			Action.NONE,  	// [17] opt$FP = 
-			Action.RETURN,	// [18] opt$FP = FP
-			new Action() {	// [19] lst$Cmd = Cmd
+			Action.NONE,  	// [16] opt$lst$FP = 
+			Action.RETURN,	// [17] opt$lst$FP = lst$FP
+			Action.NONE,  	// [18] opt$FP = 
+			Action.RETURN,	// [19] opt$FP = FP
+			new Action() {	// [20] lst$Cmd = Cmd
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					ArrayList lst = new ArrayList(); lst.add(_symbols[offset + 1].value); return new Symbol(lst);
 				}
 			},
-			new Action() {	// [20] lst$Cmd = lst$Cmd Cmd
+			new Action() {	// [21] lst$Cmd = lst$Cmd Cmd
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					((ArrayList) _symbols[offset + 1].value).add(_symbols[offset + 2].value); return _symbols[offset + 1];
 				}
 			},
-			Action.NONE,  	// [21] opt$lst$Cmd = 
-			Action.RETURN,	// [22] opt$lst$Cmd = lst$Cmd
-			new Action() {	// [23] Func = ID.v AP opt$Param.p FP AP COLON Type.t AP COMMA Type.t opt$lst$FP opt$FP OPEN_BRACE opt$lst$Cmd.c CLOSE_BRACE
+			Action.NONE,  	// [22] opt$lst$Cmd = 
+			Action.RETURN,	// [23] opt$lst$Cmd = lst$Cmd
+			new Action() {	// [24] Func = ID.v AP opt$Param.p FP AP COLON Type.t AP COMMA Type.t opt$lst$FP opt$FP OPEN_BRACE opt$lst$Cmd.c CLOSE_BRACE
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					final Symbol _symbol_v = _symbols[offset + 1];
 					final String v = (String) _symbol_v.value;
@@ -157,7 +157,7 @@ public class MiniLangParser extends Parser {
 					 return new Func(v, p, t, c);
 				}
 			},
-			new Action() {	// [24] Param = ID.v SRO Type.t AP COMMA ID.v SRO Type.t opt$lst$FP
+			new Action() {	// [25] Param = ID.v SRO Type.t AP COMMA ID.v SRO Type.t opt$lst$FP
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					final Symbol _symbol_v = _symbols[offset + 1];
 					final String v = (String) _symbol_v.value;
@@ -170,91 +170,106 @@ public class MiniLangParser extends Parser {
 					 return new Param(v, t, v, t);
 				}
 			},
-			new Action() {	// [25] Type = Type.t OPEN_BRACKET CLOSE_BRACKET
+			new Action() {	// [26] Type = Type.t OPEN_BRACKET CLOSE_BRACKET
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					final Symbol _symbol_t = _symbols[offset + 1];
 					final Node t = (Node) _symbol_t.value;
 					 return new TyArr(t);
 				}
 			},
-			new Action() {	// [26] Type = Btype.b
+			new Action() {	// [27] Type = Btype.b
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					final Symbol _symbol_b = _symbols[offset + 1];
 					final Node b = (Node) _symbol_b.value;
 					 return b;
 				}
 			},
-			new Action() {	// [27] Btype = TYPE_INT
+			new Action() {	// [28] Btype = TYPE_INT
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					 return new TyInt();
 				}
 			},
-			new Action() {	// [28] Btype = TYPE_CHAR
+			new Action() {	// [29] Btype = TYPE_CHAR
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					 return new TyChar();
 				}
 			},
-			new Action() {	// [29] Btype = TYPE_BOOL
+			new Action() {	// [30] Btype = TYPE_BOOL
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					 return new TyBool();
 				}
 			},
-			new Action() {	// [30] Btype = TYPE_FLOAT
+			new Action() {	// [31] Btype = TYPE_FLOAT
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					 return new TyFloat();
 				}
 			},
-			new Action() {	// [31] Cmd = IF AP Exp.e FP Cmd.c
+			new Action() {	// [32] Btype = ID.v
+				public Symbol reduce(Symbol[] _symbols, int offset) {
+					final Symbol _symbol_v = _symbols[offset + 1];
+					final String v = (String) _symbol_v.value;
+					 return new CustomType(v);
+				}
+			},
+			new Action() {	// [33] Block = OPEN_BRACE opt$lst$Cmd.c CLOSE_BRACE
+				public Symbol reduce(Symbol[] _symbols, int offset) {
+					final Symbol _symbol_c = _symbols[offset + 2];
+					final ArrayList _list_c = (ArrayList) _symbol_c.value;
+					final Node[] c = _list_c == null ? new Node[0] : (Node[]) _list_c.toArray(new Node[_list_c.size()]);
+					 return c;
+				}
+			},
+			new Action() {	// [34] Cmd = IF AP Exp.e FP Block.b
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					final Symbol _symbol_e = _symbols[offset + 3];
 					final Expr e = (Expr) _symbol_e.value;
-					final Symbol _symbol_c = _symbols[offset + 5];
-					final Node c = (Node) _symbol_c.value;
-					 return new If(e, c);
+					final Symbol _symbol_b = _symbols[offset + 5];
+					final Node b = (Node) _symbol_b.value;
+					 return new If(e, b);
 				}
 			},
-			new Action() {	// [32] Cmd = IF AP Exp.e FP Cmd.c1 ELSE Cmd.c2
+			new Action() {	// [35] Cmd = IF AP Exp.e FP Block.b1 ELSE Block.b2
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					final Symbol _symbol_e = _symbols[offset + 3];
 					final Expr e = (Expr) _symbol_e.value;
-					final Symbol _symbol_c1 = _symbols[offset + 5];
-					final Node c1 = (Node) _symbol_c1.value;
-					final Symbol _symbol_c2 = _symbols[offset + 7];
-					final Node c2 = (Node) _symbol_c2.value;
-					 return new If(e,c1,c2);
+					final Symbol _symbol_b1 = _symbols[offset + 5];
+					final Node b1 = (Node) _symbol_b1.value;
+					final Symbol _symbol_b2 = _symbols[offset + 7];
+					final Node b2 = (Node) _symbol_b2.value;
+					 return new If(e,b1,b2);
 				}
 			},
-			new Action() {	// [33] Cmd = ITERATE AP Exp.e FP Cmd.c
+			new Action() {	// [36] Cmd = ITERATE AP Exp.e FP Block.b
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					final Symbol _symbol_e = _symbols[offset + 3];
 					final Expr e = (Expr) _symbol_e.value;
-					final Symbol _symbol_c = _symbols[offset + 5];
-					final Node c = (Node) _symbol_c.value;
-					 return new While(e, c);
+					final Symbol _symbol_b = _symbols[offset + 5];
+					final Node b = (Node) _symbol_b.value;
+					 return new While(e, b);
 				}
 			},
-			new Action() {	// [34] Cmd = READ Lvalue.l SEMI
+			new Action() {	// [37] Cmd = READ Lvalue.l SEMI
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					final Symbol _symbol_l = _symbols[offset + 2];
 					final Node l = (Node) _symbol_l.value;
 					 return new Read(l);
 				}
 			},
-			new Action() {	// [35] Cmd = PRINT Exp.e SEMI
+			new Action() {	// [38] Cmd = PRINT Exp.e SEMI
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					final Symbol _symbol_e = _symbols[offset + 2];
 					final Expr e = (Expr) _symbol_e.value;
 					 return new Print(e);
 				}
 			},
-			new Action() {	// [36] Cmd = RETURN Exp.e AP COMMA Exp opt$lst$FP SEMI
+			new Action() {	// [39] Cmd = RETURN Exp.e AP COMMA Exp opt$lst$FP SEMI
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					final Symbol _symbol_e = _symbols[offset + 2];
 					final Expr e = (Expr) _symbol_e.value;
 					 return new Return(e);
 				}
 			},
-			new Action() {	// [37] Cmd = Lvalue.l EQUAL Exp.e SEMI
+			new Action() {	// [40] Cmd = Lvalue.l EQUAL Exp.e SEMI
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					final Symbol _symbol_l = _symbols[offset + 1];
 					final Node l = (Node) _symbol_l.value;
@@ -263,7 +278,14 @@ public class MiniLangParser extends Parser {
 					 return new Equal(l, e);
 				}
 			},
-			new Action() {	// [38] CExpr = Exp.e1 AND Exp.e2
+			new Action() {	// [41] Cmd = ID.fn AP Exps FP AP LESS_THAN Lvalue AP COMMA Lvalue opt$lst$FP GREATER_THAN opt$FP SEMI
+				public Symbol reduce(Symbol[] _symbols, int offset) {
+					final Symbol _symbol_fn = _symbols[offset + 1];
+					final String fn = (String) _symbol_fn.value;
+					 return new Call(fn, e, l);
+				}
+			},
+			new Action() {	// [42] CExpr = Exp.e1 AND Exp.e2
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					final Symbol _symbol_e1 = _symbols[offset + 1];
 					final Expr e1 = (Expr) _symbol_e1.value;
@@ -272,7 +294,7 @@ public class MiniLangParser extends Parser {
 					 return new And(e1,e2);
 				}
 			},
-			new Action() {	// [39] CExpr = Exp.e1 LESS_THAN Exp.e2
+			new Action() {	// [43] CExpr = Exp.e1 LESS_THAN Exp.e2
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					final Symbol _symbol_e1 = _symbols[offset + 1];
 					final Expr e1 = (Expr) _symbol_e1.value;
@@ -281,7 +303,7 @@ public class MiniLangParser extends Parser {
 					 return new Lt(e1,e2);
 				}
 			},
-			new Action() {	// [40] CExpr = Exp.e1 EQUAL_EQUAL Exp.e2
+			new Action() {	// [44] CExpr = Exp.e1 EQUAL_EQUAL Exp.e2
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					final Symbol _symbol_e1 = _symbols[offset + 1];
 					final Expr e1 = (Expr) _symbol_e1.value;
@@ -290,7 +312,7 @@ public class MiniLangParser extends Parser {
 					 return new EqEq(e1,e2);
 				}
 			},
-			new Action() {	// [41] CExpr = Exp.e1 NO_EQUAL Exp.e2
+			new Action() {	// [45] CExpr = Exp.e1 NO_EQUAL Exp.e2
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					final Symbol _symbol_e1 = _symbols[offset + 1];
 					final Expr e1 = (Expr) _symbol_e1.value;
@@ -299,14 +321,14 @@ public class MiniLangParser extends Parser {
 					 return new NotEqual(e1, e2);
 				}
 			},
-			new Action() {	// [42] CExpr = Exp.e
+			new Action() {	// [46] CExpr = Exp.e
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					final Symbol _symbol_e = _symbols[offset + 1];
 					final Expr e = (Expr) _symbol_e.value;
 					 return e;
 				}
 			},
-			new Action() {	// [43] Exp = Exp.e1 PLUS Exp.e2
+			new Action() {	// [47] Exp = Exp.e1 PLUS Exp.e2
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					final Symbol _symbol_e1 = _symbols[offset + 1];
 					final Expr e1 = (Expr) _symbol_e1.value;
@@ -315,7 +337,7 @@ public class MiniLangParser extends Parser {
 					 return new Add(e1, e2);
 				}
 			},
-			new Action() {	// [44] Exp = Exp.e1 MINUS Exp.e2
+			new Action() {	// [48] Exp = Exp.e1 MINUS Exp.e2
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					final Symbol _symbol_e1 = _symbols[offset + 1];
 					final Expr e1 = (Expr) _symbol_e1.value;
@@ -324,7 +346,7 @@ public class MiniLangParser extends Parser {
 					 return new Sub(e1, e2);
 				}
 			},
-			new Action() {	// [45] Exp = Exp.e1 MULT Exp.e2
+			new Action() {	// [49] Exp = Exp.e1 MULT Exp.e2
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					final Symbol _symbol_e1 = _symbols[offset + 1];
 					final Expr e1 = (Expr) _symbol_e1.value;
@@ -333,7 +355,7 @@ public class MiniLangParser extends Parser {
 					 return new Mul(e1, e2);
 				}
 			},
-			new Action() {	// [46] Exp = Exp.e1 DIV Exp.e2
+			new Action() {	// [50] Exp = Exp.e1 DIV Exp.e2
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					final Symbol _symbol_e1 = _symbols[offset + 1];
 					final Expr e1 = (Expr) _symbol_e1.value;
@@ -342,7 +364,7 @@ public class MiniLangParser extends Parser {
 					 return new Div(e1, e2);
 				}
 			},
-			new Action() {	// [47] Exp = Exp.e1 MOD Exp.e2
+			new Action() {	// [51] Exp = Exp.e1 MOD Exp.e2
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					final Symbol _symbol_e1 = _symbols[offset + 1];
 					final Expr e1 = (Expr) _symbol_e1.value;
@@ -351,68 +373,68 @@ public class MiniLangParser extends Parser {
 					 return new Mod(e1, e2);
 				}
 			},
-			new Action() {	// [48] Exp = NOT CExpr.e
+			new Action() {	// [52] Exp = NOT CExpr.e
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					final Symbol e = _symbols[offset + 2];
 					 return new Not((Expr) e);
 				}
 			},
-			new Action() {	// [49] Exp = MINUS CExpr.e
+			new Action() {	// [53] Exp = MINUS CExpr.e
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					final Symbol e = _symbols[offset + 2];
 					 return new Neg((Expr) e);
 				}
 			},
-			new Action() {	// [50] Exp = INT.n
+			new Action() {	// [54] Exp = INT.n
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					final Symbol _symbol_n = _symbols[offset + 1];
 					final Integer n = (Integer) _symbol_n.value;
 					 return new NInt(n);
 				}
 			},
-			new Action() {	// [51] Exp = FLOAT.f
+			new Action() {	// [55] Exp = FLOAT.f
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					final Symbol _symbol_f = _symbols[offset + 1];
 					final Float f = (Float) _symbol_f.value;
 					 return new NFloat(f);
 				}
 			},
-			new Action() {	// [52] Exp = CHAR.c
+			new Action() {	// [56] Exp = CHAR.c
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					final Symbol _symbol_c = _symbols[offset + 1];
 					final Character c = (Character) _symbol_c.value;
 					 return new NChar(c);
 				}
 			},
-			new Action() {	// [53] Exp = TRUE
+			new Action() {	// [57] Exp = TRUE
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					 return new True();
 				}
 			},
-			new Action() {	// [54] Exp = FALSE
+			new Action() {	// [58] Exp = FALSE
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					 return new False();
 				}
 			},
-			new Action() {	// [55] Exp = NULL
+			new Action() {	// [59] Exp = NULL
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					 return new Null();
 				}
 			},
-			new Action() {	// [56] Exp = Lvalue.l
+			new Action() {	// [60] Exp = Lvalue.l
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					final Symbol _symbol_l = _symbols[offset + 1];
 					final Node l = (Node) _symbol_l.value;
 					 return l;
 				}
 			},
-			new Action() {	// [57] Exp = AP CExpr.e FP
+			new Action() {	// [61] Exp = AP CExpr.e FP
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					final Symbol e = _symbols[offset + 2];
 					 return e;
 				}
 			},
-			new Action() {	// [58] Exp = TYPE_NEW Type.t AP OPEN_BRACKET CExpr.e CLOSE_BRACKET opt$FP
+			new Action() {	// [62] Exp = TYPE_NEW Type.t AP OPEN_BRACKET CExpr.e CLOSE_BRACKET opt$FP
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					final Symbol _symbol_t = _symbols[offset + 2];
 					final Node t = (Node) _symbol_t.value;
@@ -420,14 +442,26 @@ public class MiniLangParser extends Parser {
 					 return e;
 				}
 			},
-			new Action() {	// [59] Lvalue = ID.v
+			Action.NONE,  	// [63] opt$Exps = 
+			Action.RETURN,	// [64] opt$Exps = Exps
+			new Action() {	// [65] Exp = ID.v AP opt$Exps.e FP OPEN_BRACKET CExpr.ce CLOSE_BRACKET
+				public Symbol reduce(Symbol[] _symbols, int offset) {
+					final Symbol _symbol_v = _symbols[offset + 1];
+					final String v = (String) _symbol_v.value;
+					final Symbol _symbol_e = _symbols[offset + 3];
+					final Node e = (Node) _symbol_e.value;
+					final Symbol ce = _symbols[offset + 6];
+					 return new Call(v, ce, e);
+				}
+			},
+			new Action() {	// [66] Lvalue = ID.v
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					final Symbol _symbol_v = _symbols[offset + 1];
 					final String v = (String) _symbol_v.value;
 					 return new Var(v);
 				}
 			},
-			new Action() {	// [60] Lvalue = Lvalue.l OPEN_BRACKET Exp.e CLOSE_BRACKET
+			new Action() {	// [67] Lvalue = Lvalue.l OPEN_BRACKET Exp.e CLOSE_BRACKET
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					final Symbol _symbol_l = _symbols[offset + 1];
 					final Node l = (Node) _symbol_l.value;
@@ -436,13 +470,22 @@ public class MiniLangParser extends Parser {
 					 return new Index(l, e);
 				}
 			},
-			new Action() {	// [61] Lvalue = Lvalue.l DOT ID.v
+			new Action() {	// [68] Lvalue = Lvalue.l DOT ID.v
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					final Symbol _symbol_l = _symbols[offset + 1];
 					final Node l = (Node) _symbol_l.value;
 					final Symbol _symbol_v = _symbols[offset + 3];
 					final String v = (String) _symbol_v.value;
 					 return new Field(l, v);
+				}
+			},
+			new Action() {	// [69] Exps = Exp.e AP COMMA Exp.ep opt$lst$FP
+				public Symbol reduce(Symbol[] _symbols, int offset) {
+					final Symbol _symbol_e = _symbols[offset + 1];
+					final Expr e = (Expr) _symbol_e.value;
+					final Symbol _symbol_ep = _symbols[offset + 4];
+					final Expr ep = (Expr) _symbol_ep.value;
+					 return new ExpList(e, ep);
 				}
 			}
 		};

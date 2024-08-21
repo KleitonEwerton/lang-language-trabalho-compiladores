@@ -5,11 +5,11 @@ import visitors.Visitor;
 public class Data extends Node {
 
     private String id;
-    private String type;
+    private Node decl[];
 
-    public Data(String i, String t) {
+    public Data(String i, Node d[]) {
         id = i;
-        type = t;
+        decl = d;
     }
 
     public void accept(Visitor v) {

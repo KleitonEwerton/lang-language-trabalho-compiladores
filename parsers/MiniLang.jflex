@@ -41,6 +41,7 @@ import java.math.BigDecimal;
   int         = [:digit:] [:digit:]*
   float       = {int} "." {int}
   identificador = [:lowercase:] ([:lowercase:] | [:uppercase:] | [:digit:])*
+  nameIdentificador = [:uppercase:] ([:lowercase:] | [:uppercase:] | [:digit:])*
   lineCmt       = "//" .* {FimDeLinha}
   
   
@@ -87,7 +88,8 @@ import java.math.BigDecimal;
     "Bool"          { return symbol(Terminals.TYPE_BOOL);   } 
     "Data"          { return symbol(Terminals.TYPE_DATA);   } 
     
-    {identificador} { return symbol(Terminals.ID, yytext());   }
+    {identificador}     {return symbol(Terminals.ID, yytext());   }
+    {nameIdentificador} {return symbol(Terminals.NAME, yytext());   }
     {float}         { return symbol(Terminals.FLOAT, Float.parseFloat(yytext()) );  }
     {int}           { return symbol(Terminals.INT, Integer.parseInt(yytext()) );  }
     {Brancos}       { /* Não faz nada  */                }
