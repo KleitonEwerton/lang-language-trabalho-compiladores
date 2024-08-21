@@ -12,6 +12,8 @@
            LESS_THAN, GREATER_THAN, EQUAL_EQUAL, NO_EQUAL,
            AND, SEMI, COLON, SRO, COMMA, EQUAL,
            AP, FP, TYPE_NEW;
+           
+           
 
 %left PLUS, MINUS;      
 %left MULT, DIV, MOD;   
@@ -31,7 +33,6 @@
 %nonassoc OPEN_BRACKET, CLOSE_BRACKET, DOT, AP, FP, OPEN_BRACE, CLOSE_BRACE; 
 %nonassoc ITERATE, READ, PRINT;  
 %nonassoc SEMI, COLON;  
-
 
 %nonassoc EQUAL_EQUAL;
 %nonassoc LESS_THAN;

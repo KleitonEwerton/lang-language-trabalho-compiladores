@@ -55,23 +55,20 @@ import java.math.BigDecimal;
     
     "false"         { return symbol(Terminals.FALSE, false ); }
     "true"          { return symbol(Terminals.TRUE, true );   }
-    "<-"            { return symbol(Terminals.ATTR);          }
-    "$"             { return symbol(Terminals.INST);   }
-    "@"             { return symbol(Terminals.RET);    }
-    "?"             { return symbol(Terminals.IF);     }
-    "?["            { return symbol(Terminals.WHILE);  }
-    "#"             { return symbol(Terminals.PRINT);  }
+    "if"            { return symbol(Terminals.IF);     }
+    "iterate"       { return symbol(Terminals.ITERATE);  }
+    "print"         { return symbol(Terminals.PRINT);  }
     
-    "=="            { return symbol(Terminals.EQ);     }
+    "=="            { return symbol(Terminals.EQUAL_EQUAL);     }
     ";"             { return symbol(Terminals.SEMI);   }
     ","             { return symbol(Terminals.COMMA);  }
     ":"             { return symbol(Terminals.COLON);  }
     "("             { return symbol(Terminals.AP);     }
     ")"             { return symbol(Terminals.FP);     }
-    "["             { return symbol(Terminals.LB);     }
-    "]"             { return symbol(Terminals.RB);     }
-    "{"             { return symbol(Terminals.LBRACE); }
-    "}"             { return symbol(Terminals.RBRACE); }
+    "["             { return symbol(Terminals.OPEN_BRACKET);     }
+    "]"             { return symbol(Terminals.CLOSE_BRACKET);     }
+    "{"             { return symbol(Terminals.OPEN_BRACE); }
+    "}"             { return symbol(Terminals.CLOSE_BRACE); }
     
     "*"             { return symbol(Terminals.MULT);   }
     "/"             { return symbol(Terminals.DIV);    }
@@ -80,15 +77,15 @@ import java.math.BigDecimal;
     "!"             { return symbol(Terminals.NOT);    }
     "+"             { return symbol(Terminals.PLUS);   }
     "-"             { return symbol(Terminals.MINUS);  }
-    "<"             { return symbol(Terminals.LT);     }
+    "<"             { return symbol(Terminals.LESS_THAN);     }
     
     
-    "/*"            { yybegin(COMMENT);                  }
-    "Int"           { return symbol(Terminals.TYINT);  }
-    "Float"         { return symbol(Terminals.TYFLOAT);  } 
-    "Bool"          { return symbol(Terminals.TYBOOL);  } 
-
-    "Data"  { return symbol(Terminals.DATA);  } 
+    "/*"            { yybegin(COMMENT);                     }
+    "Int"           { return symbol(Terminals.TYPE_INT);    }
+    "Float"         { return symbol(Terminals.TYPE_FLOAT);  } 
+    "Char"          { return symbol(Terminals.TYPE_CHAR);   }
+    "Bool"          { return symbol(Terminals.TYPE_BOOL);   } 
+    "Data"          { return symbol(Terminals.TYPE_DATA);   } 
     
     {identificador} { return symbol(Terminals.ID, yytext());   }
     {float}         { return symbol(Terminals.FLOAT, Float.parseFloat(yytext()) );  }
