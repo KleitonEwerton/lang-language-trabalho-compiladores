@@ -228,7 +228,7 @@ public class InterpretVisitor extends Visitor {
         }
     }
 
-    public void visit(Attr e) {
+    public void visit(Decl e) {
         try {
             Var v = e.getID();
             e.getExp().accept(this);
@@ -400,4 +400,9 @@ public class InterpretVisitor extends Visitor {
     public void visit(EqEq e) {
 
     }
+
+    public void visit(Data e) {
+
+    }
+
 }

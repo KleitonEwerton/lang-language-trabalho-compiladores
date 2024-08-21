@@ -89,13 +89,13 @@ Data = TYPE_DATA NAME.nm OPEN_BRACE Decl.dl* CLOSE_BRACE     {: return new Data(
      ;
 
 
-Decl = ID.v SRO Type.t SEMI                         {: return new Decl(v, t); :}
+Decl = ID.v SRO Type.t SEMI                                      {: return new Decl(v, t); :}
      ;
 
 Func = ID.v AP Params.p? FP AP COLON Type.t AP COMMA Type.t FP* FP? OPEN_BRACE Cmd.c* CLOSE_BRACE {: return new Func(v, p, t, c); :}
      ;
 
-Params = ID.v SRO Type.t AP COMMA ID.v SRO Type.t FP*                  {: return new Params(v, t, v, t); :}
+Params = ID.v SRO Type.t AP COMMA ID.v SRO Type.t FP*              {: return new Params(v, t, v, t); :}
        ;
 
 Type = Type.t OPEN_BRACKET CLOSE_BRACKET                           {: return new ArrayType(t); :} 
@@ -123,7 +123,7 @@ Cmd = OPEN_BRACE Cmd.c* CLOSE_BRACE                                {: return new
 CExpr = Exp.e1 AND Exp.e2                                           {: return new And(e1,e2);  :}
       | Exp.e1 LESS_THAN Exp.e2                                     {: return new Lt(e1,e2);   :}
       | Exp.e1 EQUAL_EQUAL Exp.e2                                   {: return new EqEq(e1,e2);   :}
-      | Exp.e1 NO_EQUAL Exp.e2                                      {: return new neg(e1, e2); :}
+      | Exp.e1 NO_EQUAL Exp.e2                                      {: return new NotEqual(e1, e2); :}
       | Exp.e                                                       {: return e; :}
       ; 
 

@@ -8,11 +8,11 @@ package ast;
 import java.util.HashMap;
 import visitors.Visitor;
 
-public class Neg extends Expr {
+public class Neg extends Node {
 
-   private CExpr l;
+   private Expr l;
 
-   public Neg(CExpr l) {
+   public Neg(Expr l) {
       this.l = l;
    }
 

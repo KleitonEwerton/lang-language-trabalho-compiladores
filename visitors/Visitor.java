@@ -37,7 +37,7 @@ public abstract class Visitor {
 
      public abstract void visit(Call e);
 
-     public abstract void visit(Attr e);
+     public abstract void visit(Decl e);
 
      public abstract void visit(If e);
 
@@ -78,5 +78,7 @@ public abstract class Visitor {
      public abstract void visit(NotEqual t);
 
      public abstract void visit(EqEq t);
+
+     public abstract void visit(Data t);
 
 }
