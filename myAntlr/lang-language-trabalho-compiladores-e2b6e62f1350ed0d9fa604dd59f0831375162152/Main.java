@@ -1,24 +1,22 @@
 import org.antlr.v4.runtime.*;
-import org.antlr.v4.runtime.tree.*;
+import org.antlr.v4.runtime.tree.ParseTree;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        // Lê o arquivo de entrada
+        // Leitura da entrada
         CharStream input = CharStreams.fromFileName("input.txt");
 
-        // Cria o lexer e o stream de tokens
-        ExampleLexer lexer = new ExampleLexer(input);
+        // Criação do lexer e parser
+        lang1Lexer lexer = new lang1Lexer(input);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
+        lang1Parser parser = new lang1Parser(tokens);
 
-        // Cria o parser e analisa a entrada
-        ExampleParser parser = new ExampleParser(tokens);
-        ParseTree tree = parser.prog(); // Inicia a análise pela regra inicial "prog"
+        // Parsing
+        ParseTree tree = parser.prog(); // ou o nome da regra inicial
 
-        // Cria um visitante e o usa para visitar a árvore de parse
+        // Visitação
         MyVisitor visitor = new MyVisitor();
-        Integer result = visitor.visit(tree); // Captura o resultado da visita
-
-        // Exibe o resultado
-        System.out.println("Resultado: " + result);
+        Integer result = visitor.visit(tree);
+        System.out.println("Result: " + result);
     }
 }
