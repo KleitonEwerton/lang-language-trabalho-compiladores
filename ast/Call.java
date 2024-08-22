@@ -11,34 +11,25 @@ import visitors.Visitor;
 public class Call extends Expr {
 
    private String l;
-   private String id;
-   private Expr[] args;
+   private Node args;
+   private Node expList;
 
-   public Call(String id, String name, Expr[] xs) {
-      this.l = name;
-      this.id = id;
-      this.args = xs;
+   public Call(String id, Node xs, Node expList) {
+      l = id;
+      args = xs;
+      this.expList = expList;
    }
 
    public String getName() {
       return l;
    }
 
-   public Expr[] getArgs() {
+   public Node getArgs() {
       return args;
    }
 
-   // @Override
-   public String toString() {
-      String s = l + "(";
-      if (args.length > 0) {
-         s += args[0].toString();
-         for (int i = 1; i < args.length; i++) {
-            s += "," + args[i].toString();
-         }
-      }
-      s += ")";
-      return s;
+   public Node getExpList() {
+      return expList;
    }
 
    public void accept(Visitor v) {

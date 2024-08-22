@@ -1,0 +1,12 @@
+generate:
+	java -jar antlr-4.8-complete.jar -visitor -Dlanguage=Java Example.g4
+	
+
+compile:
+	javac -cp .:antlr-4.8-complete.jar *.java
+
+run:
+	java -cp .:antlr-4.8-complete.jar Main input.txt
+
+clean:
+	rm -f *.class *.tokens Example*.java Example*.tokens

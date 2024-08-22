@@ -117,7 +117,6 @@ Cmd = IF AP Exp.e FP Block.b                                         {: return n
     | PRINT Exp.e SEMI                                             {: return new Print(e); :}
     | RETURN Exp.e AP COMMA Exp FP* SEMI                           {: return new Return(e); :}
     | Lvalue.l EQUAL Exp.e SEMI                                    {: return new Equal(l, e); :}
-    | ID.fn AP Exps FP AP LESS_THAN Lvalue  AP COMMA Lvalue FP* GREATER_THAN FP? SEMI {: return new Call(fn, e, l); :}
     ;
 
 CExpr = Exp.e1 AND Exp.e2                                           {: return new And(e1,e2);  :}
@@ -144,7 +143,7 @@ Exp = Exp.e1 PLUS Exp.e2                                            {: return ne
     | Lvalue.l                                                      {: return l; :}
     | AP CExpr.e FP                                                 {: return e; :}
     | TYPE_NEW Type.t AP OPEN_BRACKET CExpr.e CLOSE_BRACKET FP?     {: return e; :}
-    | ID.v AP Exps.e? FP OPEN_BRACKET CExpr.ce CLOSE_BRACKET        {: return new Call(v, ce, e); :}
+    | ID.v AP Exps.e? FP OPEN_BRACKET Block.ce CLOSE_BRACKET        {: return new Call(v, e, ce); :}
     
     ;
 
