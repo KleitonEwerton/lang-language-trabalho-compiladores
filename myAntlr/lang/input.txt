@@ -1,11 +1,16 @@
 f(x :: Int) : Int{
    y = 2*x  + 1;
+   print y;
    return y;
 }
 
 main(v :: Int[], f :: Float){
   z = 10;
   f(z);
+
+  a = 4;
+
+  print z + a;
 }
 
 
