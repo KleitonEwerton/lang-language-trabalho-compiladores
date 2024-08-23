@@ -1,6 +1,6 @@
-package antlrGrammar.lang.parser;
+package lang.parser;
 
-import antlrGrammar.lang.ast.SuperNode;
+import lang.ast.SuperNode;
 
 public interface ParseAdaptor {
     public abstract SuperNode parseFile(String path);

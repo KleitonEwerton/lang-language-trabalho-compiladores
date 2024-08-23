@@ -1,4 +1,4 @@
-package antlrGrammar.lang.ast;
+package lang.ast;
 
 public abstract class SuperNode {
     // The line and column of the node in the input text

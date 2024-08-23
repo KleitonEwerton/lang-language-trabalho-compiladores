@@ -1,5 +1,17 @@
 grammar lang1;
 
+@parser::header
+{
+    package lang.parser;
+     
+}
+
+@lexer::header
+{
+    package lang.parser;
+}
+
+
 prog: def*
    ;
 

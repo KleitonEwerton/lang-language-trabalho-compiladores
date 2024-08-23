@@ -1,11 +1,9 @@
-package antlrGrammar.lang;
-
 import java.io.*;
 
-import antlrGrammar.lang.ast.SuperNode;
-import antlrGrammar.lang.parser.ParseAdaptor;
-import antlrGrammar.lang.parser.ParserSyntactic;
-import antlrGrammar.lang.parser.TestParser;
+import lang.ast.SuperNode;
+import lang.parser.ParseAdaptor;
+import lang.parser.ParserSyntactic;
+import lang.parser.TestParser;
 
 public class LangCompiler {
     // Recupera o nome base (sem extensão) de um arquivo.
@@ -51,7 +49,7 @@ public class LangCompiler {
                 System.out.println("Para usar essa opção, especifique um nome de arquivo");
                 return;
             }
-            
+
             SuperNode result = langParser.parseFile(args[1]);
             if (result == null) {
                 System.err.println("Aborting due to syntax error(s)");

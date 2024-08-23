@@ -1,4 +1,4 @@
-package antlrGrammar.lang.parser;
+package lang.parser;
 
 import java.io.File;
 

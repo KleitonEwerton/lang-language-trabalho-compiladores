@@ -4,8 +4,11 @@ f(x :: Int) : Int{
 }
 
 main(v :: Int[], f :: Float){
-  z = 10;
+  z = 10 + 9;
+  print z;
   f(z);
+  
+  print f(2);
 }
 
 
