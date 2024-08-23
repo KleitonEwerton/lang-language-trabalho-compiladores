@@ -1,5 +1,5 @@
 generate:
-	java -jar antlr-4.8-complete.jar -visitor -Dlanguage=Java Example.g4
+	java -jar antlr-4.8-complete.jar -visitor -Dlanguage=Java lang1.g4
 	
 
 compile:
