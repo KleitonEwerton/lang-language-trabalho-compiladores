@@ -12,93 +12,93 @@ grammar lang;
 }
 
 
-prog: def*
+prog: def* #progName
    ;
 
-def: data 
-   | fun 
+def: data #dataDef
+   | fun  #funDef
    ;
 
-data: TYPE_DATA NAME TYPE_OPEN_BRACE decl* TYPE_CLOSE_BRACE
+data: TYPE_DATA NAME TYPE_OPEN_BRACE decl* TYPE_CLOSE_BRACE #dataName
    ;
 
-decl: ID TYPE_SRO type TYPE_SEMI 
+decl: ID TYPE_SRO type TYPE_SEMI #declName
    ;
 
-fun: ID TYPE_OPEN_PARENTHESIS params? TYPE_CLOSE_PARENTHESIS (TYPE_COLON type (TYPE_COMMA type)*)? TYPE_OPEN_BRACE cmd* TYPE_CLOSE_BRACE
+fun: ID TYPE_OPEN_PARENTHESIS params? TYPE_CLOSE_PARENTHESIS (TYPE_COLON type (TYPE_COMMA type)*)? TYPE_OPEN_BRACE cmd* TYPE_CLOSE_BRACE #funName
    ;
 
-params: ID TYPE_SRO type (TYPE_COMMA ID TYPE_SRO type)* 
+params: ID TYPE_SRO type (TYPE_COMMA ID TYPE_SRO type)* #paramsName
    ;
 
-type: type TYPE_OPEN_BRACKET TYPE_CLOSE_BRACKET
-   |  btype
+type: type TYPE_OPEN_BRACKET TYPE_CLOSE_BRACKET #typeName
+   |  btype #btypeName
    ;
 
-btype: TYPE_INT
-   | TYPE_CHAR 
-   | TYPE_BOOL 
-   | TYPE_FLOAT 
-   | NAME
-   | ID 
+btype: TYPE_INT   #intType
+   | TYPE_CHAR    #charType
+   | TYPE_BOOL    #boolType
+   | TYPE_FLOAT   #floatType
+   | NAME         #nameType
+   | ID           #idType
    ;
 
 
-cmd: TYPE_OPEN_BRACE cmd* TYPE_OPEN_BRACE
-   | TYPE_IF TYPE_OPEN_PARENTHESIS exp TYPE_CLOSE_PARENTHESIS cmd
-   | TYPE_IF TYPE_OPEN_PARENTHESIS exp TYPE_CLOSE_PARENTHESIS cmd TYPE_ELSE cmd
-   | TYPE_ITERATE TYPE_OPEN_PARENTHESIS exp TYPE_CLOSE_PARENTHESIS cmd
-   | TYPE_READ lvalue TYPE_SEMI
-   | TYPE_PRINT exp TYPE_SEMI
-   | TYPE_RETURN exp (TYPE_COMMA exp)* TYPE_SEMI
-   | lvalue TYPE_EQUAL exp TYPE_SEMI 
-   | ID TYPE_OPEN_PARENTHESIS exps TYPE_CLOSE_PARENTHESIS (TYPE_LESS_THAN lvalue (TYPE_COMMA lvalue)* TYPE_GREATER_THAN)? TYPE_SEMI
+cmd: TYPE_OPEN_BRACE cmd* TYPE_CLOSE_BRACE                                           #blockCmd
+   | TYPE_IF TYPE_OPEN_PARENTHESIS exp TYPE_CLOSE_PARENTHESIS cmd                    #ifCmd
+   | TYPE_IF TYPE_OPEN_PARENTHESIS exp TYPE_CLOSE_PARENTHESIS cmd TYPE_ELSE cmd      #ifElseCmd
+   | TYPE_ITERATE TYPE_OPEN_PARENTHESIS exp TYPE_CLOSE_PARENTHESIS cmd               #iterateCmd
+   | TYPE_READ lvalue TYPE_SEMI                                                      #readCmd
+   | TYPE_PRINT exp TYPE_SEMI                                                        #printCmd
+   | TYPE_RETURN exp (TYPE_COMMA exp)* TYPE_SEMI                                     #returnCmd
+   | lvalue TYPE_EQUAL exp TYPE_SEMI                                                 #lvalueCmd
+   | ID TYPE_OPEN_PARENTHESIS exps TYPE_CLOSE_PARENTHESIS (TYPE_LESS_THAN lvalue (TYPE_COMMA lvalue)* TYPE_GREATER_THAN)? TYPE_SEMI #funcCallCmd
    ;
 
-exp: exp TYPE_AND exp
-   | cexpr 
+exp: exp TYPE_AND exp #andExp
+   | cexpr            #cexprExp
    ;
 
-cexpr: baexp TYPE_LESS_THAN baexp 
-   |   cexpr TYPE_EQUAL_EQUAL baexp 
-   |   cexpr TYPE_NO_EQUAL baexp 
-   |   baexp
+cexpr: baexp TYPE_LESS_THAN baexp     #lessThanCexpr
+   |   cexpr TYPE_EQUAL_EQUAL baexp   #equalsCexpr
+   |   cexpr TYPE_NO_EQUAL baexp      #notEqualsCexpr
+   |   baexp                          #baexpCexpr
    ;
 
-baexp: baexp TYPE_PLUS opexp 
-   |   baexp TYPE_MINUS opexp
-   |   opexp
+baexp: baexp TYPE_PLUS opexp          #addBaexp
+   |   baexp TYPE_MINUS opexp         #subBaexp
+   |   opexp                          #opexpBaexp
    ;
 
-opexp: opexp TYPE_ASTERISK dexp 
-   |   opexp TYPE_DIV dexp 
-   |   opexp TYPE_MOD dexp
-   |   dexp
+opexp: opexp TYPE_ASTERISK dexp       #mulOpexp
+   |   opexp TYPE_DIV dexp            #divOpexp
+   |   opexp TYPE_MOD dexp            #modOpexp
+   |   dexp                           #dexpOpexp
    ;
 
-dexp: TYPE_EXCLAMATION dexp 
-   |  TYPE_MINUS dexp 
-   |  TYPE_TRUE
-   |  TYPE_FALSE 
-   |  TYPE_NULL 
-   |  INT 
-   |  FLOAT 
-   |  CHAR
-   |  rexp
+dexp: TYPE_EXCLAMATION dexp           #notDexp
+   |  TYPE_MINUS dexp                 #negDexp
+   |  TYPE_TRUE                       #trueDexp
+   |  TYPE_FALSE                      #falseDexp
+   |  TYPE_NULL                       #nullDexp
+   |  INT                             #intDexp
+   |  FLOAT                           #floatDexp
+   |  CHAR                            #charDexp
+   |  rexp                            #rexpDexp
    ;
 
-rexp: lvalue 
-   | TYPE_OPEN_PARENTHESIS exp TYPE_CLOSE_PARENTHESIS 
-   | TYPE_NEW type (TYPE_OPEN_BRACKET exp TYPE_CLOSE_BRACKET)? 
-   | ID TYPE_OPEN_PARENTHESIS exps? TYPE_CLOSE_PARENTHESIS TYPE_OPEN_BRACKET exp TYPE_CLOSE_BRACKET 
+rexp: lvalue                                                                                             #lvalueRexp
+   | TYPE_OPEN_PARENTHESIS exp TYPE_CLOSE_PARENTHESIS                                                    #parenRexp
+   | TYPE_NEW type (TYPE_OPEN_BRACKET exp TYPE_CLOSE_BRACKET)?                                           #newRexp
+   | ID TYPE_OPEN_PARENTHESIS exps? TYPE_CLOSE_PARENTHESIS TYPE_OPEN_BRACKET exp TYPE_CLOSE_BRACKET      #funcCallRexp
    ;
 
-lvalue: ID 
-      | lvalue TYPE_OPEN_BRACKET exp TYPE_CLOSE_BRACKET
-      | lvalue TYPE_DOT ID 
+lvalue: ID                                                        #idLvalue
+      | lvalue TYPE_OPEN_BRACKET exp TYPE_CLOSE_BRACKET           #arrayLvalue
+      | lvalue TYPE_DOT ID                                        #dotLvalue
       ;
 
-exps: exp (TYPE_COMMA exp)* 
+exps: exp (TYPE_COMMA exp)*                                       #expsName
       ;
 
 TYPE_INT: 'int';
@@ -123,12 +123,14 @@ ID: [a-z][a-zA-Z0-9_]* ;
 NAME: [A-Z][a-zA-Z0-9_]* ;
 INT: '-'? [0-9]+ ;
 FLOAT: '-'? [0-9]* '.' ([0-9] [0-9]*) ;
-CHAR: '\'' [\u0000-\u007F] '\'' ;
+CHAR: '\'' [\u0000-\u007F] '\'' 
+   |  '\'' ('\\n' | '\\t' | '\\b' | '\\r' | '\\\\' | '\\') '\''
+   ;
 
 NEWLINE: '\r'? '\n' -> skip;
 WS : [ \t]+ -> skip;
-LINE_COMMENT : '//' ~('\r' | '\n')* NEWLINE -> skip;
-COMMENT: '/*' .*?  '*/' -> skip;
+LINE_COMMENT : '--' .*? NEWLINE -> skip;
+COMMENT: '{-' .*?  '-}' -> skip;
 
 TYPE_OPEN_BRACKET: '[';
 TYPE_CLOSE_BRACKET: ']';

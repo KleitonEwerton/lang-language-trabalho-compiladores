@@ -1,16 +1,16 @@
 package lang.ast;
 
 /*
- * Esta classe representa uma expressão de soma.
+ * Esta classe representa uma operação de comparação.
  * Expr + Expr
  */
  
 import java.util.HashMap; 
 import visitors.Visitor;
 
-public class Add extends BinOP {
+public class Lt extends BinOP {
 
-      public Add(Expr l, Expr r){
+      public Lt(Expr l, Expr r){
            super(l,r);
       }
       

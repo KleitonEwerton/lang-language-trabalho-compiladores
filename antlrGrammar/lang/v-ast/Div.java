@@ -1,16 +1,16 @@
 package lang.ast;
 
 /*
- * Esta classe representa uma expressão de soma.
+ * Esta classe representa uma operação de divisão.
  * Expr + Expr
  */
  
 import java.util.HashMap; 
 import visitors.Visitor;
 
-public class Add extends BinOP {
+public class Div extends BinOP {
 
-      public Add(Expr l, Expr r){
+      public Div(Expr l, Expr r){
            super(l,r);
       }
       
@@ -20,9 +20,8 @@ public class Add extends BinOP {
          if(getRight() instanceof Add){
             ss = "(" + ss + ")";
          }
-         return   s + " + " + ss;
+         return   s + " / " + ss;
       }
       
       public void accept(Visitor v){ v.visit(this);}
-            
 }

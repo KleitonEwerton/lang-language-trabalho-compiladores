@@ -6,12 +6,12 @@ package lang.ast;
  */
  
 import java.util.HashMap; 
-import visitors.Visitor;
+import lang.ast.Visitor;
 
 public class Add extends BinOP {
 
-      public Add(Expr l, Expr r){
-           super(l,r);
+      public Add(int lin, int col, Expr l, Expr r){
+         super(lin,col,l,r);
       }
       
       public String toString(){

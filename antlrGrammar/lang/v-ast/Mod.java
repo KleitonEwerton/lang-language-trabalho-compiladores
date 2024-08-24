@@ -8,9 +8,9 @@ package lang.ast;
 import java.util.HashMap; 
 import visitors.Visitor;
 
-public class Add extends BinOP {
+public class Mod extends BinOP {
 
-      public Add(Expr l, Expr r){
+      public Mod(Expr l, Expr r){
            super(l,r);
       }
       
