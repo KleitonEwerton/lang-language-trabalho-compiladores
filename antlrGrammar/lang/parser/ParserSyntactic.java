@@ -27,11 +27,11 @@ public class ParserSyntactic implements ParseAdaptor {
 
         // Parsing
         ParseTree tree = parser.prog(); // ou o nome da regra inicial
-        
+
         return new Node();
 
         // Visitação
-        
+
         // MyVisitor visitor = new MyVisitor();
         // SuperNode result = null;
         // visitor.visit(tree);

@@ -10,7 +10,9 @@ public class MyVisitor extends langBaseVisitor<Node> {
 
     @Override
     public Node visitProgName(langParser.ProgNameContext ctx) {
-        // Implementação para visitProgName
+
+        System.out.println("visitProgName");
+
         return null;
     }
 

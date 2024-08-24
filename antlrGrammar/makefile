@@ -8,6 +8,9 @@ compile:
 run:
 	java -cp .:antlr-4.8-complete.jar LangCompiler -bs lang/parser/input.txt
 
+testesSintaticos:
+	java -cp .:antlr-4.8-complete.jar LangCompiler -bs
+
 clean:
 	rm -f lang/parser/*.class \
 	lang/parser/*.tokens \
