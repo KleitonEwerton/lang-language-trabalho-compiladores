@@ -1,4 +1,4 @@
-grammar lang1;
+grammar lang;
 
 @parser::header
 {

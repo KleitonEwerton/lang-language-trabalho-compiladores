@@ -1,5 +1,5 @@
 generate:
-	java -jar antlr-4.8-complete.jar -visitor -Dlanguage=Java lang/parser/lang1.g4
+	java -jar antlr-4.8-complete.jar -visitor -Dlanguage=Java lang/parser/lang.g4
 	
 
 compile:
@@ -13,12 +13,12 @@ clean:
 	lang/parser/*.tokens \
 	lang/parser/Example*.java \
 	lang/parser/Example*.tokens \
-	lang/parser/lang1BaseListener.java \
-	lang/parser/lang1Lexer.java \
-	lang/parser/lang1Listener.java \
-	lang/parser/lang1Parser.java \
-	lang/parser/lang1.interp \
-	lang/parser/lang1BaseVisitor.java \
-	lang/parser/lang1Lexer.interp \
-	lang/parser/lang1Visitor.java \
+	lang/parser/langBaseListener.java \
+	lang/parser/langLexer.java \
+	lang/parser/langListener.java \
+	lang/parser/langParser.java \
+	lang/parser/lang.interp \
+	lang/parser/langBaseVisitor.java \
+	lang/parser/langLexer.interp \
+	lang/parser/langVisitor.java \
 	lang/ast/*.class

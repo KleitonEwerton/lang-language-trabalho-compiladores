@@ -5,7 +5,7 @@ import java.io.IOException;
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.ParseTree;
 
-import lang.ast.SuperNode;
+import lang.ast.*;
 
 public class ParserSyntactic implements ParseAdaptor {
 
@@ -21,19 +21,20 @@ public class ParserSyntactic implements ParseAdaptor {
         }
 
         // Criação do lexer e parser
-        lang1Lexer lexer = new lang1Lexer(input);
+        langLexer lexer = new langLexer(input);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
-        lang1Parser parser = new lang1Parser(tokens);
+        langParser parser = new langParser(tokens);
 
         // Parsing
         ParseTree tree = parser.prog(); // ou o nome da regra inicial
+        
+        return new Node();
+        // // Visitação
+        // MyVisitor visitor = new MyVisitor();
+        // SuperNode result = null;
+        // visitor.visit(tree);
+        // System.out.println("Result: " + result);
 
-        // Visitação
-        MyVisitor visitor = new MyVisitor();
-        SuperNode result = null;
-        visitor.visit(tree);
-        System.out.println("Result: " + result);
-
-        return result; // Retorna o resultado da visitação
+        // return result; // Retorna o resultado da visitação
     }
 }

@@ -4,24 +4,24 @@ import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MyVisitor extends lang1BaseVisitor<Integer> {
+public class MyVisitor extends langBaseVisitor<Integer> {
 
     private final Map<String, Integer> memory = new HashMap<>(); // Armazena valores de variáveis
 
     @Override
-    public Integer visitProg(lang1Parser.ProgContext ctx) {
+    public Integer visitProg(langParser.ProgContext ctx) {
         System.out.println("visitProg: " + ctx.getText());
         return visitChildren(ctx);
     }
 
     @Override
-    public Integer visitFun(lang1Parser.FunContext ctx) {
+    public Integer visitFun(langParser.FunContext ctx) {
         System.out.println("visitFun: " + ctx.getText());
         return visitChildren(ctx);
     }
 
     @Override
-    public Integer visitCmd(lang1Parser.CmdContext ctx) {
+    public Integer visitCmd(langParser.CmdContext ctx) {
         if (ctx.TYPE_PRINT() != null) {
             Integer result = visit(ctx.exp(0)); // Avalia a expressão para print
             System.out.println("checando print: " + result); // Verifica o valor que está sendo impresso
@@ -45,7 +45,7 @@ public class MyVisitor extends lang1BaseVisitor<Integer> {
     }
 
     @Override
-    public Integer visitLvalue(lang1Parser.LvalueContext ctx) {
+    public Integer visitLvalue(langParser.LvalueContext ctx) {
         String varName = ctx.getText();
         Integer value = memory.getOrDefault(varName, 0); // Retorna o valor da variável, ou 0 se não estiver definido
         System.out.println("visitLvalue: " + varName + " = " + value);
@@ -53,7 +53,7 @@ public class MyVisitor extends lang1BaseVisitor<Integer> {
     }
 
     @Override
-    public Integer visitBaexp(lang1Parser.BaexpContext ctx) {
+    public Integer visitBaexp(langParser.BaexpContext ctx) {
         if (ctx.TYPE_PLUS() != null) {
             Integer left = visit(ctx.baexp()); // Avalia o lado esquerdo
             Integer right = visit(ctx.opexp()); // Avalia o lado direito
@@ -76,7 +76,7 @@ public class MyVisitor extends lang1BaseVisitor<Integer> {
     }
 
     @Override
-    public Integer visitOpexp(lang1Parser.OpexpContext ctx) {
+    public Integer visitOpexp(langParser.OpexpContext ctx) {
         if (ctx.TYPE_ASTERISK() != null) {
             Integer left = visit(ctx.opexp());
             Integer right = visit(ctx.dexp());
@@ -106,7 +106,7 @@ public class MyVisitor extends lang1BaseVisitor<Integer> {
     }
 
     @Override
-    public Integer visitDexp(lang1Parser.DexpContext ctx) {
+    public Integer visitDexp(langParser.DexpContext ctx) {
         if (ctx.INT() != null) {
             return Integer.parseInt(ctx.INT().getText());
         } else if (ctx.TYPE_TRUE() != null) {
