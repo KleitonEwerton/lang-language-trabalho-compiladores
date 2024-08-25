@@ -43,13 +43,77 @@ public class InterpretVisitor extends Visitor {
         }
     }
 
+    public void visit(Sub sub) {
+        sub.getLeft().accept(this);
+        // Guarda o resultado da subárvore esquerda
+        Object left = operands.pop();
+
+        // Visita a subárvore direita
+        sub.getRight().accept(this);
+        // Guarda o resultado da subárvore direita
+        Object right = operands.pop();
+
+        // Supondo que left e right sejam números (por exemplo, inteiros)
+        if (left instanceof Integer && right instanceof Integer) {
+            int result = (Integer) left - (Integer) right;
+            // Armazena o resultado na pilha de operandos
+            operands.push(result);
+        } else {
+            // Tratamento de erro ou outras operações, se necessário
+            throw new RuntimeException("Operação Sub com operandos incompatíveis");
+        }
+    }
+
+    public void visit(Mul mul) {
+        mul.getLeft().accept(this);
+        // Guarda o resultado da subárvore esquerda
+        Object left = operands.pop();
+
+        // Visita a subárvore direita
+        mul.getRight().accept(this);
+        // Guarda o resultado da subárvore direita
+        Object right = operands.pop();
+
+        // Supondo que left e right sejam números (por exemplo, inteiros)
+        if (left instanceof Integer && right instanceof Integer) {
+            int result = (Integer) left * (Integer) right;
+            // Armazena o resultado na pilha de operandos
+            operands.push(result);
+        } else {
+            // Tratamento de erro ou outras operações, se necessário
+            throw new RuntimeException("Operação Mul com operandos incompatíveis");
+        }
+    }
+
+    public void visit(Div div) {
+        div.getLeft().accept(this);
+        // Guarda o resultado da subárvore esquerda
+        Object left = operands.pop();
+
+        // Visita a subárvore direita
+        div.getRight().accept(this);
+        // Guarda o resultado da subárvore direita
+        Object right = operands.pop();
+
+        // Supondo que left e right sejam números (por exemplo, inteiros)
+        if (left instanceof Integer && right instanceof Integer) {
+            int result = (Integer) left / (Integer) right;
+            // Armazena o resultado na pilha de operandos
+            operands.push(result);
+        } else {
+            // Tratamento de erro ou outras operações, se necessário
+            throw new RuntimeException("Operação Mul com operandos incompatíveis");
+        }
+    }
+
     @Override
     public void visit(Param param) {
         // Implementação do método visit para Param
         // Aqui você pode definir o comportamento específico ao visitar um nó de Param
         // Por exemplo, talvez você queira armazenar ou processar o parâmetro
         String paramName = param.toString();
-        // Supondo que você tenha uma lógica para trabalhar com parâmetros, pode usar o env
+        // Supondo que você tenha uma lógica para trabalhar com parâmetros, pode usar o
+        // env
         Object paramValue = env.peek().get(paramName);
         operands.push(paramValue);
     }
@@ -57,7 +121,8 @@ public class InterpretVisitor extends Visitor {
     @Override
     public void visit(Cmd cmd) {
         // Implementação do método visit para Cmd
-        // Dependendo da lógica de interpretação, você pode definir o comportamento desejado aqui
+        // Dependendo da lógica de interpretação, você pode definir o comportamento
+        // desejado aqui
         // Por exemplo, você pode decidir como tratar comandos genéricos.
         // Este é um ponto de extensão, caso existam subclasses específicas de Cmd.
         // Por enquanto, vamos apenas imprimir ou tratar de forma genérica.
@@ -71,8 +136,7 @@ public class InterpretVisitor extends Visitor {
         // Exemplo: Adicionar a função ao mapa de funções
         funcs.put(func.getId(), func);
 
-        
-        
         // Se necessário, processar o tipo de retorno ou outros detalhes
     }
+
 }

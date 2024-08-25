@@ -87,7 +87,7 @@ public class MyVisitor extends langBaseVisitor<Node> {
 
         func.setAdditionalTypes(additionalTypes);
         func.setCommands(commands);
-        
+
         System.out.println(func.toString());
         return func;
     }
@@ -232,19 +232,27 @@ public class MyVisitor extends langBaseVisitor<Node> {
 
     @Override
     public Node visitBaexpCexpr(langParser.BaexpCexprContext ctx) {
-        // Implementação para visitBaexpCexpr
+
         return super.visitBaexpCexpr(ctx);
     }
 
     @Override
     public Node visitAddBaexp(langParser.AddBaexpContext ctx) {
-        return null;
+
+        Expr left = (Expr) visit(ctx.baexp());
+        Expr right = (Expr) visit(ctx.opexp());
+        System.out.println("Visitando AddBaexp: " + left + " + " + right);
+
+        return new Add(ctx.start.getLine(), ctx.start.getCharPositionInLine(), left, right);
     }
 
     @Override
     public Node visitSubBaexp(langParser.SubBaexpContext ctx) {
-        // Implementação para visitSubBaexp
-        return null;
+
+        Expr left = (Expr) visit(ctx.baexp());
+        Expr right = (Expr) visit(ctx.opexp());
+
+        return new Sub(ctx.start.getLine(), ctx.start.getCharPositionInLine(), left, right);
     }
 
     @Override
@@ -255,14 +263,19 @@ public class MyVisitor extends langBaseVisitor<Node> {
 
     @Override
     public Node visitMulOpexp(langParser.MulOpexpContext ctx) {
-        // Implementação para visitMulOpexp
-        return null;
+
+        Expr left = (Expr) visit(ctx.opexp());
+        Expr right = (Expr) visit(ctx.opexp());
+
+        return new Mul(ctx.start.getLine(), ctx.start.getCharPositionInLine(), left, right);
     }
 
     @Override
     public Node visitDivOpexp(langParser.DivOpexpContext ctx) {
-        // Implementação para visitDivOpexp
-        return null;
+        Expr left = (Expr) visit(ctx.opexp());
+        Expr right = (Expr) visit(ctx.opexp());
+
+        return new Div(ctx.start.getLine(), ctx.start.getCharPositionInLine(), left, right);
     }
 
     @Override

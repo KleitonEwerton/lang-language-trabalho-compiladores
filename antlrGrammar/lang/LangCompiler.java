@@ -1,10 +1,10 @@
 package lang;
+
 import java.io.*;
 
 import lang.ast.*;
 import lang.parser.*;
 import lang.visitors.*;
-
 
 public class LangCompiler {
     // Recupera o nome base (sem extensão) de um arquivo.
@@ -39,7 +39,7 @@ public class LangCompiler {
             }
             if (args[0].equals("-byt")) {
                 System.out.println("Executando bateria de testes interpretador:");
-                TestVisitor tv = new TestVisitor(interpreterAdaptor);                
+                TestVisitor tv = new TestVisitor(interpreterAdaptor);
                 return;
             }
             if (args[0].equals("-bsm")) {
@@ -57,10 +57,12 @@ public class LangCompiler {
                 System.err.println("Aborting due to syntax error(s)");
                 System.exit(1);
             } else if (args[0].equals("-i")) {
+
                 InterpretVisitor interpretVisitor = new InterpretVisitor();
                 Node nodeResult = (Node) result;
                 nodeResult.accept(interpretVisitor);
-                //((InterpreterVisitor)iv).printEnv();
+
+                // ((InterpreterVisitor)iv).printEnv();
             } else if (args[0].equals("-ii")) {
                 // iv = new InteractiveInterpreterVisitor();
                 // result.accept(iv);
