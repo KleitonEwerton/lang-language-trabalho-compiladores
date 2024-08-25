@@ -6,8 +6,8 @@ compile:
 	javac -cp .:antlr-4.8-complete.jar lang/parser/*.java lang/ast/*.java lang/*.java lang/visitors/*.java
 
 run:
-	java -cp .:antlr-4.8-complete.jar lang.LangCompiler -bs lang/parser/input.txt
-	java -cp .:antlr-4.8-complete.jar lang.LangCompiler -i lang/parser/input.txt
+	java -cp .:antlr-4.8-complete.jar lang.LangCompiler -bs lang/meu_teste/input.txt
+	java -cp .:antlr-4.8-complete.jar lang.LangCompiler -byt lang/meu_teste/input.txt
 	
 clean:
 	rm -f lang/parser/*.class \

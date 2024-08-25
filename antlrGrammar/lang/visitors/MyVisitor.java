@@ -30,12 +30,14 @@ public class MyVisitor extends langBaseVisitor<Node> {
     @Override
     public Node visitDataName(langParser.DataNameContext ctx) {
         // Implementação para visitDataName
+        System.out.println("Aqui - Data");
         return null;
     }
 
     @Override
     public Node visitDeclName(langParser.DeclNameContext ctx) {
         // Implementação para visitDeclName
+        System.out.println("Aqui - Decl");
         return null;
     }
 

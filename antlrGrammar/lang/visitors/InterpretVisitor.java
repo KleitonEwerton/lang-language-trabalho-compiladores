@@ -66,6 +66,7 @@ public class InterpretVisitor extends Visitor {
 
     @Override
     public void visit(Func func) {
+        System.out.println("Aqui - Fun");
         // Implementação do método visit para Func
         // Exemplo: Adicionar a função ao mapa de funções
         funcs.put(func.getId(), func);

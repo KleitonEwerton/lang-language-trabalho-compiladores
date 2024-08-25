@@ -2,12 +2,8 @@ package lang;
 import java.io.*;
 
 import lang.ast.*;
-import lang.parser.ParseAdaptor;
-import lang.parser.ParserSyntactic;
-import lang.parser.TestParser;
-import lang.visitors.InterpretVisitor;
-import lang.visitors.InterpreterAdaptor;
-import lang.visitors.InterpreterSyntactic;
+import lang.parser.*;
+import lang.visitors.*;
 
 
 public class LangCompiler {
@@ -42,8 +38,8 @@ public class LangCompiler {
                 return;
             }
             if (args[0].equals("-byt")) {
-                System.out.println("Executando bateria de testes sintáticos:");
-                // TestParser tp = new TestParser(langParser); ;
+                System.out.println("Executando bateria de testes interpretador:");
+                TestVisitor tv = new TestVisitor(interpreterAdaptor);                
                 return;
             }
             if (args[0].equals("-bsm")) {
