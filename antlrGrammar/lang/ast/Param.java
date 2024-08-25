@@ -1,5 +1,6 @@
 package lang.ast;
 
+import java.util.ArrayList;
 /*
  * Esta classe representa um comando de Impressão.
  * Expr
@@ -24,6 +25,12 @@ public class Param extends Node {
             super(line, column);
             this.id = id;
             this.type = type;
+      }
+
+      public Param(int line, int column) {
+            super(line, column);
+            this.id = new ArrayList<String>();
+            this.type = new ArrayList<Type>();
       }
 
       public List<String> getId() {

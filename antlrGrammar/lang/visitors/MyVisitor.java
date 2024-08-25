@@ -1,7 +1,10 @@
 package lang.visitors;
 
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import lang.parser.*;
 import lang.ast.*;
@@ -22,29 +25,71 @@ public class MyVisitor extends langBaseVisitor<Node> {
 
     @Override
     public Node visitFunDef(langParser.FunDefContext ctx) {
-        // Implementação para visitFunDef
-        System.out.println("Aqui - Fun");
-        return null;
+        return visitChildren(ctx);
     }
 
     @Override
     public Node visitDataName(langParser.DataNameContext ctx) {
         // Implementação para visitDataName
-        System.out.println("Aqui - Data");
         return null;
     }
 
     @Override
     public Node visitDeclName(langParser.DeclNameContext ctx) {
         // Implementação para visitDeclName
-        System.out.println("Aqui - Decl");
         return null;
     }
 
     @Override
     public Node visitFunName(langParser.FunNameContext ctx) {
-        // Implementação para visitFunName
-        return null;
+
+        // Acessa o ID através de getChild
+        String id = ctx.getChild(0).getText(); // Ajuste o índice com base na estrutura real
+
+        // Obtém a linha e a coluna da função
+        int line = ctx.start.getLine();
+        int col = ctx.start.getCharPositionInLine();
+
+        // Inicializa os parâmetros e comandos
+        Param params = null;
+        List<Cmd> commands = new ArrayList<>();
+        List<Type> additionalTypes = new ArrayList<>();
+
+        // Verifica se há parâmetros e os extrai, se existirem
+        if (ctx.params() != null) {
+            // Adapta o código para extrair os parâmetros
+            // Assumindo que você tenha um método que transforma o contexto em um objeto
+            // Param
+            params = (Param) visit(ctx.params());
+        }
+
+        // Verifica se há tipos adicionais e os extrai, se existirem
+        if (ctx.type() != null) {
+            for (int i = 1; i < ctx.type().size(); i++) {
+                additionalTypes.add((Type) visit(ctx.type(i)));
+            }
+        }
+
+        // Extrai e cria a lista de comandos
+        if (ctx.cmd() != null) {
+            for (langParser.CmdContext cmdCtx : ctx.cmd()) {
+                commands.add((Cmd) visit(cmdCtx));
+            }
+        }
+
+        // Cria a nova instância de Func com base nos dados extraídos
+        Func func;
+        if (params != null) {
+            func = new Func(line, col, id, params);
+        } else {
+            func = new Func(line, col, id);
+        }
+
+        func.setAdditionalTypes(additionalTypes);
+        func.setCommands(commands);
+        
+        System.out.println(func.toString());
+        return func;
     }
 
     @Override
@@ -52,20 +97,18 @@ public class MyVisitor extends langBaseVisitor<Node> {
         // Implementação para visitParamsName
         return null;
     }
-    
+
     @Override
     public Node visitTypeName(langParser.TypeNameContext ctx) {
         // Implementação para visitTypeName
         return null;
     }
 
-    
     @Override
     public Node visitBtypeName(langParser.BtypeNameContext ctx) {
         // Implementação para visitBtypeName
         return null;
     }
-
 
     @Override
     public Node visitIntType(langParser.IntTypeContext ctx) {
@@ -175,13 +218,11 @@ public class MyVisitor extends langBaseVisitor<Node> {
         return null;
     }
 
-
     @Override
     public Node visitEqualsCexpr(langParser.EqualsCexprContext ctx) {
         // Implementação para visitEqualsCexpr
         return null;
     }
-
 
     @Override
     public Node visitNotEqualsCexpr(langParser.NotEqualsCexprContext ctx) {
@@ -189,14 +230,11 @@ public class MyVisitor extends langBaseVisitor<Node> {
         return null;
     }
 
-
     @Override
     public Node visitBaexpCexpr(langParser.BaexpCexprContext ctx) {
         // Implementação para visitBaexpCexpr
         return super.visitBaexpCexpr(ctx);
     }
-
-
 
     @Override
     public Node visitAddBaexp(langParser.AddBaexpContext ctx) {
@@ -215,36 +253,29 @@ public class MyVisitor extends langBaseVisitor<Node> {
         return super.visitOpexpBaexp(ctx);
     }
 
-
-    
     @Override
     public Node visitMulOpexp(langParser.MulOpexpContext ctx) {
         // Implementação para visitMulOpexp
         return null;
     }
 
-    
     @Override
     public Node visitDivOpexp(langParser.DivOpexpContext ctx) {
         // Implementação para visitDivOpexp
         return null;
     }
 
-    
     @Override
     public Node visitModOpexp(langParser.ModOpexpContext ctx) {
         // Implementação para visitModOpexp
         return null;
     }
 
-
     @Override
     public Node visitDexpOpexp(langParser.DexpOpexpContext ctx) {
         // Implementação para visitDexpOpexp
         return super.visitDexpOpexp(ctx);
     }
-
-
 
     @Override
     public Node visitNotDexp(langParser.NotDexpContext ctx) {
@@ -300,7 +331,6 @@ public class MyVisitor extends langBaseVisitor<Node> {
         return super.visitRexpDexp(ctx);
     }
 
-
     @Override
     public Node visitLvalueRexp(langParser.LvalueRexpContext ctx) {
         // Implementação para visitLvalueRexp
@@ -342,7 +372,6 @@ public class MyVisitor extends langBaseVisitor<Node> {
         // Implementação para visitDotLvalue
         return null;
     }
-
 
     @Override
     public Node visitExpsName(langParser.ExpsNameContext ctx) {

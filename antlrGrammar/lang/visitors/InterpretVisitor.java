@@ -71,15 +71,7 @@ public class InterpretVisitor extends Visitor {
         // Exemplo: Adicionar a função ao mapa de funções
         funcs.put(func.getId(), func);
 
-        // Se necessário, visitar os parâmetros da função
-        for (Param param : func.getParams()) {
-            param.accept(this);
-        }
-
-        // Visitar os comandos dentro da função
-        for (Cmd cmd : func.getCommands()) {
-            cmd.accept(this);
-        }
+        
         
         // Se necessário, processar o tipo de retorno ou outros detalhes
     }
