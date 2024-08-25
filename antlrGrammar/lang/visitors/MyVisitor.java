@@ -14,6 +14,9 @@ public class MyVisitor extends langBaseVisitor<Node> {
     @Override
     public Node visitProgName(langParser.ProgNameContext ctx) {
         // Método visitChildren visita todos os filhos do nó prog
+
+        System.out.println("Visitando ProgName");
+
         return visitChildren(ctx);
     }
 
@@ -238,6 +241,8 @@ public class MyVisitor extends langBaseVisitor<Node> {
 
     @Override
     public Node visitAddBaexp(langParser.AddBaexpContext ctx) {
+
+        System.out.println("Visitando AddBaexp");
 
         Expr left = (Expr) visit(ctx.baexp());
         Expr right = (Expr) visit(ctx.opexp());

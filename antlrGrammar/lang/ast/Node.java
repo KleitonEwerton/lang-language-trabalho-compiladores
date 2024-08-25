@@ -4,26 +4,28 @@ import lang.ast.SuperNode;
 import lang.visitors.*;
 
 public class Node extends SuperNode implements Visitable {
-    
-    private int line,col;
 
-    public Node()
-    {
+    private int line, col;
+
+    public Node() {
         super();
     }
 
-    public Node(int l, int c){
+    public Node(int l, int c) {
         super();
         line = l;
         col = c;
-   }
+    }
 
-   
-   public int getLine(){ return line;}
+    public int getLine() {
+        return line;
+    }
 
-   public int getColumn(){ return col;}
+    public int getColumn() {
+        return col;
+    }
 
-   @Override
-   public void accept(Visitor v) {
-   }
+    @Override
+    public void accept(Visitor v) {
+    }
 }

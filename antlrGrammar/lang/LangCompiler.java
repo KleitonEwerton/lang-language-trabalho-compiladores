@@ -53,6 +53,7 @@ public class LangCompiler {
             }
 
             SuperNode result = langParser.parseFile(args[1]);
+
             if (result == null) {
                 System.err.println("Aborting due to syntax error(s)");
                 System.exit(1);
@@ -62,7 +63,6 @@ public class LangCompiler {
                 Node nodeResult = (Node) result;
                 nodeResult.accept(interpretVisitor);
 
-                // ((InterpreterVisitor)iv).printEnv();
             } else if (args[0].equals("-ii")) {
                 // iv = new InteractiveInterpreterVisitor();
                 // result.accept(iv);

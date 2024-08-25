@@ -23,6 +23,9 @@ public class InterpretVisitor extends Visitor {
     }
 
     public void visit(Add add) {
+
+        System.out.println("Aqui - Add");
+
         add.getLeft().accept(this);
         // Guarda o resultado da subárvore esquerda
         Object left = operands.pop();
@@ -136,7 +139,7 @@ public class InterpretVisitor extends Visitor {
         // Exemplo: Adicionar a função ao mapa de funções
         funcs.put(func.getId(), func);
 
-        // Se necessário, processar o tipo de retorno ou outros detalhes
+        // Aqui você pode definir o comportamento específico ao visitar um nó de Func
     }
 
 }
