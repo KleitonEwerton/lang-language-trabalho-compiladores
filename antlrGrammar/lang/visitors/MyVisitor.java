@@ -1,6 +1,8 @@
 package lang.visitors;
 
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
+import org.antlr.v4.runtime.tree.ParseTree;
+
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -97,116 +99,219 @@ public class MyVisitor extends langBaseVisitor<Node> {
 
     @Override
     public Node visitParamsName(langParser.ParamsNameContext ctx) {
-        // Implementação para visitParamsName
-        return null;
+        // Criação de listas para armazenar os IDs e tipos dos parâmetros
+        List<String> ids = new ArrayList<>();
+        List<Type> types = new ArrayList<>();
+
+        // Itera sobre cada par ID TYPE_SRO type presente no contexto
+        for (int i = 0; i < ctx.ID().size(); i++) {
+            // Adiciona o ID à lista de IDs
+            ids.add(ctx.ID(i).getText());
+
+            // Visita o nó type correspondente e adiciona à lista de tipos
+            Type type = (Type) visit(ctx.type(i));
+            types.add(type);
+        }
+        // Cria um novo objeto Param usando as listas de IDs e tipos
+        Param paramNode = new Param(ctx.start.getLine(), ctx.start.getCharPositionInLine(), ids, types);
+
+        // Retorna o objeto Param criado
+        return paramNode;
+
     }
 
     @Override
     public Node visitTypeName(langParser.TypeNameContext ctx) {
-        // Implementação para visitTypeName
-        return null;
+
+        // Primeiro, visite o nó filho `type` para obter o tipo base
+        Type baseType = (Type) visit(ctx.type());
+        // Crie um novo objeto ArrayType, passando o tipo base
+        ArrayType arrayType = new ArrayType(ctx.start.getLine(), ctx.start.getCharPositionInLine(), baseType);
+
+        // Retorne o objeto ArrayType criado
+        return arrayType;
     }
 
     @Override
     public Node visitBtypeName(langParser.BtypeNameContext ctx) {
-        // Implementação para visitBtypeName
-        return null;
+        return super.visitBtypeName(ctx);
     }
 
     @Override
     public Node visitIntType(langParser.IntTypeContext ctx) {
-        // Implementação para visitIntType
-        return null;
+        // Cria uma nova instância de IntType com as informações de linha e coluna
+        return new TyInt(ctx.start.getLine(), ctx.start.getCharPositionInLine());
     }
 
     @Override
     public Node visitCharType(langParser.CharTypeContext ctx) {
-        // Implementação para visitCharType
-        return null;
+        return new TyChar(ctx.start.getLine(), ctx.start.getCharPositionInLine());
     }
 
     @Override
     public Node visitBoolType(langParser.BoolTypeContext ctx) {
-        // Implementação para visitBoolType
-        return null;
+        return new TyBool(ctx.start.getLine(), ctx.start.getCharPositionInLine());
     }
 
     @Override
     public Node visitFloatType(langParser.FloatTypeContext ctx) {
-        // Implementação para visitFloatType
-        return null;
+        return new TyFloat(ctx.start.getLine(), ctx.start.getCharPositionInLine());
     }
 
     @Override
     public Node visitNameType(langParser.NameTypeContext ctx) {
-        // Implementação para visitNameType
-        return null;
+        // Extrai o nome do contexto e cria uma instância de NameType
+        String name = ctx.NAME().getText();
+        return new NameType(ctx.start.getLine(), ctx.start.getCharPositionInLine(), name);
     }
 
     @Override
     public Node visitIdType(langParser.IdTypeContext ctx) {
-        // Implementação para visitIdType
-        return null;
+        // Extrai o ID do contexto e cria uma instância de IdType
+        String id = ctx.ID().getText();
+        return new IdType(ctx.start.getLine(), ctx.start.getCharPositionInLine(), id);
     }
 
     @Override
     public Node visitBlockCmd(langParser.BlockCmdContext ctx) {
-        // Implementação para visitBlockCmd
-        return null;
+        // Cria uma lista para armazenar os comandos do bloco
+        List<Cmd> cmds = new ArrayList<>();
+
+        // Itera sobre cada comando filho no contexto
+        for (langParser.CmdContext cmdCtx : ctx.cmd()) {
+            // Visita o comando filho e adiciona o resultado à lista de comandos
+            Cmd cmd = (Cmd) visit(cmdCtx);
+            cmds.add(cmd);
+        }
+
+        // Cria e retorna uma nova instância de BlockCmd com a lista de comandos
+        return new BlockCmd(ctx.start.getLine(), ctx.start.getCharPositionInLine(), cmds);
     }
 
     @Override
     public Node visitIfCmd(langParser.IfCmdContext ctx) {
-        // Implementação para visitIfCmd
-        return null;
+        // Visitando a expressão condicional dentro do comando if
+        Expr condition = (Expr) visit(ctx.exp());
+
+        // Visitando o comando que será executado se a condição for verdadeira
+        Cmd cmd = (Cmd) visit(ctx.cmd());
+
+        // Criando uma nova instância de IfCmd com a expressão e o comando
+        return new If(ctx.start.getLine(), ctx.start.getCharPositionInLine(), condition, cmd);
     }
 
     @Override
     public Node visitIfElseCmd(langParser.IfElseCmdContext ctx) {
-        // Implementação para visitIfElseCmd
-        return null;
+        // Visitando a expressão condicional
+        Expr condition = (Expr) visit(ctx.exp());
+
+        // Visitando o comando a ser executado se a condição for verdadeira
+        Cmd trueCmd = (Cmd) visit(ctx.cmd(0));
+
+        // Visitando o comando a ser executado se a condição for falsa
+        Cmd falseCmd = (Cmd) visit(ctx.cmd(1));
+
+        // Criando uma nova instância de IfElseCmd com a expressão, comando verdadeiro e
+        // comando falso
+        return new IfElse(ctx.start.getLine(), ctx.start.getCharPositionInLine(), condition, trueCmd, falseCmd);
     }
 
     @Override
     public Node visitIterateCmd(langParser.IterateCmdContext ctx) {
-        // Implementação para visitIterateCmd
-        return null;
+        // Visitando a expressão condicional para o loop
+        Expr condition = (Expr) visit(ctx.exp());
+
+        // Visitando o comando a ser repetido enquanto a condição for verdadeira
+        Cmd cmd = (Cmd) visit(ctx.cmd());
+
+        // Criando uma nova instância de IterateCmd com a expressão e o corpo do loop
+        return new Iterate(ctx.start.getLine(), ctx.start.getCharPositionInLine(), condition, cmd);
     }
 
     @Override
     public Node visitReadCmd(langParser.ReadCmdContext ctx) {
-        // Implementação para visitReadCmd
-        return null;
+        // Visitando o lvalue onde o valor será armazenado
+        LValue lvalue = (LValue) visit(ctx.lvalue());
+
+        // Criando uma nova instância de ReadCmd com o lvalue
+        return new Read(ctx.start.getLine(), ctx.start.getCharPositionInLine(), lvalue);
+
     }
 
     @Override
     public Node visitPrintCmd(langParser.PrintCmdContext ctx) {
-        // Implementação para visitPrintCmd
-        return null;
+        // Visitando a expressão que será impressa
+        Expr expr = (Expr) visit(ctx.exp());
+
+        // Criando uma nova instância de PrintCmd com a expressão
+        return new Print(ctx.start.getLine(), ctx.start.getCharPositionInLine(), expr);
     }
 
     @Override
     public Node visitReturnCmd(langParser.ReturnCmdContext ctx) {
-        // Implementação para visitReturnCmd
-        return null;
+        // Criar uma lista para armazenar as expressões retornadas
+        List<Expr> exprs = new ArrayList<Expr>();
+
+        // Visitar a primeira expressão (obrigatória)
+        exprs.add((Expr) visit(ctx.exp(0)));
+
+        // Visitar as expressões adicionais (opcionais)
+        for (int i = 1; i < ctx.exp().size(); i++) {
+            exprs.add((Expr) visit(ctx.exp(i)));
+        }
+
+        // Criar uma nova instância de ReturnCmd com a lista de expressões
+        return new Return(ctx.start.getLine(), ctx.start.getCharPositionInLine(), exprs);
     }
 
     @Override
     public Node visitLvalueCmd(langParser.LvalueCmdContext ctx) {
-        // Implementação para visitLvalueCmd
-        return null;
+        // Visitar o lvalue
+        LValue lvalue = (LValue) visit(ctx.lvalue());
+
+        // Visitar a expressão que será atribuída
+        Expr expr = (Expr) visit(ctx.exp());
+
+        // Criar uma nova instância de LvalueCmd com o lvalue e a expressão
+        return new LvalueCmd(ctx.start.getLine(), ctx.start.getCharPositionInLine(), lvalue, expr);
     }
 
     @Override
     public Node visitFuncCallCmd(langParser.FuncCallCmdContext ctx) {
-        // Implementação para visitFuncCallCmd
-        return null;
+        // Obter o identificador da função
+        String id = ctx.ID().getText();
+
+        // Criar a lista de argumentos
+        List<Expr> exprs = new ArrayList<>();
+        for (ParseTree child : ctx.exps().children) {
+            if (child instanceof langParser.ExpContext) {
+                exprs.add((Expr) visit(child));
+            }
+        }
+
+        // Criar a lista de variáveis genéricas (se houver)
+        List<LValue> lvalues = null;
+        if (ctx.lvalue() != null) {
+            lvalues = new ArrayList<>();
+            for (langParser.LvalueContext lvalueCtx : ctx.lvalue()) {
+                lvalues.add((LValue) visit(lvalueCtx));
+            }
+        }
+
+        // Criar uma nova instância de FuncCallCmd com o identificador da função, a
+        // lista de argumentos e as variáveis genéricas
+        return new FuncCallCmd(ctx.start.getLine(), ctx.start.getCharPositionInLine(), id, exprs,
+                lvalues);
     }
 
     @Override
     public Node visitAndExp(langParser.AndExpContext ctx) {
-        // Implementação para visitAndExp
-        return null;
+        // Visitar as expressões à esquerda e à direita do operador &&
+        Expr left = (Expr) visit(ctx.exp(0));
+        Expr right = (Expr) visit(ctx.exp(1));
+
+        // Criar uma nova instância de AndExp com a linha e a coluna atuais
+        return new And(ctx.start.getLine(), ctx.start.getCharPositionInLine(), left, right);
     }
 
     @Override
@@ -217,25 +322,40 @@ public class MyVisitor extends langBaseVisitor<Node> {
 
     @Override
     public Node visitLessThanCexpr(langParser.LessThanCexprContext ctx) {
-        // Implementação para visitLessThanCexpr
-        return null;
+        // Visitar as expressões à esquerda e à direita do operador <
+        Expr left = (Expr) visit(ctx.baexp(0));
+        Expr right = (Expr) visit(ctx.baexp(1));
+
+        // Criar uma nova instância de LessThanCexpr com a linha e a coluna atuais
+        return new LessThan(ctx.start.getLine(), ctx.start.getCharPositionInLine(), left, right);
     }
 
     @Override
     public Node visitEqualsCexpr(langParser.EqualsCexprContext ctx) {
-        // Implementação para visitEqualsCexpr
-        return null;
+        // Visitar a expressão à esquerda (cexpr)
+        Expr left = (Expr) visit(ctx.cexpr());
+
+        // Visitar a expressão à direita (baexp)
+        Expr right = (Expr) visit(ctx.baexp());
+
+        // Criar uma nova instância de EqualsCexpr com a linha e a coluna atuais
+        return new Equals(ctx.start.getLine(), ctx.start.getCharPositionInLine(), left, right);
     }
 
     @Override
     public Node visitNotEqualsCexpr(langParser.NotEqualsCexprContext ctx) {
-        // Implementação para visitNotEqualsCexpr
-        return null;
+        // Visitar a expressão à esquerda (cexpr)
+        Expr left = (Expr) visit(ctx.cexpr());
+
+        // Visitar a expressão à direita (baexp)
+        Expr right = (Expr) visit(ctx.baexp());
+
+        // Criar uma nova instância de NotEqualsCexpr com a linha e a coluna atuais
+        return new NotEquals(ctx.start.getLine(), ctx.start.getCharPositionInLine(), left, right);
     }
 
     @Override
     public Node visitBaexpCexpr(langParser.BaexpCexprContext ctx) {
-
         return super.visitBaexpCexpr(ctx);
     }
 
@@ -253,7 +373,6 @@ public class MyVisitor extends langBaseVisitor<Node> {
 
     @Override
     public Node visitSubBaexp(langParser.SubBaexpContext ctx) {
-
         Expr left = (Expr) visit(ctx.baexp());
         Expr right = (Expr) visit(ctx.opexp());
 
@@ -262,13 +381,11 @@ public class MyVisitor extends langBaseVisitor<Node> {
 
     @Override
     public Node visitOpexpBaexp(langParser.OpexpBaexpContext ctx) {
-        // Implementação para visitOpexpBaexp
         return super.visitOpexpBaexp(ctx);
     }
 
     @Override
     public Node visitMulOpexp(langParser.MulOpexpContext ctx) {
-
         Expr left = (Expr) visit(ctx.opexp());
         Expr right = (Expr) visit(ctx.opexp());
 
@@ -285,8 +402,14 @@ public class MyVisitor extends langBaseVisitor<Node> {
 
     @Override
     public Node visitModOpexp(langParser.ModOpexpContext ctx) {
-        // Implementação para visitModOpexp
-        return null;
+        // Visitar a expressão à esquerda (opexp)
+        Expr left = (Expr) visit(ctx.opexp());
+
+        // Visitar a expressão à direita (dexp)
+        Expr right = (Expr) visit(ctx.dexp());
+
+        // Criar uma nova instância de ModOpexp com a linha e a coluna atuais
+        return new Mod(ctx.start.getLine(), ctx.start.getCharPositionInLine(), left, right);
     }
 
     @Override
@@ -297,50 +420,68 @@ public class MyVisitor extends langBaseVisitor<Node> {
 
     @Override
     public Node visitNotDexp(langParser.NotDexpContext ctx) {
-        // Implementação para visitNotDexp
-        return null;
+        // Visitar a expressão que está sendo negada
+        Expr expr = (Expr) visit(ctx.dexp());
+
+        // Criar uma nova instância de NotDexp com a linha e a coluna atuais
+        return new Not(ctx.start.getLine(), ctx.start.getCharPositionInLine(), expr);
     }
 
     @Override
     public Node visitNegDexp(langParser.NegDexpContext ctx) {
-        // Implementação para visitNegDexp
-        return null;
+        // Obtém a expressão que está sendo negada
+        Expr expr = (Expr) visit(ctx.dexp()); // Aqui você deve chamar o método visit() adequado para obter o nó da
+                                              // expressão
+
+        // Cria uma instância de NegDexp usando a expressão e as informações de linha e
+        // coluna
+        return new Neg(ctx.start.getLine(), ctx.start.getCharPositionInLine(), expr);
     }
 
     @Override
     public Node visitTrueDexp(langParser.TrueDexpContext ctx) {
-        // Implementação para visitTrueDexp
-        return null;
+        // Cria uma instância de TrueDexp usando as informações de linha e coluna
+        return new True(ctx.start.getLine(), ctx.start.getCharPositionInLine());
     }
 
     @Override
     public Node visitFalseDexp(langParser.FalseDexpContext ctx) {
-        // Implementação para visitFalseDexp
-        return null;
+        // Cria uma instância de TrueDexp usando as informações de linha e coluna
+        return new False(ctx.start.getLine(), ctx.start.getCharPositionInLine());
     }
 
     @Override
     public Node visitNullDexp(langParser.NullDexpContext ctx) {
-        // Implementação para visitNullDexp
-        return null;
+        // Cria uma instância de TrueDexp usando as informações de linha e coluna
+        return new Null(ctx.start.getLine(), ctx.start.getCharPositionInLine());
     }
 
     @Override
     public Node visitIntDexp(langParser.IntDexpContext ctx) {
-        // Implementação para visitIntDexp
-        return null;
+        // Obtém o valor do inteiro do contexto
+        int value = Integer.parseInt(ctx.INT().getText());
+
+        // Cria uma instância de IntDexp usando a linha e coluna do token
+        return new IntDexp(ctx.start.getLine(), ctx.start.getCharPositionInLine(), value);
     }
 
     @Override
     public Node visitFloatDexp(langParser.FloatDexpContext ctx) {
-        // Implementação para visitFloatDexp
-        return null;
+        // Obtém o valor do float do contexto
+        float value = Float.parseFloat(ctx.FLOAT().getText());
+
+        // Cria uma instância de FloatDexp usando a linha e coluna do token
+        return new FloatDexp(ctx.start.getLine(), ctx.start.getCharPositionInLine(), value);
     }
 
     @Override
     public Node visitCharDexp(langParser.CharDexpContext ctx) {
-        // Implementação para visitCharDexp
-        return null;
+        // Obtém o texto do token CHAR e remove as aspas simples ao redor
+        String charText = ctx.CHAR().getText();
+        char value = charText.charAt(1); // O caractere literal está no meio das aspas
+
+        // Cria uma instância de CharDexp usando a linha e coluna do token
+        return new CharDexp(ctx.start.getLine(), ctx.start.getCharPositionInLine(), value);
     }
 
     @Override
@@ -352,13 +493,17 @@ public class MyVisitor extends langBaseVisitor<Node> {
     @Override
     public Node visitLvalueRexp(langParser.LvalueRexpContext ctx) {
         // Implementação para visitLvalueRexp
-        return null;
+        return super.visitLvalueRexp(ctx);
     }
 
     @Override
     public Node visitParenRexp(langParser.ParenRexpContext ctx) {
-        // Implementação para visitParenRexp
-        return null;
+        // Obtém a expressão dentro dos parênteses
+        Expr expr = (Expr) visit(ctx.exp()); // A expressão dentro dos parênteses
+
+        // Cria uma instância de ParenRexp usando a linha e coluna do token de abertura
+        // dos parênteses
+        return new Paren(ctx.start.getLine(), ctx.start.getCharPositionInLine(), expr);
     }
 
     @Override
