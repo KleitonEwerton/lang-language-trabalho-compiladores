@@ -5,8 +5,11 @@ package lang.ast;
  * Expr + Expr
  */
  
-import java.util.HashMap; 
-import lang.ast.Visitor;
+import java.util.HashMap;
+
+import lang.visitors.*;
+import lang.ast.*;
+import lang.parser.*;
 
 public class Add extends BinOP {
 

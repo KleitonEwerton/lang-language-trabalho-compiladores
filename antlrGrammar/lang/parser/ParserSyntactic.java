@@ -6,6 +6,7 @@ import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.ParseTree;
 
 import lang.ast.*;
+import lang.visitors.MyVisitor;
 
 public class ParserSyntactic implements ParseAdaptor {
 
@@ -25,18 +26,10 @@ public class ParserSyntactic implements ParseAdaptor {
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         langParser parser = new langParser(tokens);
 
+
         // Parsing
         ParseTree tree = parser.prog(); // ou o nome da regra inicial
-
-        return new Node();
-
-        // Visitação
-
-        // MyVisitor visitor = new MyVisitor();
-        // SuperNode result = null;
-        // visitor.visit(tree);
-        // System.out.println("Result: " + result);
-
-        // return result; // Retorna o resultado da visitação
+        
+        return new Node(); // Retorna o resultado da visitação
     }
 }

@@ -4,8 +4,9 @@ package lang.ast;
  * Esta classe representa uma Operção binária.
  * Expr [opreação] Expr
  */
-import java.util.HashMap; 
-import lang.ast.Visitor;
+import java.util.HashMap;
+
+import lang.visitors.Visitor;
 
 public abstract class BinOP extends Expr {
       

@@ -3,14 +3,12 @@ generate:
 	
 
 compile:
-	javac -cp .:antlr-4.8-complete.jar lang/parser/*.java lang/ast/*.java *.java
+	javac -cp .:antlr-4.8-complete.jar lang/parser/*.java lang/ast/*.java lang/*.java lang/visitors/*.java
 
 run:
-	java -cp .:antlr-4.8-complete.jar LangCompiler -i input.txt
-
-testesSintaticos:
-	java -cp .:antlr-4.8-complete.jar LangCompiler -bs
-
+	java -cp .:antlr-4.8-complete.jar lang.LangCompiler -bs lang/parser/input.txt
+	java -cp .:antlr-4.8-complete.jar lang.LangCompiler -i lang/parser/input.txt
+	
 clean:
 	rm -f lang/parser/*.class \
 	lang/parser/*.tokens \
@@ -25,4 +23,5 @@ clean:
 	lang/parser/langLexer.interp \
 	lang/parser/langVisitor.java \
 	lang/ast/*.class \
-	*.class
+	lang/*.class \
+	lang/visitors/*.class
