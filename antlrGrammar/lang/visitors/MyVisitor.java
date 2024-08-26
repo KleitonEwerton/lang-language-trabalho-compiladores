@@ -68,9 +68,7 @@ public class MyVisitor extends langBaseVisitor<Node> {
 
         // Verifica se há parâmetros e os extrai, se existirem
         if (ctx.params() != null) {
-            // Adapta o código para extrair os parâmetros
-            // Assumindo que você tenha um método que transforma o contexto em um objeto
-            // Param
+
             params = (Param) visit(ctx.params());
         }
 
@@ -368,7 +366,7 @@ public class MyVisitor extends langBaseVisitor<Node> {
     @Override
     public Node visitAddBaexp(langParser.AddBaexpContext ctx) {
 
-        System.out.println("Visitando AddBaexp");
+        System.out.println("Visitando AddBaexp´visitor");
 
         Expr left = (Expr) visit(ctx.baexp());
         Expr right = (Expr) visit(ctx.opexp());

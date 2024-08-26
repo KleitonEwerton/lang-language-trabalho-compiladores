@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Stack;
 
 import lang.ast.*;
-import lang.visitors.*;
 
 public class InterpretVisitor extends Visitor {
 
@@ -12,6 +11,7 @@ public class InterpretVisitor extends Visitor {
     private HashMap<String, Func> funcs;
     private Stack<Object> operands;
     private boolean retMode, debug;
+    Node main;
 
     public InterpretVisitor() {
         env = new Stack<HashMap<String, Object>>();
@@ -20,6 +20,16 @@ public class InterpretVisitor extends Visitor {
         operands = new Stack<Object>();
         retMode = false;
         debug = false;
+    }
+
+    @Override
+    public void visit(Prog prog) {
+        System.out.println("Visit Prog in InterpretVisitor");
+
+        // for (Node cmd : prog.getDefs()) {
+        // cmd.accept(this);
+        // }
+        operands.forEach(System.out::println);
     }
 
     public void visit(Add add) {
@@ -39,7 +49,9 @@ public class InterpretVisitor extends Visitor {
         if (left instanceof Integer && right instanceof Integer) {
             int result = (Integer) left + (Integer) right;
             // Armazena o resultado na pilha de operandos
+
             operands.push(result);
+
         } else {
             // Tratamento de erro ou outras operações, se necessário
             throw new RuntimeException("Operação Add com operandos incompatíveis");
@@ -144,266 +156,218 @@ public class InterpretVisitor extends Visitor {
 
     @Override
     public void visit(And and) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visit'");
+        System.out.println("Visit And in InterpretVisitor");
     }
 
     @Override
     public void visit(ArrayType arrayType) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visit'");
+        System.out.println("Visit ArrayType in InterpretVisitor");
     }
 
     @Override
     public void visit(BinOP binOP) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visit'");
+
+        System.out.println("Visit BinOP in InterpretVisitor");
     }
 
     @Override
     public void visit(BlockCmd blockCmd) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visit'");
+        System.out.println("Visit BlockCmd in InterpretVisitor");
     }
 
     @Override
     public void visit(CharDexp charDexp) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visit'");
+        System.out.println("Visit CharDexp in InterpretVisitor");
     }
 
     @Override
     public void visit(Equals equals) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visit'");
+        System.out.println("Visit Equals in InterpretVisitor");
     }
 
     @Override
     public void visit(Expr expr) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visit'");
+        System.out.println("Visit Expr in InterpretVisitor");
     }
 
     @Override
     public void visit(False false1) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visit'");
+        System.out.println("Visit False in InterpretVisitor");
     }
 
     @Override
     public void visit(FloatDexp floatDexp) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visit'");
+        System.out.println("Visit FloatDexp in InterpretVisitor");
     }
 
     @Override
     public void visit(FuncCallCmd funcCallCmd) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visit'");
+        System.out.println("Visit FuncCallCmd in InterpretVisitor");
     }
 
     @Override
     public void visit(IdType idType) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visit'");
+        System.out.println("Visit IdType in InterpretVisitor");
     }
 
     @Override
     public void visit(If if1) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visit'");
+        System.out.println("Visit If in InterpretVisitor");
     }
 
     @Override
     public void visit(IfElse ifElse) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visit'");
+        System.out.println("Visit IfElse in InterpretVisitor");
     }
 
     @Override
     public void visit(IntDexp intDexp) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visit'");
+        System.out.println("Visit IntDexp in InterpretVisitor");
     }
 
     @Override
     public void visit(Iterate iterate) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visit'");
+        System.out.println("Visit Iterate in InterpretVisitor");
     }
 
     @Override
     public void visit(LessThan lessThan) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visit'");
+        System.out.println("Visit LessThan in InterpretVisitor");
     }
 
     @Override
     public void visit(LValue lValue) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visit'");
+        System.out.println("Visit LValue in InterpretVisitor");
     }
 
     @Override
     public void visit(LvalueCmd lvalueCmd) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visit'");
+        System.out.println("Visit LvalueCmd in InterpretVisitor");
     }
 
     @Override
     public void visit(Mod mod) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visit'");
+        System.out.println("Visit Mod in InterpretVisitor");
     }
 
     @Override
     public void visit(NameType nameType) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visit'");
+        System.out.println("Visit NameType in InterpretVisitor");
     }
 
     @Override
     public void visit(Neg neg) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visit'");
+        System.out.println("Visit Neg in InterpretVisitor");
     }
 
     @Override
     public void visit(Not not) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visit'");
+        System.out.println("Visit Not in InterpretVisitor");
     }
 
     @Override
     public void visit(NotEquals notEquals) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visit'");
+        System.out.println("Visit NotEquals in InterpretVisitor");
     }
 
     @Override
     public void visit(Null null1) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visit'");
+        System.out.println("Visit Null in InterpretVisitor");
     }
 
     @Override
     public void visit(Paren paren) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visit'");
+        System.out.println("Visit Paren in InterpretVisitor");
     }
 
     @Override
     public void visit(Print print) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visit'");
+        System.out.println("Visit Print in InterpretVisitor");
     }
 
     @Override
     public void visit(Read read) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visit'");
+        System.out.println("Visit Read in InterpretVisitor");
     }
 
     @Override
     public void visit(Return return1) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visit'");
+        System.out.println("Visit Return in InterpretVisitor");
     }
 
     @Override
     public void visit(True true1) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visit'");
+        System.out.println("Visit True in InterpretVisitor");
     }
 
     @Override
     public void visit(TyBool tyBool) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visit'");
+        System.out.println("Visit TyBool in InterpretVisitor");
     }
 
     @Override
     public void visit(TyChar tyChar) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visit'");
+        System.out.println("Visit TyChar in InterpretVisitor");
     }
 
     @Override
     public void visit(TyFloat tyFloat) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visit'");
+        System.out.println("Visit TyFloat in InterpretVisitor");
     }
 
     @Override
     public void visit(TyInt tyInt) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visit'");
+        System.out.println("Visit TyInt in InterpretVisitor");
     }
 
     @Override
     public void visit(Type type) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visit'");
+        System.out.println("Visit Type in InterpretVisitor");
     }
 
     @Override
     public void visit(ArrayLValue arrayLValue) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visit'");
+        System.out.println("Visit ArrayLValue in InterpretVisitor");
     }
 
     @Override
     public void visit(Data data) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visit'");
+        System.out.println("Visit Data in InterpretVisitor");
     }
 
     @Override
     public void visit(Decl decl) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visit'");
+        System.out.println("Visit Decl in InterpretVisitor");
     }
 
     @Override
     public void visit(Dot dot) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visit'");
+        System.out.println("Visit Dot in InterpretVisitor");
     }
 
     @Override
     public void visit(Exprs exprs) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visit'");
+        System.out.println("Visit Exprs in InterpretVisitor");
     }
 
     @Override
     public void visit(FuncCall funcCall) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visit'");
+        System.out.println("Visit FuncCall in InterpretVisitor");
     }
 
     @Override
     public void visit(IdLValue idLValue) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visit'");
+        System.out.println("Visit IdLValue in InterpretVisitor");
     }
 
     @Override
     public void visit(NewExp newExp) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visit'");
-    }
-
-    @Override
-    public void visit(Prog prog) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visit'");
+        System.out.println("Visit NewExp in InterpretVisitor");
     }
 
     @Override
     public void visit(FuncArgs funcArgs) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visit'");
+        System.out.println("Visit FuncArgs in InterpretVisitor");
     }
 
 }
