@@ -3,7 +3,6 @@ package lang.visitors;
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 import org.antlr.v4.runtime.tree.ParseTree;
 
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,33 +15,40 @@ public class MyVisitor extends langBaseVisitor<Node> {
     @Override
     public Node visitProgName(langParser.ProgNameContext ctx) {
         // Método visitChildren visita todos os filhos do nó prog
-
         System.out.println("Visitando ProgName");
 
-        return visitChildren(ctx);
+        List<Node> defs = new ArrayList<>();
+        for (langParser.DefContext defCtx : ctx.def()) {
+            defs.add(visit(defCtx));
+        }
+        return new Prog(ctx.start.getLine(), ctx.start.getCharPositionInLine(), defs);
     }
 
     @Override
     public Node visitDataDef(langParser.DataDefContext ctx) {
-        // Implementação para visitDataDef
-        return null;
+        return visit(ctx.data());
     }
 
     @Override
     public Node visitFunDef(langParser.FunDefContext ctx) {
-        return visitChildren(ctx);
+        return visit(ctx.fun());
     }
 
     @Override
     public Node visitDataName(langParser.DataNameContext ctx) {
-        // Implementação para visitDataName
-        return null;
+        String name = ctx.NAME().getText();
+        List<Decl> decls = new ArrayList<>();
+        for (langParser.DeclContext declCtx : ctx.decl()) {
+            decls.add((Decl) visit(declCtx));
+        }
+        return new Data(ctx.start.getLine(), ctx.start.getCharPositionInLine(), name, decls);
     }
 
     @Override
     public Node visitDeclName(langParser.DeclNameContext ctx) {
-        // Implementação para visitDeclName
-        return null;
+        String id = ctx.ID().getText();
+        Type type = (Type) visit(ctx.type());
+        return new Decl(ctx.start.getLine(), ctx.start.getCharPositionInLine(), id, type);
     }
 
     @Override
@@ -508,38 +514,101 @@ public class MyVisitor extends langBaseVisitor<Node> {
 
     @Override
     public Node visitNewRexp(langParser.NewRexpContext ctx) {
-        // Implementação para visitNewRexp
-        return null;
+        // Obtendo o tipo a partir do contexto
+        Type type = (Type) visit(ctx.type());
+
+        // Verificando se há uma expressão de tamanho
+        Expr expr = null;
+        if (ctx.exp() != null) {
+            expr = (Expr) visit(ctx.exp());
+        }
+
+        // Criando uma nova instância de NewExp
+        return new NewExp(ctx.start.getLine(), ctx.start.getCharPositionInLine(), type, expr);
     }
 
     @Override
     public Node visitFuncCallRexp(langParser.FuncCallRexpContext ctx) {
-        // Implementação para visitFuncCallRexp
-        return null;
+        // Obtendo o nome da função
+        String id = ctx.ID().getText();
+
+        // Obtendo os argumentos (se houver)
+        List<Expr> arguments = new ArrayList<>();
+        if (ctx.exps() != null) {
+            // Obtendo o contexto ExpsContext e iterando sobre as expressões
+            for (ParseTree child : ctx.exps().children) {
+                if (child instanceof langParser.ExpContext) {
+                    langParser.ExpContext expCtx = (langParser.ExpContext) child;
+                    Expr argument = (Expr) visit(expCtx);
+                    arguments.add(argument);
+                }
+            }
+        }
+
+        // Obtendo o tamanho do array
+        Expr expr = (Expr) visit(ctx.exp());
+
+        // Criando e retornando uma nova instância de FuncCallExp
+        return new FuncCall(ctx.start.getLine(), ctx.start.getCharPositionInLine(), id, arguments,
+                expr);
+
     }
 
     @Override
     public Node visitIdLvalue(langParser.IdLvalueContext ctx) {
-        // Implementação para visitIdLvalue
-        return null;
+        // Obtendo o identificador do contexto
+        String id = ctx.ID().getText();
+
+        // Retornando o nó criado
+        return new IdLValue(ctx.start.getLine(), ctx.start.getCharPositionInLine(), id);
     }
 
     @Override
     public Node visitArrayLvalue(langParser.ArrayLvalueContext ctx) {
-        // Implementação para visitArrayLvalue
-        return null;
+        // Visitando o lvalue base (parte antes do [])
+        LValue lValue = (LValue) visit(ctx.lvalue());
+
+        // Visitando a expressão dentro dos colchetes (índice do array)
+        Expr expr = (Expr) visit(ctx.exp());
+
+        // Retornando o nó criado
+        return new ArrayLValue(ctx.start.getLine(), ctx.start.getCharPositionInLine(), lValue, expr);
     }
 
     @Override
     public Node visitDotLvalue(langParser.DotLvalueContext ctx) {
-        // Implementação para visitDotLvalue
-        return null;
+        // Visitando o lvalue base (parte antes do .)
+        LValue lValue = (LValue) visit(ctx.lvalue());
+
+        // Obtendo o nome do campo (ID após o .)
+        String name = ctx.ID().getText();
+
+        // Retornando o nó criado
+        return new Dot(ctx.start.getLine(), ctx.start.getCharPositionInLine(), lValue, name);
     }
 
     @Override
     public Node visitExpsName(langParser.ExpsNameContext ctx) {
-        // Implementação para visitArrayLvalue
-        return null;
+        // Obtendo a linha e a coluna para o nó principal
+        int line = ctx.start.getLine();
+        int column = ctx.start.getCharPositionInLine();
+
+        // Criando uma lista para armazenar as expressões
+        List<Expr> exprList = new ArrayList<>();
+
+        // Adicionando a primeira expressão
+        exprList.add((Expr) visit(ctx.exp(0)));
+
+        // Adicionando as expressões subsequentes
+        for (int i = 1; i < ctx.exp().size(); i++) {
+            exprList.add((Expr) visit(ctx.exp(i)));
+        }
+
+        // Criando uma instância de Exps com a lista de expressões
+        Exprs exprs = new Exprs(line, column, exprList);
+
+        // Retornando o nó criado
+        return exprs;
     }
 
 }

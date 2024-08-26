@@ -10,6 +10,8 @@ public abstract class Visitor {
     
     public abstract void visit(And and);
 
+    public abstract void visit(ArrayLValue arrayLValue);
+
     public abstract void visit(ArrayType arrayType);
 
     public abstract void visit(BinOP binOP);
@@ -20,11 +22,19 @@ public abstract class Visitor {
 
     public abstract void visit(Cmd cmd);
 
+    public abstract void visit(Data data);
+
+    public abstract void visit(Decl decl);
+
     public abstract void visit(Div div);
+
+    public abstract void visit(Dot dot);
 
     public abstract void visit(Equals equals);
 
     public abstract void visit(Expr expr);
+
+    public abstract void visit(Exprs exprs);
 
     public abstract void visit(False false1);
 
@@ -32,7 +42,13 @@ public abstract class Visitor {
 
     public abstract void visit(Func func);
 
+    public abstract void visit(FuncArgs funcArgs);
+
+    public abstract void visit(FuncCall funcCall);
+
     public abstract void visit(FuncCallCmd funcCallCmd);
+
+    public abstract void visit(IdLValue idLValue);
 
     public abstract void visit(IdType idType);
 
@@ -58,6 +74,8 @@ public abstract class Visitor {
 
     public abstract void visit(Neg neg);
 
+    public abstract void visit(NewExp newExp);
+
     public abstract void visit(Not not);
 
     public abstract void visit(NotEquals notEquals);
@@ -69,6 +87,8 @@ public abstract class Visitor {
     public abstract void visit(Paren paren);
 
     public abstract void visit(Print print);
+
+    public abstract void visit(Prog prog);
 
     public abstract void visit(Read read);
 
