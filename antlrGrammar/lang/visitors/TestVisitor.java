@@ -3,11 +3,10 @@ package lang.visitors;
 import java.io.File;
 import lang.visitors.*;
 
-
 public class TestVisitor {
     private InterpreterAdaptor adp;
-    //private String okSrcs = "testes/sintaxe/certo/";
-    private String okSrcs = "lang/meu_teste/";
+    private String okSrcs = "testes/sintaxe/certo/";
+    // private String okSrcs = "lang/meu_teste/";
     private File f;
 
     public TestVisitor(InterpreterAdaptor adp) {

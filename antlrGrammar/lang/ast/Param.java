@@ -50,6 +50,15 @@ public class Param extends Node {
       }
 
       @Override
+      public String toString() {
+            String str = "";
+            for (int i = 0; i < id.size(); i++) {
+                  str += id.get(i) + " " + type.get(i) + " ";
+            }
+            return str;
+      }
+
+      @Override
       public void accept(Visitor v) {
             v.visit(this);
       }

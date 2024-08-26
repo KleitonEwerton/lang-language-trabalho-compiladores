@@ -31,6 +31,7 @@ public class MyVisitor extends langBaseVisitor<Node> {
 
     @Override
     public Node visitFunDef(langParser.FunDefContext ctx) {
+        System.out.println("Visitando FunDef visitor");
         return visit(ctx.fun());
     }
 
@@ -38,6 +39,7 @@ public class MyVisitor extends langBaseVisitor<Node> {
     public Node visitDataName(langParser.DataNameContext ctx) {
         String name = ctx.NAME().getText();
         List<Decl> decls = new ArrayList<>();
+
         for (langParser.DeclContext declCtx : ctx.decl()) {
             decls.add((Decl) visit(declCtx));
         }
@@ -366,11 +368,9 @@ public class MyVisitor extends langBaseVisitor<Node> {
     @Override
     public Node visitAddBaexp(langParser.AddBaexpContext ctx) {
 
-        System.out.println("Visitando AddBaexp´visitor");
-
         Expr left = (Expr) visit(ctx.baexp());
         Expr right = (Expr) visit(ctx.opexp());
-        System.out.println("Visitando AddBaexp: " + left + " + " + right);
+        System.out.println("Visitando AddBaexp´visitor " + left + " + " + right);
 
         return new Add(ctx.start.getLine(), ctx.start.getCharPositionInLine(), left, right);
     }
@@ -392,6 +392,8 @@ public class MyVisitor extends langBaseVisitor<Node> {
     public Node visitMulOpexp(langParser.MulOpexpContext ctx) {
         Expr left = (Expr) visit(ctx.opexp());
         Expr right = (Expr) visit(ctx.opexp());
+
+        System.out.println("Visitando MulOpexp´visitor " + left + " * " + right);
 
         return new Mul(ctx.start.getLine(), ctx.start.getCharPositionInLine(), left, right);
     }

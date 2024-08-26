@@ -9,6 +9,8 @@ public class InterpretVisitor extends Visitor {
 
     private Stack<HashMap<String, Object>> env;
     private HashMap<String, Func> funcs;
+    private HashMap<String, Data> datas;
+
     private Stack<Object> operands;
     private boolean retMode, debug;
     Node main;
@@ -17,106 +19,111 @@ public class InterpretVisitor extends Visitor {
         env = new Stack<HashMap<String, Object>>();
         env.push(new HashMap<String, Object>());
         funcs = new HashMap<String, Func>();
+        datas = new HashMap<String, Data>();
         operands = new Stack<Object>();
-        retMode = false;
-        debug = false;
+        // retMode = false;
+        // debug = false;
     }
 
     @Override
     public void visit(Prog prog) {
-        System.out.println("Visit Prog in InterpretVisitor");
 
-        // for (Node cmd : prog.getDefs()) {
-        // cmd.accept(this);
-        // }
-        operands.forEach(System.out::println);
+        // [ X ] Implementar o método visit para Prog
+
+        for (Node def : prog.getDefs()) {
+            if (def instanceof Func) {
+
+                Func func = (Func) def;
+                funcs.put(func.getId(), func);
+
+                if (func.getId().equals("main")) {
+                    main = def;
+                }
+
+            } else if (def instanceof Data) {
+
+                Data data = (Data) def;
+                datas.put(data.getName(), data);
+
+            } else {
+                throw new RuntimeException("Tipo de definição desconhecido: " + def.getClass().getName());
+            }
+
+        }
+
+        if (main != null) {
+            main.accept(this);
+        } else {
+            throw new RuntimeException("Função main não encontrada");
+        }
+
     }
 
     public void visit(Add add) {
 
-        System.out.println("Aqui - Add");
+        // [ ] Implementar o método visit para Prog
+
+        System.out.println("Visit Add in InterpretVisitor");
 
         add.getLeft().accept(this);
-        // Guarda o resultado da subárvore esquerda
         Object left = operands.pop();
 
-        // Visita a subárvore direita
         add.getRight().accept(this);
-        // Guarda o resultado da subárvore direita
         Object right = operands.pop();
 
-        // Supondo que left e right sejam números (por exemplo, inteiros)
         if (left instanceof Integer && right instanceof Integer) {
             int result = (Integer) left + (Integer) right;
-            // Armazena o resultado na pilha de operandos
 
             operands.push(result);
 
         } else {
-            // Tratamento de erro ou outras operações, se necessário
             throw new RuntimeException("Operação Add com operandos incompatíveis");
         }
     }
 
     public void visit(Sub sub) {
         sub.getLeft().accept(this);
-        // Guarda o resultado da subárvore esquerda
         Object left = operands.pop();
 
-        // Visita a subárvore direita
         sub.getRight().accept(this);
-        // Guarda o resultado da subárvore direita
         Object right = operands.pop();
 
-        // Supondo que left e right sejam números (por exemplo, inteiros)
         if (left instanceof Integer && right instanceof Integer) {
             int result = (Integer) left - (Integer) right;
-            // Armazena o resultado na pilha de operandos
             operands.push(result);
         } else {
-            // Tratamento de erro ou outras operações, se necessário
             throw new RuntimeException("Operação Sub com operandos incompatíveis");
         }
     }
 
     public void visit(Mul mul) {
         mul.getLeft().accept(this);
-        // Guarda o resultado da subárvore esquerda
         Object left = operands.pop();
 
-        // Visita a subárvore direita
+        System.out.println("Visit Mul in InterpretVisitor");
+
         mul.getRight().accept(this);
-        // Guarda o resultado da subárvore direita
         Object right = operands.pop();
 
-        // Supondo que left e right sejam números (por exemplo, inteiros)
         if (left instanceof Integer && right instanceof Integer) {
             int result = (Integer) left * (Integer) right;
-            // Armazena o resultado na pilha de operandos
             operands.push(result);
         } else {
-            // Tratamento de erro ou outras operações, se necessário
             throw new RuntimeException("Operação Mul com operandos incompatíveis");
         }
     }
 
     public void visit(Div div) {
         div.getLeft().accept(this);
-        // Guarda o resultado da subárvore esquerda
         Object left = operands.pop();
 
-        // Visita a subárvore direita
         div.getRight().accept(this);
-        // Guarda o resultado da subárvore direita
         Object right = operands.pop();
 
-        // Supondo que left e right sejam números (por exemplo, inteiros)
         if (left instanceof Integer && right instanceof Integer) {
             int result = (Integer) left / (Integer) right;
-            // Armazena o resultado na pilha de operandos
             operands.push(result);
         } else {
-            // Tratamento de erro ou outras operações, se necessário
             throw new RuntimeException("Operação Mul com operandos incompatíveis");
         }
     }
@@ -135,23 +142,23 @@ public class InterpretVisitor extends Visitor {
 
     @Override
     public void visit(Cmd cmd) {
-        // Implementação do método visit para Cmd
-        // Dependendo da lógica de interpretação, você pode definir o comportamento
-        // desejado aqui
-        // Por exemplo, você pode decidir como tratar comandos genéricos.
-        // Este é um ponto de extensão, caso existam subclasses específicas de Cmd.
-        // Por enquanto, vamos apenas imprimir ou tratar de forma genérica.
+
         System.out.println("Visiting Cmd: " + cmd.toString());
     }
 
     @Override
     public void visit(Func func) {
-        System.out.println("Aqui - Fun");
-        // Implementação do método visit para Func
-        // Exemplo: Adicionar a função ao mapa de funções
-        funcs.put(func.getId(), func);
 
-        // Aqui você pode definir o comportamento específico ao visitar um nó de Func
+        for (Cmd cmd : func.getCommands()) {
+
+            System.out.println("Visiting func: " + cmd.toString());
+
+            cmd.accept(this);
+
+            // System.out.println("Env: " + env);
+
+        }
+
     }
 
     @Override
@@ -222,7 +229,13 @@ public class InterpretVisitor extends Visitor {
 
     @Override
     public void visit(IntDexp intDexp) {
-        System.out.println("Visit IntDexp in InterpretVisitor");
+
+        System.out.println("Visit IntDexp in InterpretVisitor " + intDexp);
+
+        operands.push(intDexp.getValue());
+        // salvando o que vai receber o valor
+        // env.peek().put(String.valueOf(operands.pop()), intDexp.getValue());
+
     }
 
     @Override
@@ -237,12 +250,16 @@ public class InterpretVisitor extends Visitor {
 
     @Override
     public void visit(LValue lValue) {
+
         System.out.println("Visit LValue in InterpretVisitor");
     }
 
     @Override
     public void visit(LvalueCmd lvalueCmd) {
-        System.out.println("Visit LvalueCmd in InterpretVisitor");
+        System.out.println("Visit LvalueCmd in InterpretVisitor " + lvalueCmd);
+        lvalueCmd.getLvalue().accept(this);
+        lvalueCmd.getExpr().accept(this);
+
     }
 
     @Override
@@ -357,7 +374,12 @@ public class InterpretVisitor extends Visitor {
 
     @Override
     public void visit(IdLValue idLValue) {
-        System.out.println("Visit IdLValue in InterpretVisitor");
+
+        System.out.println("Visit IdLValue in InterpretVisitor " + idLValue);
+
+        // salvando o que vai receber o valor
+        // operands.push(idLValue);
+
     }
 
     @Override
