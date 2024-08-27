@@ -28,141 +28,162 @@ public class InterpretVisitor extends Visitor {
     @Override
     public void visit(Prog prog) {
 
-        // [ X ] Implementar o método visit para Prog
+        try {
+            // [ X ] Implementar o método visit para Prog
 
-        for (Node def : prog.getDefs()) {
-            if (def instanceof Func) {
+            for (Node def : prog.getDefs()) {
+                if (def instanceof Func) {
 
-                Func func = (Func) def;
-                funcs.put(func.getId(), func);
+                    Func func = (Func) def;
+                    funcs.put(func.getId(), func);
 
-                if (func.getId().equals("main")) {
-                    main = def;
+                    if (func.getId().equals("main")) {
+                        main = def;
+                    }
+
+                } else if (def instanceof Data) {
+
+                    Data data = (Data) def;
+                    datas.put(data.getName(), data);
+
+                } else {
+                    throw new RuntimeException("Tipo de definição desconhecido: " + def.getClass().getName());
                 }
 
-            } else if (def instanceof Data) {
-
-                Data data = (Data) def;
-                datas.put(data.getName(), data);
-
-            } else {
-                throw new RuntimeException("Tipo de definição desconhecido: " + def.getClass().getName());
             }
 
-        }
-
-        if (main != null) {
-            main.accept(this);
-        } else {
-            throw new RuntimeException("Função main não encontrada");
+            if (main != null) {
+                main.accept(this);
+            } else {
+                throw new RuntimeException("Função main não encontrada");
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(" (" + prog.getLine() + ", " + prog.getColumn() + ") " + e.getMessage());
         }
 
     }
 
     public void visit(Add add) {
 
-        // [ ] Implementar o método visit para Prog
+        try {
+            // [ x ] Implementar o método visit para Prog
 
-        System.out.println("Visit Add in InterpretVisitor");
+            System.out.println("Visit Add in InterpretVisitor");
 
-        add.getLeft().accept(this);
-        Object left = operands.pop();
+            add.getLeft().accept(this);
+            Object left = operands.pop();
 
-        add.getRight().accept(this);
-        Object right = operands.pop();
+            add.getRight().accept(this);
+            Object right = operands.pop();
 
-        if (left instanceof Integer && right instanceof Integer) {
-            int result = (Integer) left + (Integer) right;
+            if (left instanceof Integer && right instanceof Integer) {
+                int result = (Integer) left + (Integer) right;
 
-            operands.push(result);
+                operands.push(result);
 
-        } else if (left instanceof Float && right instanceof Float) {
+            } else if (left instanceof Float && right instanceof Float) {
 
-            Float result = (Float) left + (Float) right;
+                Float result = (Float) left + (Float) right;
 
-            operands.push(result);
+                operands.push(result);
 
-        } else {
-            throw new RuntimeException("Operação Add com operandos incompatíveis");
+            } else {
+                throw new RuntimeException("Operação Add com operandos incompatíveis");
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(" (" + add.getLine() + ", " + add.getColumn() + ") " + e.getMessage());
         }
     }
 
     public void visit(Sub sub) {
-        sub.getLeft().accept(this);
-        Object left = operands.pop();
+        try {
+            sub.getLeft().accept(this);
+            Object left = operands.pop();
 
-        sub.getRight().accept(this);
-        Object right = operands.pop();
+            sub.getRight().accept(this);
+            Object right = operands.pop();
 
-        if (left instanceof Integer && right instanceof Integer) {
-            int result = (Integer) left - (Integer) right;
-            operands.push(result);
+            if (left instanceof Integer && right instanceof Integer) {
+                int result = (Integer) left - (Integer) right;
+                operands.push(result);
 
-        } else if (left instanceof Float && right instanceof Float) {
+            } else if (left instanceof Float && right instanceof Float) {
 
-            Float result = (Float) left - (Float) right;
+                Float result = (Float) left - (Float) right;
 
-            operands.push(result);
+                operands.push(result);
 
-        } else {
-            throw new RuntimeException("Operação Sub com operandos incompatíveis");
+            } else {
+                throw new RuntimeException("Operação Sub com operandos incompatíveis");
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(" (" + sub.getLine() + ", " + sub.getColumn() + ") " + e.getMessage());
         }
     }
 
     public void visit(Mul mul) {
-        mul.getLeft().accept(this);
-        Object left = operands.pop();
+        try {
+            mul.getLeft().accept(this);
+            Object left = operands.pop();
 
-        System.out.println("Visit Mul in InterpretVisitor");
+            System.out.println("Visit Mul in InterpretVisitor");
 
-        mul.getRight().accept(this);
-        Object right = operands.pop();
+            mul.getRight().accept(this);
+            Object right = operands.pop();
 
-        if (left instanceof Integer && right instanceof Integer) {
-            int result = (Integer) left * (Integer) right;
-            operands.push(result);
-        } else if (left instanceof Float && right instanceof Float) {
+            if (left instanceof Integer && right instanceof Integer) {
+                int result = (Integer) left * (Integer) right;
+                operands.push(result);
+            } else if (left instanceof Float && right instanceof Float) {
 
-            Float result = (Float) left * (Float) right;
+                Float result = (Float) left * (Float) right;
 
-            operands.push(result);
+                operands.push(result);
 
-        } else {
-            throw new RuntimeException("Operação Mul com operandos incompatíveis");
+            } else {
+                throw new RuntimeException("Operação Mul com operandos incompatíveis");
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(" (" + mul.getLine() + ", " + mul.getColumn() + ") " + e.getMessage());
         }
     }
 
     public void visit(Div div) {
-        div.getLeft().accept(this);
-        Object left = operands.pop();
+        try {
+            div.getLeft().accept(this);
+            Object left = operands.pop();
 
-        div.getRight().accept(this);
-        Object right = operands.pop();
+            div.getRight().accept(this);
+            Object right = operands.pop();
 
-        if (left instanceof Integer && right instanceof Integer) {
-            int result = (Integer) left / (Integer) right;
-            operands.push(result);
-        } else if (left instanceof Float && right instanceof Float) {
+            if (left instanceof Integer && right instanceof Integer) {
+                int result = (Integer) left / (Integer) right;
+                operands.push(result);
+            } else if (left instanceof Float && right instanceof Float) {
 
-            Float result = (Float) left / (Float) right;
+                Float result = (Float) left / (Float) right;
 
-            operands.push(result);
+                operands.push(result);
 
-        } else {
-            throw new RuntimeException("Operação Mul com operandos incompatíveis");
+            } else {
+                throw new RuntimeException("Operação Mul com operandos incompatíveis");
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(" (" + div.getLine() + ", " + div.getColumn() + ") " + e.getMessage());
         }
     }
 
     @Override
     public void visit(Param param) {
-        // Implementação do método visit para Param
-        // Aqui você pode definir o comportamento específico ao visitar um nó de Param
-        // Por exemplo, talvez você queira armazenar ou processar o parâmetro
-        String paramName = param.toString();
-        // Supondo que você tenha uma lógica para trabalhar com parâmetros, pode usar o
-        // env
-        Object paramValue = env.peek().get(paramName);
-        operands.push(paramValue);
+
+        try {
+            String paramName = param.toString();
+            Object paramValue = env.peek().get(paramName);
+            operands.push(paramValue);
+        } catch (Exception e) {
+            throw new RuntimeException(" (" + param.getLine() + ", " + param.getColumn() + ") " + e.getMessage());
+        }
+
     }
 
     @Override
@@ -174,14 +195,17 @@ public class InterpretVisitor extends Visitor {
     @Override
     public void visit(Func func) {
 
-        for (Cmd cmd : func.getCommands()) {
+        try {
+            for (Cmd cmd : func.getCommands()) {
 
-            System.out.println("Visiting func: " + cmd.toString());
+                System.out.println("Visiting func: " + cmd.toString());
 
-            cmd.accept(this);
+                cmd.accept(this);
 
-            // System.out.println("Env: " + env);
+            }
+        } catch (Exception e) {
 
+            throw new RuntimeException(" (" + func.getLine() + ", " + func.getColumn() + ") " + e.getMessage());
         }
 
     }
@@ -221,29 +245,45 @@ public class InterpretVisitor extends Visitor {
 
     @Override
     public void visit(ArrayType arrayType) {
-        System.out.println("Visit ArrayType in InterpretVisitor");
+        try {
+
+            System.out.println("Visit ArrayType in InterpretVisitor");
+
+        } catch (Exception e) {
+            throw new RuntimeException(
+                    " (" + arrayType.getLine() + ", " + arrayType.getColumn() + ") " + e.getMessage());
+        }
     }
 
     @Override
     public void visit(BinOP binOP) {
 
-        System.out.println("Visit BinOP in InterpretVisitor");
+        try {
+
+            System.out.println("Visit BinOP in InterpretVisitor");
+
+        } catch (Exception e) {
+            throw new RuntimeException(" (" + binOP.getLine() + ", " + binOP.getColumn() + ") " + e.getMessage());
+        }
     }
 
     @Override
     public void visit(BlockCmd blockCmd) {
-        System.out.println("Visit BlockCmd in InterpretVisitor");
+        try {
+            System.out.println("Visit BlockCmd in InterpretVisitor");
+
+        } catch (Exception e) {
+            throw new RuntimeException(" (" + blockCmd.getLine() + ", " + blockCmd.getColumn() + ") " + e.getMessage());
+        }
     }
 
     @Override
     public void visit(CharDexp charDexp) {
-        System.out.println("Visit CharDexp in InterpretVisitor");
-        try {
-            // Obter o valor do caractere da instância CharDexp
-            String value = charDexp.getValue();
 
-            // Empurrar o valor do caractere para a pilha de operandos
+        try {
+            String value = charDexp.getValue();
             operands.push(value);
+
         } catch (Exception e) {
             throw new RuntimeException(" (" + charDexp.getLine() + ", " + charDexp.getColumn() + ") " + e.getMessage());
         }
@@ -251,23 +291,19 @@ public class InterpretVisitor extends Visitor {
 
     @Override
     public void visit(Equals equals) {
-        System.out.println("Visit Equals in InterpretVisitor");
-        System.out.println(equals.toString());
 
         try {
-            // Visitando as expressões da esquerda e da direita
-            equals.getLeft().accept(this); // Isso empurra o valor da expressão esquerda para a pilha
-            equals.getRight().accept(this); // Isso empurra o valor da expressão direita para a pilha
+            System.out.println(equals.toString());
 
-            // Obter os valores das expressões do topo da pilha
+            equals.getLeft().accept(this);
+            equals.getRight().accept(this);
+
             Object rightValue = operands.pop();
             Object leftValue = operands.pop();
 
-            // Verificar se ambos são do mesmo tipo para comparação
             if (leftValue.getClass() == rightValue.getClass()) {
                 boolean result;
 
-                // Comparar com base no tipo de valor
                 if (leftValue instanceof Integer) {
                     result = (Integer) leftValue == (Integer) rightValue;
                 } else if (leftValue instanceof Float) {
@@ -279,8 +315,8 @@ public class InterpretVisitor extends Visitor {
                 } else {
                     result = leftValue.equals(rightValue);
                 }
-                // Empurrar o resultado booleano para a pilha
                 operands.push(result);
+
             } else {
                 throw new RuntimeException(
                         "Type mismatch: cannot compare " + leftValue.getClass() + " with " + rightValue.getClass());
@@ -293,23 +329,31 @@ public class InterpretVisitor extends Visitor {
 
     @Override
     public void visit(Expr expr) {
-        System.out.println("Visit Expr in InterpretVisitor");
+        try {
+            System.out.println("Visit Expr in InterpretVisitor");
+
+        } catch (Exception e) {
+            throw new RuntimeException(" (" + expr.getLine() + ", " + expr.getColumn() + ") " + e.getMessage());
+        }
     }
 
     @Override
     public void visit(False false1) {
-        System.out.println("Visit False in InterpretVisitor");
+        try {
+            System.out.println("Visit False in InterpretVisitor");
+
+        } catch (Exception e) {
+            throw new RuntimeException(" (" + false1.getLine() + ", " + false1.getColumn() + ") " + e.getMessage());
+        }
     }
 
     @Override
     public void visit(FloatDexp floatDexp) {
-        System.out.println("Visit FloatDexp in InterpretVisitor");
         try {
-            // Obter o valor float da instância FloatDexp
+            System.out.println("Visit FloatDexp in InterpretVisitor");
             float value = floatDexp.getValue();
-
-            // Empurrar o valor do float para a pilha de operandos
             operands.push(value);
+
         } catch (Exception e) {
             throw new RuntimeException(
                     " (" + floatDexp.getLine() + ", " + floatDexp.getColumn() + ") " + e.getMessage());
@@ -318,34 +362,54 @@ public class InterpretVisitor extends Visitor {
 
     @Override
     public void visit(FuncCallCmd funcCallCmd) {
-        System.out.println("Visit FuncCallCmd in InterpretVisitor");
+        try {
+            System.out.println("Visit FuncCallCmd in InterpretVisitor");
+
+        } catch (Exception e) {
+
+        }
     }
 
     @Override
     public void visit(IdType idType) {
-        System.out.println("Visit IdType in InterpretVisitor");
+        try {
+            System.out.println("Visit IdType in InterpretVisitor");
+
+        } catch (Exception e) {
+            throw new RuntimeException(" (" + idType.getLine() + ", " + idType.getColumn() + ") " + e.getMessage());
+        }
     }
 
     @Override
     public void visit(If if1) {
-        System.out.println("Visit If in InterpretVisitor");
+
+        try {
+            System.out.println("Visit If in InterpretVisitor");
+
+        } catch (Exception e) {
+            throw new RuntimeException(" (" + if1.getLine() + ", " + if1.getColumn() + ") " + e.getMessage());
+        }
+
     }
 
     @Override
     public void visit(IfElse ifElse) {
-        System.out.println("Visit IfElse in InterpretVisitor");
+        try {
+            System.out.println("Visit IfElse in InterpretVisitor");
+
+        } catch (Exception e) {
+            throw new RuntimeException(" (" + ifElse.getLine() + ", " + ifElse.getColumn() + ") " + e.getMessage());
+        }
     }
 
     @Override
     public void visit(IntDexp intDexp) {
 
-        System.out.println("Visit IntDexp in InterpretVisitor " + intDexp);
         try {
-            // Obter o valor float da instância FloatDexp
+            System.out.println("Visit IntDexp in InterpretVisitor " + intDexp);
             int value = intDexp.getValue();
-
-            // Empurrar o valor do float para a pilha de operandos
             operands.push(value);
+
         } catch (Exception e) {
             throw new RuntimeException(" (" + intDexp.getLine() + ", " + intDexp.getColumn() + ") " + e.getMessage());
         }
@@ -354,26 +418,45 @@ public class InterpretVisitor extends Visitor {
 
     @Override
     public void visit(Iterate iterate) {
-        System.out.println("Visit Iterate in InterpretVisitor");
+
+        try {
+
+            iterate.getCondition().accept(this);
+            Object condition = operands.pop();
+
+            System.out.println("Visit Iterate in InterpretVisitor " + condition);
+
+            if ((Integer) condition instanceof Integer) {
+
+                int Interador = (Integer) condition;
+
+                for (int i = 0; i < Interador; i++) {
+                    iterate.getCmd().accept(this);
+                }
+
+            } else {
+                throw new RuntimeException("Iterate condition must be an Integer");
+            }
+
+        } catch (Exception e) {
+            throw new RuntimeException(" (" + iterate.getLine() + ", " + iterate.getColumn() + ") " + e.getMessage());
+        }
+
     }
 
     @Override
     public void visit(LessThan lessThan) {
-        System.out.println("Visit LessThan in InterpretVisitor");
         try {
-            // Visitando as expressões da esquerda e da direita
-            lessThan.getLeft().accept(this); // Empurra o valor da expressão esquerda para a pilha
-            lessThan.getRight().accept(this); // Empurra o valor da expressão direita para a pilha
+            System.out.println("Visit LessThan in InterpretVisitor");
+            lessThan.getLeft().accept(this);
+            lessThan.getRight().accept(this);
 
-            // Obter os valores das expressões do topo da pilha
             Object rightValue = operands.pop();
             Object leftValue = operands.pop();
 
-            // Verificar se ambos são do mesmo tipo para comparação
             if (leftValue.getClass() == rightValue.getClass()) {
                 boolean result;
 
-                // Comparar com base no tipo de valor
                 if (leftValue instanceof Integer) {
                     result = (Integer) leftValue < (Integer) rightValue;
                 } else if (leftValue instanceof Float) {
@@ -384,11 +467,10 @@ public class InterpretVisitor extends Visitor {
                     throw new RuntimeException("Tipo não suportado para comparação '<': " + leftValue.getClass());
                 }
 
-                // Empurrar o resultado booleano para a pilha
                 operands.push(result);
 
-                // Mensagem opcional de depuração
                 System.out.println("Visit LessThan in InterpretVisitor: Comparison result is " + result);
+
             } else {
                 throw new RuntimeException("Incompatibilidade de tipos: não é possível comparar " + leftValue.getClass()
                         + " com " + rightValue.getClass());
@@ -400,34 +482,41 @@ public class InterpretVisitor extends Visitor {
 
     @Override
     public void visit(LValue lValue) {
-        System.out.println("Visit LValue in InterpretVisitor");
+        try {
+            System.out.println("Visit LValue in InterpretVisitor");
+
+        } catch (Exception e) {
+            throw new RuntimeException(" (" + lValue.getLine() + ", " + lValue.getColumn() + ") " + e.getMessage());
+        }
     }
 
     @Override
     public void visit(LvalueCmd lvalueCmd) {
-        System.out.println("Visit LvalueCmd in InterpretVisitor " + lvalueCmd);
-        lvalueCmd.getLvalue().accept(this);
-        lvalueCmd.getExpr().accept(this);
+        try {
+            System.out.println("Visit LvalueCmd in InterpretVisitor " + lvalueCmd);
+            lvalueCmd.getLvalue().accept(this);
+            lvalueCmd.getExpr().accept(this);
+
+        } catch (Exception e) {
+            throw new RuntimeException(
+                    " (" + lvalueCmd.getLine() + ", " + lvalueCmd.getColumn() + ") " + e.getMessage());
+        }
 
     }
 
     @Override
     public void visit(Mod mod) {
-        System.out.println("Visit Mod in InterpretVisitor");
         try {
-            // Visitar as expressões da esquerda e da direita
-            mod.getLeft().accept(this); // Empurra o valor da expressão esquerda para a pilha
-            mod.getRight().accept(this); // Empurra o valor da expressão direita para a pilha
+            System.out.println("Visit Mod in InterpretVisitor");
+            mod.getLeft().accept(this);
+            mod.getRight().accept(this);
 
-            // Obter os valores das expressões do topo da pilha
             Object rightValue = operands.pop();
             Object leftValue = operands.pop();
 
-            // Verificar se ambos são do mesmo tipo para operação de módulo
             if (leftValue.getClass() == rightValue.getClass()) {
                 Object result;
 
-                // Realizar a operação de módulo com base no tipo de valor
                 if (leftValue instanceof Integer) {
                     if ((Integer) rightValue == 0) {
                         throw new ArithmeticException("Divisão por zero ao calcular módulo.");
@@ -442,10 +531,8 @@ public class InterpretVisitor extends Visitor {
                     throw new RuntimeException("Tipo não suportado para operação '%': " + leftValue.getClass());
                 }
 
-                // Empurrar o resultado para a pilha
                 operands.push(result);
 
-                // Mensagem opcional de depuração
                 System.out.println(
                         "Visit Mod in InterpretVisitor: Result of " + leftValue + " % " + rightValue + " is " + result);
             } else {
@@ -453,52 +540,108 @@ public class InterpretVisitor extends Visitor {
                         + leftValue.getClass() + " com " + rightValue.getClass());
             }
         } catch (Exception e) {
-            // Tratamento de exceção genérica
             System.err.println("Erro ao executar Mod: " + e.getMessage());
-            e.printStackTrace(); // Útil para depuração
+            e.printStackTrace();
         }
     }
 
     @Override
     public void visit(NameType nameType) {
-        System.out.println("Visit NameType in InterpretVisitor");
+        try {
+            System.out.println("Visit NameType in InterpretVisitor");
+        } catch (Exception e) {
+            throw new RuntimeException(" (" + nameType.getLine() + ", " + nameType.getColumn() + ") " + e.getMessage());
+        }
     }
 
     @Override
     public void visit(Neg neg) {
-        System.out.println("Visit Neg in InterpretVisitor");
+
+        try {
+            System.out.println("Visit Neg in InterpretVisitor");
+            neg.getExpr().accept(this);
+            Object value = operands.pop();
+
+            if (value instanceof Integer) {
+                operands.push((Integer) value * -1);
+
+            } else if (value instanceof Float) {
+                operands.push((Float) value * -1);
+
+            } else {
+                throw new RuntimeException(
+                        "Operador de negação requer um operando Inteiro ou Float. Operando é de tipo inválido: "
+                                + value);
+            }
+
+        } catch (Exception e) {
+            throw new RuntimeException(" (" + neg.getLine() + ", " + neg.getColumn() + ") " + e.getMessage());
+        }
+
     }
 
     @Override
     public void visit(Not not) {
-        System.out.println("Visit Not in InterpretVisitor");
+
+        try {
+            System.out.println("Visit Not in InterpretVisitor");
+            not.getExpr().accept(this);
+
+            Object value = operands.pop();
+
+            if (!(value instanceof Boolean)) {
+                throw new RuntimeException(
+                        "Operador de negação requer um operando booleano. Operando é de tipo inválido: "
+                                + value);
+            }
+
+            operands.push(!(Boolean) value);
+
+        } catch (Exception e) {
+            throw new RuntimeException(" (" + not.getLine() + ", " + not.getColumn() + ") " + e.getMessage());
+        }
     }
 
     @Override
     public void visit(NotEquals notEquals) {
-        System.out.println("Visit NotEquals in InterpretVisitor");
+        try {
+            System.out.println("Visit NotEquals in InterpretVisitor");
+
+        } catch (Exception e) {
+            throw new RuntimeException(
+                    " (" + notEquals.getLine() + ", " + notEquals.getColumn() + ") " + e.getMessage());
+        }
     }
 
     @Override
     public void visit(Null null1) {
-        System.out.println("Visit Null in InterpretVisitor");
+        try {
+            System.out.println("Visit Null in InterpretVisitor");
+        } catch (Exception e) {
+            throw new RuntimeException(" (" + null1.getLine() + ", " + null1.getColumn() + ") " + e.getMessage());
+        }
+
     }
 
     @Override
     public void visit(Paren paren) {
-        System.out.println("Visit Paren in InterpretVisitor");
+
+        try {
+            System.out.println("Visit Paren in InterpretVisitor");
+            paren.getExpr().accept(this);
+        } catch (Exception e) {
+            throw new RuntimeException(" (" + paren.getLine() + ", " + paren.getColumn() + ") " + e.getMessage());
+        }
+
     }
 
     @Override
     public void visit(Print print) {
-        System.out.println("Visit Print in InterpretVisitor");
         try {
-            // Avalia a expressão associada ao comando print
+            System.out.println("Visit Print in InterpretVisitor");
             print.getExpression().accept(this);
-            // O resultado da expressão estará no topo da pilha de operandos
             Object value = operands.pop();
 
-            // Imprime o valor avaliado
             System.out.println(value);
         } catch (Exception e) {
             throw new RuntimeException(" (" + print.getLine() + ", " + print.getColumn() + ") " + e.getMessage());
@@ -507,92 +650,198 @@ public class InterpretVisitor extends Visitor {
 
     @Override
     public void visit(Read read) {
-        System.out.println("Visit Read in InterpretVisitor");
+        try {
+            System.out.println("Visit Read in InterpretVisitor");
+
+        } catch (Exception e) {
+            throw new RuntimeException(" (" + read.getLine() + ", " + read.getColumn() + ") " + e.getMessage());
+        }
     }
 
     @Override
     public void visit(Return return1) {
-        System.out.println("Visit Return in InterpretVisitor");
+
+        try {
+            System.out.println("Visit Return in InterpretVisitor");
+
+        } catch (Exception e) {
+            throw new RuntimeException(" (" + return1.getLine() + ", " + return1.getColumn() + ") " + e.getMessage());
+        }
+
     }
 
     @Override
     public void visit(True true1) {
-        System.out.println("Visit True in InterpretVisitor");
+
+        try {
+            System.out.println("Visit True in InterpretVisitor");
+
+        } catch (Exception e) {
+            throw new RuntimeException(" (" + true1.getLine() + ", " + true1.getColumn() + ") " + e.getMessage());
+        }
+
     }
 
     @Override
     public void visit(TyBool tyBool) {
-        System.out.println("Visit TyBool in InterpretVisitor");
+
+        try {
+            System.out.println("Visit TyBool in InterpretVisitor");
+
+        } catch (Exception e) {
+            throw new RuntimeException(" (" + tyBool.getLine() + ", " + tyBool.getColumn() + ") " + e.getMessage());
+        }
+
     }
 
     @Override
     public void visit(TyChar tyChar) {
-        System.out.println("Visit TyChar in InterpretVisitor");
+
+        try {
+            System.out.println("Visit TyChar in InterpretVisitor");
+
+        } catch (Exception e) {
+            throw new RuntimeException(" (" + tyChar.getLine() + ", " + tyChar.getColumn() + ") " + e.getMessage());
+        }
     }
 
     @Override
     public void visit(TyFloat tyFloat) {
-        System.out.println("Visit TyFloat in InterpretVisitor");
+
+        try {
+            System.out.println("Visit TyFloat in InterpretVisitor");
+
+        } catch (Exception e) {
+            throw new RuntimeException(" (" + tyFloat.getLine() + ", " + tyFloat.getColumn() + ") " + e.getMessage());
+        }
+
     }
 
     @Override
     public void visit(TyInt tyInt) {
-        System.out.println("Visit TyInt in InterpretVisitor");
+        try {
+            System.out.println("Visit True in InterpretVisitor");
+        } catch (Exception e) {
+            throw new RuntimeException(" (" + tyInt.getLine() + ", " + tyInt.getColumn() + ") " + e.getMessage());
+        }
     }
 
     @Override
     public void visit(Type type) {
-        System.out.println("Visit Type in InterpretVisitor");
+        try {
+            System.out.println("Visit Type in InterpretVisitor");
+        } catch (Exception e) {
+            throw new RuntimeException(" (" + type.getLine() + ", " + type.getColumn() + ") " + e.getMessage());
+        }
     }
 
     @Override
     public void visit(ArrayLValue arrayLValue) {
-        System.out.println("Visit ArrayLValue in InterpretVisitor");
+
+        try {
+            System.out.println("Visit ArrayLValue in InterpretVisitor");
+
+        } catch (Exception e) {
+            throw new RuntimeException(
+                    " (" + arrayLValue.getLine() + ", " + arrayLValue.getColumn() + ") " + e.getMessage());
+        }
+
     }
 
     @Override
     public void visit(Data data) {
-        System.out.println("Visit Data in InterpretVisitor");
+
+        try {
+            System.out.println("Visit Data in InterpretVisitor");
+
+        } catch (Exception e) {
+            throw new RuntimeException(" (" + data.getLine() + ", " + data.getColumn() + ") " + e.getMessage());
+        }
+
     }
 
     @Override
     public void visit(Decl decl) {
-        System.out.println("Visit Decl in InterpretVisitor");
+
+        try {
+            System.out.println("Visit Decl in InterpretVisitor");
+
+        } catch (Exception e) {
+            throw new RuntimeException(" (" + decl.getLine() + ", " + decl.getColumn() + ") " + e.getMessage());
+        }
+
     }
 
     @Override
     public void visit(Dot dot) {
-        System.out.println("Visit Dot in InterpretVisitor");
+
+        try {
+            System.out.println("Visit Dot in InterpretVisitor");
+
+        } catch (Exception e) {
+            throw new RuntimeException(" (" + dot.getLine() + ", " + dot.getColumn() + ") " + e.getMessage());
+        }
+
     }
 
     @Override
     public void visit(Exprs exprs) {
-        System.out.println("Visit Exprs in InterpretVisitor");
+
+        try {
+            System.out.println("Visit Exprs in InterpretVisitor");
+
+        } catch (Exception e) {
+            throw new RuntimeException(" (" + exprs.getLine() + ", " + exprs.getColumn() + ") " + e.getMessage());
+        }
+
     }
 
     @Override
     public void visit(FuncCall funcCall) {
-        System.out.println("Visit FuncCall in InterpretVisitor");
+
+        try {
+            System.out.println("Visit FuncCall in InterpretVisitor");
+
+        } catch (Exception e) {
+            throw new RuntimeException(" (" + funcCall.getLine() + ", " + funcCall.getColumn() + ") " + e.getMessage());
+        }
+
     }
 
     @Override
     public void visit(IdLValue idLValue) {
 
-        System.out.println("Visit IdLValue in InterpretVisitor " + idLValue);
+        try {
+            System.out.println("Visit IdLValue in InterpretVisitor");
 
-        // salvando o que vai receber o valor
-        // operands.push(idLValue);
+        } catch (Exception e) {
+            throw new RuntimeException(
+                    " (" + idLValue.getLine() + ", " + idLValue.getColumn() + ") " + e.getMessage());
+        }
 
     }
 
     @Override
     public void visit(NewExp newExp) {
-        System.out.println("Visit NewExp in InterpretVisitor");
+
+        try {
+            System.out.println("Visit NewExp in InterpretVisitor");
+
+        } catch (Exception e) {
+            throw new RuntimeException(" (" + newExp.getLine() + ", " + newExp.getColumn() + ") " + e.getMessage());
+        }
+
     }
 
     @Override
     public void visit(FuncArgs funcArgs) {
-        System.out.println("Visit FuncArgs in InterpretVisitor");
+
+        try {
+            System.out.println("Visit FuncArgs in InterpretVisitor");
+
+        } catch (Exception e) {
+            throw new RuntimeException(" (" + funcArgs.getLine() + ", " + funcArgs.getColumn() + ") " + e.getMessage());
+        }
     }
 
 }

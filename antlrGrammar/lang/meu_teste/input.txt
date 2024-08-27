@@ -24,4 +24,12 @@ main(){
 
     print b;
 
+    a = 0;
+
+    iterate(3 + 10) (
+        a = a + 1;
+    )
+
+    print a;
+    
 }

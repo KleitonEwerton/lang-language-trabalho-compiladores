@@ -28,6 +28,6 @@ public class Iterate extends Cmd {
 
     @Override
     public String toString() {
-        return "iterate (" + condition.toString() + ") " + cmd.toString();
+        return "iterate (" + condition + ") " + cmd;
     }
 }
