@@ -391,7 +391,7 @@ public class MyVisitor extends langBaseVisitor<Node> {
     @Override
     public Node visitMulOpexp(langParser.MulOpexpContext ctx) {
         Expr left = (Expr) visit(ctx.opexp());
-        Expr right = (Expr) visit(ctx.opexp());
+        Expr right = (Expr) visit(ctx.dexp());
 
         System.out.println("Visitando MulOpexp´visitor " + left + " * " + right);
 
@@ -401,7 +401,7 @@ public class MyVisitor extends langBaseVisitor<Node> {
     @Override
     public Node visitDivOpexp(langParser.DivOpexpContext ctx) {
         Expr left = (Expr) visit(ctx.opexp());
-        Expr right = (Expr) visit(ctx.opexp());
+        Expr right = (Expr) visit(ctx.dexp());
 
         return new Div(ctx.start.getLine(), ctx.start.getCharPositionInLine(), left, right);
     }
@@ -484,10 +484,9 @@ public class MyVisitor extends langBaseVisitor<Node> {
     public Node visitCharDexp(langParser.CharDexpContext ctx) {
         // Obtém o texto do token CHAR e remove as aspas simples ao redor
         String charText = ctx.CHAR().getText();
-        char value = charText.charAt(1); // O caractere literal está no meio das aspas
-
+        
         // Cria uma instância de CharDexp usando a linha e coluna do token
-        return new CharDexp(ctx.start.getLine(), ctx.start.getCharPositionInLine(), value);
+        return new CharDexp(ctx.start.getLine(), ctx.start.getCharPositionInLine(), charText);
     }
 
     @Override

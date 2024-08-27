@@ -4,14 +4,14 @@ import lang.visitors.*;
 
 public class CharDexp extends Expr {
 
-    private final char value;
+    private String value;
 
-    public CharDexp(int line, int column, char value) {
+    public CharDexp(int line, int column, String value) {
         super(line, column);
         this.value = value;
     }
 
-    public char getValue() {
+    public String getValue() {
         return value;
     }
 

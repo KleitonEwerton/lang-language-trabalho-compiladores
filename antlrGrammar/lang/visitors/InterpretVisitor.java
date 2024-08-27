@@ -1,5 +1,6 @@
 package lang.visitors;
 
+import java.util.EmptyStackException;
 import java.util.HashMap;
 import java.util.Stack;
 
@@ -163,7 +164,35 @@ public class InterpretVisitor extends Visitor {
 
     @Override
     public void visit(And and) {
-        System.out.println("Visit And in InterpretVisitor");
+        try {
+            // Avaliar a expressão à esquerda do operador &&
+            and.getLeft().accept(this);
+            Object leftValue = operands.pop();
+
+            // Verifica se o valor à esquerda é um booleano
+            if (!(leftValue instanceof Boolean)) {
+                throw new RuntimeException(
+                        "Erro: Operador && requer operandos booleanos. Operando à esquerda é de tipo inválido: "
+                                + leftValue);
+            }
+
+            // Avaliar a expressão à direita do operador &&
+            and.getRight().accept(this);
+            Object rightValue = operands.pop();
+
+            // Verifica se o valor à direita é um booleano
+            if (!(rightValue instanceof Boolean)) {
+                throw new RuntimeException(
+                        "Erro: Operador && requer operandos booleanos. Operando à direita é de tipo inválido: "
+                                + rightValue);
+            }
+
+            // Resultado final do operador &&
+            operands.push((Boolean) leftValue && (Boolean) rightValue);
+
+        } catch (Exception e) {
+            throw new RuntimeException(" (" + and.getLine() + ", " + and.getColumn() + ") " + e.getMessage());
+        }
     }
 
     @Override
@@ -185,11 +214,56 @@ public class InterpretVisitor extends Visitor {
     @Override
     public void visit(CharDexp charDexp) {
         System.out.println("Visit CharDexp in InterpretVisitor");
+        try {
+            // Obter o valor do caractere da instância CharDexp
+            String value = charDexp.getValue();
+
+            // Empurrar o valor do caractere para a pilha de operandos
+            operands.push(value);
+        } catch (Exception e) {
+            throw new RuntimeException(" (" + charDexp.getLine() + ", " + charDexp.getColumn() + ") " + e.getMessage());
+        }
     }
 
     @Override
     public void visit(Equals equals) {
         System.out.println("Visit Equals in InterpretVisitor");
+        System.out.println(equals.toString());
+        try {
+            // Visitando as expressões da esquerda e da direita
+            equals.getLeft().accept(this); // Isso empurra o valor da expressão esquerda para a pilha
+            equals.getRight().accept(this); // Isso empurra o valor da expressão direita para a pilha
+
+            // Obter os valores das expressões do topo da pilha
+            Object rightValue = operands.pop();
+            Object leftValue = operands.pop();
+
+            // Verificar se ambos são do mesmo tipo para comparação
+            if (leftValue.getClass() == rightValue.getClass()) {
+                boolean result;
+
+                // Comparar com base no tipo de valor
+                if (leftValue instanceof Integer) {
+                    result = (Integer) leftValue == (Integer) rightValue;
+                } else if (leftValue instanceof Float) {
+                    result = (Float) leftValue == (Float) rightValue;
+                } else if (leftValue instanceof Character) {
+                    result = (Character) leftValue == (Character) rightValue;
+                } else if (leftValue instanceof Boolean) {
+                    result = (Boolean) leftValue == (Boolean) rightValue;
+                } else {
+                    result = leftValue.equals(rightValue);
+                }
+                // Empurrar o resultado booleano para a pilha
+                operands.push(result);
+            } else {
+                throw new RuntimeException(
+                        "Type mismatch: cannot compare " + leftValue.getClass() + " with " + rightValue.getClass());
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(
+                    " (" + equals.getLine() + ", " + equals.getColumn() + ") " + e.getMessage());
+        }
     }
 
     @Override
@@ -205,6 +279,16 @@ public class InterpretVisitor extends Visitor {
     @Override
     public void visit(FloatDexp floatDexp) {
         System.out.println("Visit FloatDexp in InterpretVisitor");
+        try {
+            // Obter o valor float da instância FloatDexp
+            float value = floatDexp.getValue();
+
+            // Empurrar o valor do float para a pilha de operandos
+            operands.push(value);
+        } catch (Exception e) {
+            throw new RuntimeException(
+                    " (" + floatDexp.getLine() + ", " + floatDexp.getColumn() + ") " + e.getMessage());
+        }
     }
 
     @Override
@@ -231,10 +315,15 @@ public class InterpretVisitor extends Visitor {
     public void visit(IntDexp intDexp) {
 
         System.out.println("Visit IntDexp in InterpretVisitor " + intDexp);
+        try {
+            // Obter o valor float da instância FloatDexp
+            int value = intDexp.getValue();
 
-        operands.push(intDexp.getValue());
-        // salvando o que vai receber o valor
-        // env.peek().put(String.valueOf(operands.pop()), intDexp.getValue());
+            // Empurrar o valor do float para a pilha de operandos
+            operands.push(value);
+        } catch (Exception e) {
+            throw new RuntimeException(" (" + intDexp.getLine() + ", " + intDexp.getColumn() + ") " + e.getMessage());
+        }
 
     }
 
@@ -246,11 +335,46 @@ public class InterpretVisitor extends Visitor {
     @Override
     public void visit(LessThan lessThan) {
         System.out.println("Visit LessThan in InterpretVisitor");
+        try {
+            // Visitando as expressões da esquerda e da direita
+            lessThan.getLeft().accept(this); // Empurra o valor da expressão esquerda para a pilha
+            lessThan.getRight().accept(this); // Empurra o valor da expressão direita para a pilha
+
+            // Obter os valores das expressões do topo da pilha
+            Object rightValue = operands.pop();
+            Object leftValue = operands.pop();
+
+            // Verificar se ambos são do mesmo tipo para comparação
+            if (leftValue.getClass() == rightValue.getClass()) {
+                boolean result;
+
+                // Comparar com base no tipo de valor
+                if (leftValue instanceof Integer) {
+                    result = (Integer) leftValue < (Integer) rightValue;
+                } else if (leftValue instanceof Float) {
+                    result = (Float) leftValue < (Float) rightValue;
+                } else if (leftValue instanceof Character) {
+                    result = (Character) leftValue < (Character) rightValue;
+                } else {
+                    throw new RuntimeException("Tipo não suportado para comparação '<': " + leftValue.getClass());
+                }
+
+                // Empurrar o resultado booleano para a pilha
+                operands.push(result);
+
+                // Mensagem opcional de depuração
+                System.out.println("Visit LessThan in InterpretVisitor: Comparison result is " + result);
+            } else {
+                throw new RuntimeException("Incompatibilidade de tipos: não é possível comparar " + leftValue.getClass()
+                        + " com " + rightValue.getClass());
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(" (" + lessThan.getLine() + ", " + lessThan.getColumn() + ") " + e.getMessage());
+        }
     }
 
     @Override
     public void visit(LValue lValue) {
-
         System.out.println("Visit LValue in InterpretVisitor");
     }
 
@@ -265,6 +389,49 @@ public class InterpretVisitor extends Visitor {
     @Override
     public void visit(Mod mod) {
         System.out.println("Visit Mod in InterpretVisitor");
+        try {
+            // Visitar as expressões da esquerda e da direita
+            mod.getLeft().accept(this); // Empurra o valor da expressão esquerda para a pilha
+            mod.getRight().accept(this); // Empurra o valor da expressão direita para a pilha
+
+            // Obter os valores das expressões do topo da pilha
+            Object rightValue = operands.pop();
+            Object leftValue = operands.pop();
+
+            // Verificar se ambos são do mesmo tipo para operação de módulo
+            if (leftValue.getClass() == rightValue.getClass()) {
+                Object result;
+
+                // Realizar a operação de módulo com base no tipo de valor
+                if (leftValue instanceof Integer) {
+                    if ((Integer) rightValue == 0) {
+                        throw new ArithmeticException("Divisão por zero ao calcular módulo.");
+                    }
+                    result = (Integer) leftValue % (Integer) rightValue;
+                } else if (leftValue instanceof Float) {
+                    if ((Float) rightValue == 0.0f) {
+                        throw new ArithmeticException("Divisão por zero ao calcular módulo.");
+                    }
+                    result = (Float) leftValue % (Float) rightValue;
+                } else {
+                    throw new RuntimeException("Tipo não suportado para operação '%': " + leftValue.getClass());
+                }
+
+                // Empurrar o resultado para a pilha
+                operands.push(result);
+
+                // Mensagem opcional de depuração
+                System.out.println(
+                        "Visit Mod in InterpretVisitor: Result of " + leftValue + " % " + rightValue + " is " + result);
+            } else {
+                throw new RuntimeException("Incompatibilidade de tipos: não é possível calcular o módulo de "
+                        + leftValue.getClass() + " com " + rightValue.getClass());
+            }
+        } catch (Exception e) {
+            // Tratamento de exceção genérica
+            System.err.println("Erro ao executar Mod: " + e.getMessage());
+            e.printStackTrace(); // Útil para depuração
+        }
     }
 
     @Override
@@ -300,6 +467,17 @@ public class InterpretVisitor extends Visitor {
     @Override
     public void visit(Print print) {
         System.out.println("Visit Print in InterpretVisitor");
+        try {
+            // Avalia a expressão associada ao comando print
+            print.getExpression().accept(this);
+            // O resultado da expressão estará no topo da pilha de operandos
+            Object value = operands.pop();
+
+            // Imprime o valor avaliado
+            System.out.println(value);
+        } catch (Exception e) {
+            throw new RuntimeException(" (" + print.getLine() + ", " + print.getColumn() + ") " + e.getMessage());
+        }
     }
 
     @Override
