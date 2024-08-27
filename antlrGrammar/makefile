@@ -25,3 +25,6 @@ clean:
 	lang/ast/*.class \
 	lang/*.class \
 	lang/visitors/*.class
+
+ex1:
+	java -cp .:antlr-4.8-complete.jar lang.LangCompiler -i lang/meu_teste/input.txt

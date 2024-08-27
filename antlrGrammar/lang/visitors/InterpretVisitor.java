@@ -22,8 +22,7 @@ public class InterpretVisitor extends Visitor {
         funcs = new HashMap<String, Func>();
         datas = new HashMap<String, Data>();
         operands = new Stack<Object>();
-        // retMode = false;
-        // debug = false;
+        retMode = false;
     }
 
     @Override
@@ -77,6 +76,12 @@ public class InterpretVisitor extends Visitor {
 
             operands.push(result);
 
+        } else if (left instanceof Float && right instanceof Float) {
+
+            Float result = (Float) left + (Float) right;
+
+            operands.push(result);
+
         } else {
             throw new RuntimeException("Operação Add com operandos incompatíveis");
         }
@@ -92,6 +97,13 @@ public class InterpretVisitor extends Visitor {
         if (left instanceof Integer && right instanceof Integer) {
             int result = (Integer) left - (Integer) right;
             operands.push(result);
+
+        } else if (left instanceof Float && right instanceof Float) {
+
+            Float result = (Float) left - (Float) right;
+
+            operands.push(result);
+
         } else {
             throw new RuntimeException("Operação Sub com operandos incompatíveis");
         }
@@ -109,6 +121,12 @@ public class InterpretVisitor extends Visitor {
         if (left instanceof Integer && right instanceof Integer) {
             int result = (Integer) left * (Integer) right;
             operands.push(result);
+        } else if (left instanceof Float && right instanceof Float) {
+
+            Float result = (Float) left * (Float) right;
+
+            operands.push(result);
+
         } else {
             throw new RuntimeException("Operação Mul com operandos incompatíveis");
         }
@@ -124,6 +142,12 @@ public class InterpretVisitor extends Visitor {
         if (left instanceof Integer && right instanceof Integer) {
             int result = (Integer) left / (Integer) right;
             operands.push(result);
+        } else if (left instanceof Float && right instanceof Float) {
+
+            Float result = (Float) left / (Float) right;
+
+            operands.push(result);
+
         } else {
             throw new RuntimeException("Operação Mul com operandos incompatíveis");
         }
@@ -229,6 +253,7 @@ public class InterpretVisitor extends Visitor {
     public void visit(Equals equals) {
         System.out.println("Visit Equals in InterpretVisitor");
         System.out.println(equals.toString());
+
         try {
             // Visitando as expressões da esquerda e da direita
             equals.getLeft().accept(this); // Isso empurra o valor da expressão esquerda para a pilha
