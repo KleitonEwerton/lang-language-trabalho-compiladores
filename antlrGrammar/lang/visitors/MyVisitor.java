@@ -48,6 +48,7 @@ public class MyVisitor extends langBaseVisitor<Node> {
 
     @Override
     public Node visitDeclName(langParser.DeclNameContext ctx) {
+        System.out.println("Visitando Decl");
         String id = ctx.ID().getText();
         Type type = (Type) visit(ctx.type());
         return new Decl(ctx.start.getLine(), ctx.start.getCharPositionInLine(), id, type);
@@ -105,6 +106,7 @@ public class MyVisitor extends langBaseVisitor<Node> {
 
     @Override
     public Node visitParamsName(langParser.ParamsNameContext ctx) {
+        System.out.println("Visitando Params");
         // Criação de listas para armazenar os IDs e tipos dos parâmetros
         List<String> ids = new ArrayList<>();
         List<Type> types = new ArrayList<>();
@@ -120,7 +122,6 @@ public class MyVisitor extends langBaseVisitor<Node> {
         }
         // Cria um novo objeto Param usando as listas de IDs e tipos
         Param paramNode = new Param(ctx.start.getLine(), ctx.start.getCharPositionInLine(), ids, types);
-
         // Retorna o objeto Param criado
         return paramNode;
 
@@ -272,6 +273,7 @@ public class MyVisitor extends langBaseVisitor<Node> {
 
     @Override
     public Node visitLvalueCmd(langParser.LvalueCmdContext ctx) {
+        System.out.println("Visitando lvaluecmd");
         // Visitar o lvalue
         LValue lvalue = (LValue) visit(ctx.lvalue());
 
@@ -323,12 +325,14 @@ public class MyVisitor extends langBaseVisitor<Node> {
     @Override
     public Node visitCexprExp(langParser.CexprExpContext ctx) {
         // Implementação para visitCexprExp
+        System.out.println("Visitando cexprExp");
         return super.visitCexprExp(ctx);
     }
 
     @Override
     public Node visitLessThanCexpr(langParser.LessThanCexprContext ctx) {
         // Visitar as expressões à esquerda e à direita do operador <
+        System.out.println("Visitando lessThanCexpr");
         Expr left = (Expr) visit(ctx.baexp(0));
         Expr right = (Expr) visit(ctx.baexp(1));
 
@@ -385,6 +389,7 @@ public class MyVisitor extends langBaseVisitor<Node> {
 
     @Override
     public Node visitOpexpBaexp(langParser.OpexpBaexpContext ctx) {
+        System.out.println("Visitando opexpBaexp");
         return super.visitOpexpBaexp(ctx);
     }
 
@@ -421,13 +426,17 @@ public class MyVisitor extends langBaseVisitor<Node> {
     @Override
     public Node visitDexpOpexp(langParser.DexpOpexpContext ctx) {
         // Implementação para visitDexpOpexp
+        System.out.println("Visitando dexpOpexp");
+        System.out.println(ctx.getText());
         return super.visitDexpOpexp(ctx);
     }
 
     @Override
     public Node visitNotDexp(langParser.NotDexpContext ctx) {
         // Visitar a expressão que está sendo negada
+        System.out.println("Visitando Not");
         Expr expr = (Expr) visit(ctx.dexp());
+        System.out.println("Expressão: " + expr.toString());
 
         // Criar uma nova instância de NotDexp com a linha e a coluna atuais
         return new Not(ctx.start.getLine(), ctx.start.getCharPositionInLine(), expr);
@@ -464,6 +473,7 @@ public class MyVisitor extends langBaseVisitor<Node> {
 
     @Override
     public Node visitIntDexp(langParser.IntDexpContext ctx) {
+        System.out.println("Visitando intDexp");
         // Obtém o valor do inteiro do contexto
         int value = Integer.parseInt(ctx.INT().getText());
 
@@ -484,7 +494,7 @@ public class MyVisitor extends langBaseVisitor<Node> {
     public Node visitCharDexp(langParser.CharDexpContext ctx) {
         // Obtém o texto do token CHAR e remove as aspas simples ao redor
         String charText = ctx.CHAR().getText();
-        
+
         // Cria uma instância de CharDexp usando a linha e coluna do token
         return new CharDexp(ctx.start.getLine(), ctx.start.getCharPositionInLine(), charText);
     }
@@ -492,23 +502,30 @@ public class MyVisitor extends langBaseVisitor<Node> {
     @Override
     public Node visitRexpDexp(langParser.RexpDexpContext ctx) {
         // Implementação para visitRexpDexp
+        System.out.println("Visitando rexpDexp");
         return super.visitRexpDexp(ctx);
     }
 
     @Override
     public Node visitLvalueRexp(langParser.LvalueRexpContext ctx) {
         // Implementação para visitLvalueRexp
+        System.out.println("Visitando lvalueRexp");
         return super.visitLvalueRexp(ctx);
     }
 
     @Override
     public Node visitParenRexp(langParser.ParenRexpContext ctx) {
         // Obtém a expressão dentro dos parênteses
-        Expr expr = (Expr) visit(ctx.exp()); // A expressão dentro dos parênteses
+        System.out.println("Visitando parenRexp");
+        // Expr expr = (Expr) visit(ctx.exp()); // A expressão dentro dos parênteses
 
-        // Cria uma instância de ParenRexp usando a linha e coluna do token de abertura
-        // dos parênteses
-        return new Paren(ctx.start.getLine(), ctx.start.getCharPositionInLine(), expr);
+        // // Cria uma instância de ParenRexp usando a linha e coluna do token de
+        // abertura
+        // // dos parênteses
+        // return new Paren(ctx.start.getLine(), ctx.start.getCharPositionInLine(),
+        // expr);
+        Expr expr = (Expr) visit(ctx.exp());
+        return expr;
     }
 
     @Override
@@ -520,10 +537,13 @@ public class MyVisitor extends langBaseVisitor<Node> {
         Expr expr = null;
         if (ctx.exp() != null) {
             expr = (Expr) visit(ctx.exp());
+            // Criando uma nova instância de NewExp
+            return new NewExp(ctx.start.getLine(), ctx.start.getCharPositionInLine(), type, expr);
+        }
+        else{
+            return new NewExp(ctx.start.getLine(), ctx.start.getCharPositionInLine(), type);
         }
 
-        // Criando uma nova instância de NewExp
-        return new NewExp(ctx.start.getLine(), ctx.start.getCharPositionInLine(), type, expr);
     }
 
     @Override

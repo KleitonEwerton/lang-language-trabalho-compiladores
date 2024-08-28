@@ -18,6 +18,6 @@ public class Not extends Expr {
 
     @Override
     public String toString() {
-        return "!" + getExpr().toString();
+        return "!" + expr.toString();
     }
 }

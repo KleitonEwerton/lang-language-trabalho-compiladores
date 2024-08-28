@@ -10,6 +10,12 @@ public class NewExp extends Expr {
         this.expr = expr;
     }
 
+    public NewExp(int line, int column, Type type) {
+        super(line, column);
+        this.type = type;
+        this.expr = null;
+    }
+
     public Type getType() {
         return type;
     }

@@ -76,7 +76,7 @@ opexp: opexp TYPE_ASTERISK dexp       #mulOpexp
    |   dexp                           #dexpOpexp
    ;
 
-dexp: TYPE_EXCLAMATION dexp           #notDexp
+dexp: <assoc=right>TYPE_EXCLAMATION dexp           #notDexp
    |  TYPE_MINUS dexp                 #negDexp
    |  TYPE_TRUE                       #trueDexp
    |  TYPE_FALSE                      #falseDexp
