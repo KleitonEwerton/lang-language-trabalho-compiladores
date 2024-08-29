@@ -87,10 +87,11 @@ dexp: <assoc=right>TYPE_EXCLAMATION dexp           #notDexp
    |  rexp                            #rexpDexp
    ;
 
-rexp: lvalue                                                                                             #lvalueRexp
-   | TYPE_OPEN_PARENTHESIS exp TYPE_CLOSE_PARENTHESIS                                                    #parenRexp
+rexp: 
+      TYPE_OPEN_PARENTHESIS exp TYPE_CLOSE_PARENTHESIS                                                   #parenRexp
    | TYPE_NEW type (TYPE_OPEN_BRACKET exp TYPE_CLOSE_BRACKET)?                                           #newRexp
-   | ID TYPE_OPEN_PARENTHESIS exps? TYPE_CLOSE_PARENTHESIS TYPE_OPEN_BRACKET exp TYPE_CLOSE_BRACKET      #funcCallRexp
+   | ID TYPE_OPEN_PARENTHESIS exps? TYPE_CLOSE_PARENTHESIS TYPE_OPEN_BRACKET exp TYPE_CLOSE_BRACKET     #funcCallRexp
+   | lvalue                                                                                             #lvalueRexp
    ;
 
 lvalue: ID                                                        #idLvalue

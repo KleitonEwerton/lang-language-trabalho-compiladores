@@ -1,12 +1,19 @@
 main(){
 
-   	x = new Int[10];  
-    
-    	y = new int[3];
+	x = 2;
+	y = x * 8 * 5 / x; 
 
- 	z = new Int [10];  
-    
-    	a = new int [3];
-    
-	a[3] = 3;
+	z = y - 3;
+
+	p = y + 4;
+
+	print y;
+	print z;
+	print p;
+
+	l = x + y - z * p / 2;
+
+	print l;
+
+  
 }

@@ -1,5 +1,7 @@
 package lang.ast;
 
+import lang.visitors.Visitor;
+
 public class NewExp extends Expr {
     private Type type;
     private Expr expr; // Opcional, pode ser null
@@ -22,6 +24,10 @@ public class NewExp extends Expr {
 
     public Expr getExpr() {
         return expr;
+    }
+
+    @Override
+    public void accept(Visitor v) {
     }
 
     @Override

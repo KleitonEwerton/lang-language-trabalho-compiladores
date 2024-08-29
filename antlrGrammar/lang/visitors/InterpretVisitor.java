@@ -68,14 +68,28 @@ public class InterpretVisitor extends Visitor {
     public void visit(Add add) {
 
         try {
-            // [ x ] Implementar o método visit para Prog
-
-            System.out.println("Interpreter Add in InterpretVisitor");
-
             add.getLeft().accept(this);
+
+            // if add.getLeft IdLValue -> get value from env
+            if (add.getLeft() instanceof IdLValue) {
+                IdLValue idLValue = (IdLValue) add.getLeft();
+                String varName = idLValue.getId();
+                Object varValue = env.peek().get(varName);
+                operands.push(varValue);
+            }
+
             Object left = operands.pop();
 
             add.getRight().accept(this);
+
+            // if add.getRight IdLValue -> get value from env
+            if (add.getRight() instanceof IdLValue) {
+                IdLValue idLValue = (IdLValue) add.getRight();
+                String varName = idLValue.getId();
+                Object varValue = env.peek().get(varName);
+                operands.push(varValue);
+            }
+
             Object right = operands.pop();
 
             if (left instanceof Integer && right instanceof Integer) {
@@ -100,9 +114,27 @@ public class InterpretVisitor extends Visitor {
     public void visit(Sub sub) {
         try {
             sub.getLeft().accept(this);
+
+            // if sub.getLeft IdLValue -> get value from env
+            if (sub.getLeft() instanceof IdLValue) {
+                IdLValue idLValue = (IdLValue) sub.getLeft();
+                String varName = idLValue.getId();
+                Object varValue = env.peek().get(varName);
+                operands.push(varValue);
+            }
+
             Object left = operands.pop();
 
             sub.getRight().accept(this);
+
+            // if sub.getRight IdLValue -> get value from env
+            if (sub.getRight() instanceof IdLValue) {
+                IdLValue idLValue = (IdLValue) sub.getRight();
+                String varName = idLValue.getId();
+                Object varValue = env.peek().get(varName);
+                operands.push(varValue);
+            }
+
             Object right = operands.pop();
 
             if (left instanceof Integer && right instanceof Integer) {
@@ -124,27 +156,45 @@ public class InterpretVisitor extends Visitor {
     }
 
     public void visit(Mul mul) {
+
         try {
             mul.getLeft().accept(this);
+
+            // if mul.getLeft IdLValue -> get value from env
+            if (mul.getLeft() instanceof IdLValue) {
+                IdLValue idLValue = (IdLValue) mul.getLeft();
+                String varName = idLValue.getId();
+                Object varValue = env.peek().get(varName);
+                operands.push(varValue);
+            }
+
             Object left = operands.pop();
 
-            System.out.println("Interpreter Mul in InterpretVisitor");
-
             mul.getRight().accept(this);
+
+            // if mul.getRight IdLValue -> get value from env
+            if (mul.getRight() instanceof IdLValue) {
+                IdLValue idLValue = (IdLValue) mul.getRight();
+                String varName = idLValue.getId();
+                Object varValue = env.peek().get(varName);
+                operands.push(varValue);
+            }
+
             Object right = operands.pop();
 
             if (left instanceof Integer && right instanceof Integer) {
                 int result = (Integer) left * (Integer) right;
                 operands.push(result);
+
             } else if (left instanceof Float && right instanceof Float) {
-
                 Float result = (Float) left * (Float) right;
-
                 operands.push(result);
 
             } else {
-                throw new RuntimeException("Operação Mul com operandos incompatíveis");
+                throw new RuntimeException(
+                        "Operação Mul com operandos incompatíveis: left=" + left + ", right=" + right);
             }
+
         } catch (Exception e) {
             throw new RuntimeException(" (" + mul.getLine() + ", " + mul.getColumn() + ") " + e.getMessage());
         }
@@ -153,9 +203,27 @@ public class InterpretVisitor extends Visitor {
     public void visit(Div div) {
         try {
             div.getLeft().accept(this);
+
+            // if div.getLeft IdLValue -> get value from env
+            if (div.getLeft() instanceof IdLValue) {
+                IdLValue idLValue = (IdLValue) div.getLeft();
+                String varName = idLValue.getId();
+                Object varValue = env.peek().get(varName);
+                operands.push(varValue);
+            }
+
             Object left = operands.pop();
 
             div.getRight().accept(this);
+
+            // if div.getRight IdLValue -> get value from env
+            if (div.getRight() instanceof IdLValue) {
+                IdLValue idLValue = (IdLValue) div.getRight();
+                String varName = idLValue.getId();
+                Object varValue = env.peek().get(varName);
+                operands.push(varValue);
+            }
+
             Object right = operands.pop();
 
             if (left instanceof Integer && right instanceof Integer) {
@@ -288,6 +356,7 @@ public class InterpretVisitor extends Visitor {
 
         try {
             String value = charDexp.getValue();
+            System.out.println("Interpreter CharDexp in InterpretVisitor: " + value);
             operands.push(value);
 
         } catch (Exception e) {
@@ -534,37 +603,66 @@ public class InterpretVisitor extends Visitor {
     @Override
     public void visit(LvalueCmd lvalueCmd) {
         try {
-
             System.out.println("Interpreter LvalueCmd in InterpretVisitor " + lvalueCmd.getExpr());
 
-            System.out.println("--------------------");
-
-            System.out.println("GetLvalue: " + lvalueCmd.getLvalue());
-
-            lvalueCmd.getLvalue().accept(this);
-
-            System.out.println("--------------------");
-            System.out.println("GetExpr: " + lvalueCmd.getExpr());
+            // Avalia o lado direito da atribuição (expressão)
             lvalueCmd.getExpr().accept(this);
+            Object value = operands.pop();
 
-            System.out.println("--------------------");
+            // Processa o lado esquerdo da atribuição (lvalue)
+            if (lvalueCmd.getLvalue() instanceof IdLValue) {
+                IdLValue idLValue = (IdLValue) lvalueCmd.getLvalue();
+                String varName = idLValue.getId();
 
+                // Adiciona ou atualiza o valor da variável no ambiente
+                setVariableValue(varName, value);
+                System.out.println("Atribuição: " + varName + " = " + value);
+
+            } else {
+                throw new RuntimeException("Atribuição inválida para lvalue");
+            }
         } catch (Exception e) {
             throw new RuntimeException(
                     " (" + lvalueCmd.getLine() + ", " + lvalueCmd.getColumn() + ") " + e.getMessage());
         }
+    }
 
+    // Método para definir ou atualizar o valor de uma variável no ambiente
+    private void setVariableValue(String varName, Object value) {
+        // Adiciona ou atualiza no escopo atual (topo da pilha)
+        if (!env.isEmpty()) {
+            env.peek().put(varName, value); // Atualiza ou insere a variável no topo do ambiente
+        } else {
+            throw new RuntimeException("Ambiente vazio, não é possível definir variáveis.");
+        }
     }
 
     @Override
     public void visit(Mod mod) {
         try {
-            System.out.println("Interpreter Mod in InterpretVisitor");
             mod.getLeft().accept(this);
+
+            // if mod.getLeft IdLValue -> get value from env
+            if (mod.getLeft() instanceof IdLValue) {
+                IdLValue idLValue = (IdLValue) mod.getLeft();
+                String varName = idLValue.getId();
+                Object varValue = env.peek().get(varName);
+                operands.push(varValue);
+            }
+
+            Object leftValue = operands.pop();
+
             mod.getRight().accept(this);
 
+            // if mod.getRight IdLValue -> get value from env
+            if (mod.getRight() instanceof IdLValue) {
+                IdLValue idLValue = (IdLValue) mod.getRight();
+                String varName = idLValue.getId();
+                Object varValue = env.peek().get(varName);
+                operands.push(varValue);
+            }
+
             Object rightValue = operands.pop();
-            Object leftValue = operands.pop();
 
             if (leftValue.getClass() == rightValue.getClass()) {
                 Object result;
@@ -725,11 +823,22 @@ public class InterpretVisitor extends Visitor {
     @Override
     public void visit(Print print) {
         try {
-            System.out.println("Interpreter Print in InterpretVisitor");
+            System.out.println("Interpreter Print in InterpretVisitor " + print.getExpression().getClass());
             print.getExpression().accept(this);
+
+            // if print IdLValue -> get value from env
+
+            if (print.getExpression() instanceof IdLValue) {
+                IdLValue idLValue = (IdLValue) print.getExpression();
+                String varName = idLValue.getId();
+                Object varValue = env.peek().get(varName);
+                operands.push(varValue);
+            }
+
             Object value = operands.pop();
 
             System.out.println(value);
+
         } catch (Exception e) {
             throw new RuntimeException(" (" + print.getLine() + ", " + print.getColumn() + ") " + e.getMessage());
         }
@@ -918,18 +1027,22 @@ public class InterpretVisitor extends Visitor {
 
     @Override
     public void visit(IdLValue idLValue) {
-
         try {
-            System.out.println("Interpreter IdLValue in InterpretVisitor - " + idLValue);
+            // Aqui, ao visitar um IdLValue, não precisamos buscar o valor da variável para
+            // atribuição
+            // pois a atribuição já lida com a definição ou atualização da variável
+            String varName = idLValue.getId();
 
-            // empilhara em env
-            // env.peek().put(idLValue, operands.pop());
+            // Para outras operações que requerem o valor de `x`, o método
+            // `getVariableValue` pode ser usado
+            if (debug) {
+                System.out.println("Visitando IdLValue: " + varName);
+            }
 
         } catch (Exception e) {
             throw new RuntimeException(
                     " (" + idLValue.getLine() + ", " + idLValue.getColumn() + ") " + e.getMessage());
         }
-
     }
 
     @Override
