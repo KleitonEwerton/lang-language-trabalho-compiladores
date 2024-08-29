@@ -192,6 +192,9 @@ public class InterpretVisitor extends Visitor {
     public void visit(Cmd cmd) {
 
         System.out.println("Interpreter Cmd: " + cmd.toString());
+
+        cmd.accept(this);
+
     }
 
     @Override
@@ -367,6 +370,7 @@ public class InterpretVisitor extends Visitor {
     @Override
     public void visit(FuncCallCmd funcCallCmd) {
         try {
+
             System.out.println("Interpreter FuncCallCmd in InterpretVisitor");
 
         } catch (Exception e) {
@@ -530,9 +534,20 @@ public class InterpretVisitor extends Visitor {
     @Override
     public void visit(LvalueCmd lvalueCmd) {
         try {
-            System.out.println("Interpreter LvalueCmd in InterpretVisitor " + lvalueCmd);
+
+            System.out.println("Interpreter LvalueCmd in InterpretVisitor " + lvalueCmd.getExpr());
+
+            System.out.println("--------------------");
+
+            System.out.println("GetLvalue: " + lvalueCmd.getLvalue());
+
             lvalueCmd.getLvalue().accept(this);
+
+            System.out.println("--------------------");
+            System.out.println("GetExpr: " + lvalueCmd.getExpr());
             lvalueCmd.getExpr().accept(this);
+
+            System.out.println("--------------------");
 
         } catch (Exception e) {
             throw new RuntimeException(
@@ -905,7 +920,10 @@ public class InterpretVisitor extends Visitor {
     public void visit(IdLValue idLValue) {
 
         try {
-            System.out.println("Interpreter IdLValue in InterpretVisitor");
+            System.out.println("Interpreter IdLValue in InterpretVisitor - " + idLValue);
+
+            // empilhara em env
+            // env.peek().put(idLValue, operands.pop());
 
         } catch (Exception e) {
             throw new RuntimeException(

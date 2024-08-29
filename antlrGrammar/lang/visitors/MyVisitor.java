@@ -427,7 +427,6 @@ public class MyVisitor extends langBaseVisitor<Node> {
     public Node visitDexpOpexp(langParser.DexpOpexpContext ctx) {
         // Implementação para visitDexpOpexp
         System.out.println("Visitando dexpOpexp");
-        System.out.println(ctx.getText());
         return super.visitDexpOpexp(ctx);
     }
 
@@ -502,7 +501,7 @@ public class MyVisitor extends langBaseVisitor<Node> {
     @Override
     public Node visitRexpDexp(langParser.RexpDexpContext ctx) {
         // Implementação para visitRexpDexp
-        System.out.println("Visitando rexpDexp");
+        System.out.println("Visitando rexpDexp ");
         return super.visitRexpDexp(ctx);
     }
 
@@ -539,8 +538,7 @@ public class MyVisitor extends langBaseVisitor<Node> {
             expr = (Expr) visit(ctx.exp());
             // Criando uma nova instância de NewExp
             return new NewExp(ctx.start.getLine(), ctx.start.getCharPositionInLine(), type, expr);
-        }
-        else{
+        } else {
             return new NewExp(ctx.start.getLine(), ctx.start.getCharPositionInLine(), type);
         }
 
