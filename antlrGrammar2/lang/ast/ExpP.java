@@ -3,11 +3,11 @@ package lang.ast;
 
 import lang.visitors.Visitor;
 
-public class ExpParenthesis extends Expression {
+public class ExpP extends Expression {
 
     private Expression exp;
 
-    public ExpParenthesis(int line, int column, Expression exp) {
+    public ExpP(int line, int column, Expression exp) {
         super(line, column);
         this.exp = exp;
     }

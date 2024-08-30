@@ -59,7 +59,7 @@ public class InterpreterAdaptorImplementation implements InterpreterAdaptor {
 
             // Cria um adaptador da ParseTree do ANTLR para receber o padrão Node
             // criado para a AST do trabalho
-            VisitorAdapter ast = new VisitorAdapter();
+            MyVisitor ast = new MyVisitor();
 
             // Passa um objeto do tipo parseTree e retorna do tipo Node
             // Visita a árvore

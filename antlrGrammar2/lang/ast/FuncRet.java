@@ -3,13 +3,13 @@ package lang.ast;
 
 import lang.visitors.Visitor;
 
-public class FunctionReturn extends Expression {
+public class FuncRet extends Expression {
 
     private String id;
     private CallParam fCallParams;
     private Expression exp;
 
-    public FunctionReturn(int line, int column, String id, CallParam fCallParams, Expression exp) {
+    public FuncRet(int line, int column, String id, CallParam fCallParams, Expression exp) {
         super(line, column);
         this.id = id;
         this.fCallParams = fCallParams;

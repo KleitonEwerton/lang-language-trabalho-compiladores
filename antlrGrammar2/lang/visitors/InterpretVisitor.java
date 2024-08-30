@@ -188,11 +188,6 @@ public class InterpretVisitor extends Visitor {
     }
 
     @Override
-    public void visit(Type t) {
-
-    }
-
-    @Override
     public void visit(Cmd c) {
         try {
 
@@ -225,9 +220,8 @@ public class InterpretVisitor extends Visitor {
         try {
             i.getExp().accept(this);
 
-            // Desempilha os operandos com "parametro" do if
             if ((boolean) operands.pop()) {
-                i.getCmd().accept(this); // Verifica se o corpo de comandos do if é aceito
+                i.getCmd().accept(this);
             }
         } catch (Exception x) {
             throw new RuntimeException(" (" + i.getLine() + ", " + i.getColumn() + ") " + x.getMessage());
@@ -239,9 +233,8 @@ public class InterpretVisitor extends Visitor {
         try {
             i.getExp().accept(this);
 
-            // Desempilha os operandos com "parametro" do if
             if ((boolean) operands.pop()) {
-                i.getCmd().accept(this); // Verifica se o corpo de comandos do if é aceito
+                i.getCmd().accept(this);
             } else {
                 i.getElseCmd().accept(this);
             }
@@ -252,16 +245,21 @@ public class InterpretVisitor extends Visitor {
 
     @Override
     public void visit(Iterate i) {
-        try {
 
+        try {
             i.getExp().accept(this);
             Object obj = operands.pop();
+
             if (obj instanceof Boolean) {
-                do {
+
+                while ((Boolean) obj) {
+
                     i.getCmd().accept(this);
                     i.getExp().accept(this);
                     obj = operands.pop();
-                } while ((Boolean) obj);
+
+                }
+
             } else if (obj instanceof Integer) {
                 for (int j = 0; j < (Integer) obj; j++) {
                     i.getCmd().accept(this);
@@ -476,7 +474,7 @@ public class InterpretVisitor extends Visitor {
                 }
             } else {
                 throw new RuntimeException(" (" + l.getLine() + ", " + l.getColumn()
-                        + ") : Expressoes invalidas na operacao de comparacao menor com \'<\' !!");
+                        + ") : Error: operacao de comparacao menor com \'<\' !!");
             }
         } catch (Exception x) {
             throw new RuntimeException(" (" + l.getLine() + ", " + l.getColumn() + ") " + x.getMessage());
@@ -511,7 +509,7 @@ public class InterpretVisitor extends Visitor {
                     }
                 } else {
                     throw new RuntimeException(" (" + e.getLine() + ", " + e.getColumn()
-                            + ") : Expressoes invalidas na operacao de igualdade de comparacao usando \'==\' !!");
+                            + ") : Error: operacao de igualdade de comparacao usando \'==\' !!");
                 }
             }
         } catch (Exception x) {
@@ -547,15 +545,13 @@ public class InterpretVisitor extends Visitor {
                     }
                 } else {
                     throw new RuntimeException(" (" + n.getLine() + ", " + n.getColumn()
-                            + ") : Expressoes invalidas na operacao de diferencao na comparacao usando \'!=\' !!");
+                            + ") : Error: operacao de diferencao na comparacao usando \'!=\' !!");
                 }
             }
         } catch (Exception x) {
             throw new RuntimeException(" (" + n.getLine() + ", " + n.getColumn() + ") " + x.getMessage());
         }
     }
-
-    // Partem do aexp
 
     @Override
     public void visit(Add a) {
@@ -564,13 +560,16 @@ public class InterpretVisitor extends Visitor {
             a.getRight().accept(this);
             Object right = operands.pop();
             Object left = operands.pop();
+
             if (left instanceof Float || right instanceof Float) {
                 operands.push((Float) left + (Float) right);
+
             } else if (left instanceof Integer && right instanceof Integer) {
                 operands.push((Integer) left + (Integer) right);
+
             } else {
                 throw new RuntimeException(" (" + a.getLine() + ", " + a.getColumn()
-                        + ") : Expressoes invalidas na operacao de adicao \'+\' !!");
+                        + ") : Error: operacao de adicao \'+\' !!");
             }
         } catch (Exception e) {
             throw new RuntimeException(" (" + a.getLine() + ", " + a.getColumn() + ") " + e.getMessage());
@@ -582,40 +581,43 @@ public class InterpretVisitor extends Visitor {
         try {
             s.getLeft().accept(this);
             s.getRight().accept(this);
-            // Primeiro é empilhado da esquerda pra direita, logo, o topo da pilha
-            // é o operando da direita
+
             Object right = operands.pop();
             Object left = operands.pop();
+
             if (left instanceof Float || right instanceof Float) {
                 operands.push((Float) left - (Float) right);
+
             } else if (left instanceof Integer && right instanceof Integer) {
                 operands.push((Integer) left - (Integer) right);
+
             } else {
                 throw new RuntimeException(" (" + s.getLine() + ", " + s.getColumn()
-                        + ") : Expressoes invalidas na operacao de subtracao \'-\' !!");
+                        + ") : Error: operacao de subtracao \'-\' !!");
             }
         } catch (Exception x) {
             throw new RuntimeException(" (" + s.getLine() + ", " + s.getColumn() + ") " + x.getMessage());
         }
     }
 
-    // Partem do mexp
     @Override
     public void visit(Mul m) {
         try {
             m.getLeft().accept(this);
             m.getRight().accept(this);
-            // Primeiro é empilhado da esquerda pra direita, logo, o topo da pilha
-            // é o operando da direita
+
             Object right = operands.pop();
             Object left = operands.pop();
+
             if (left instanceof Float || right instanceof Float) {
                 operands.push((Float) left * (Float) right);
+
             } else if (left instanceof Integer && right instanceof Integer) {
                 operands.push((Integer) left * (Integer) right);
+
             } else {
                 throw new RuntimeException(" (" + m.getLine() + ", " + m.getColumn()
-                        + ") : Expressoes invalidas na operacao de multiplicacao \'*\' !!");
+                        + ") : Error: operacao de multiplicacao \'*\' !!");
             }
         } catch (Exception x) {
             throw new RuntimeException(" (" + m.getLine() + ", " + m.getColumn() + ") " + x.getMessage());
@@ -627,8 +629,7 @@ public class InterpretVisitor extends Visitor {
         try {
             d.getLeft().accept(this);
             d.getRight().accept(this);
-            // Primeiro é empilhado da esquerda pra direita, logo, o topo da pilha
-            // é o operando da direita
+
             Object right = operands.pop();
             Object left = operands.pop();
             if (left instanceof Float || right instanceof Float) {
@@ -637,7 +638,7 @@ public class InterpretVisitor extends Visitor {
                 operands.push((Integer) left / (Integer) right);
             } else {
                 throw new RuntimeException(" (" + d.getLine() + ", " + d.getColumn()
-                        + ") : Expressoes invalidas na operacao de divisao \'/\' !!");
+                        + ") : Error: operacao de divisao \'/\' !!");
             }
         } catch (Exception x) {
             throw new RuntimeException(" (" + d.getLine() + ", " + d.getColumn() + ") " + x.getMessage());
@@ -657,14 +658,12 @@ public class InterpretVisitor extends Visitor {
                 operands.push((Integer) left % (Integer) right);
             } else {
                 throw new RuntimeException(" (" + m.getLine() + ", " + m.getColumn()
-                        + ") : Expressoes invalidas na operacao de divisao modular \'%\' !!");
+                        + ") : Error: operacao de divisao modular \'%\' !!");
             }
         } catch (Exception x) {
             throw new RuntimeException(" (" + m.getLine() + ", " + m.getColumn() + ") " + x.getMessage());
         }
     }
-
-    // Partem do sexp
 
     @Override
     public void visit(Not n) {
@@ -745,153 +744,120 @@ public class InterpretVisitor extends Visitor {
         }
     }
 
-    // Partem do pexp
-
     @Override
-    public void visit(PexpIdentifier i) {
-
-    }
-
-    @Override
-    public void visit(ExpParenthesis e) {
-
-    }
-
-    @Override
-    public void visit(NewExp t) {
+    public void visit(NewExp newExp) {
         try {
+            if (newExp.getType() != null) {
+                if (newExp.getExp() != null) {
+                    newExp.getType().accept(this);
+                    newExp.getExp().accept(this);
 
-            if (t.getType() != null) {
-                if (t.getExp() != null) {
-                    t.getType().accept(this);
-                    t.getExp().accept(this);
+                    if (newExp.getType() instanceof NameType) {
+                        Integer count = (Integer) operands.pop();
+                        Object value = operands.pop();
 
-                    if (t.getType() instanceof NameType) {
-
-                        Integer i = (Integer) operands.pop();
-
-                        Object obj = operands.pop();
-
-                        List<Object> lista = new ArrayList<Object>(i);
-                        for (int k = 0; k < i; k++) {
-                            lista.add(obj);
-                        }
-                        operands.push(lista);
+                        List<Object> objectList = createListWithValues(count, value);
+                        operands.push(objectList);
                     } else {
+                        Integer count = (Integer) operands.pop();
+                        Object value = operands.pop();
 
-                        Integer i = (Integer) operands.pop();
-
-                        Object obj = operands.pop();
-                        List<Object> lista = new ArrayList<Object>(i);
-                        for (int k = 0; k < i; k++) {
-                            lista.add(obj);
-                        }
-                        operands.push(lista);
+                        List<Object> objectList = createListWithValues(count, value);
+                        operands.push(objectList);
                     }
                 } else {
-
-                    Object valorPadrao = new Obj(t.getLine(), t.getColumn(), t.getType());
-                    operands.push(valorPadrao);
+                    Object defaultValue = new Obj(newExp.getLine(), newExp.getColumn(), newExp.getType());
+                    operands.push(defaultValue);
                 }
             } else {
-                if (t.getExp() == null) {
+                if (newExp.getExp() == null) {
+                    String dataName = newExp.getDataName();
+                    HashMap<String, Object> newVariableMap = new HashMap<>();
 
-                    String dataID = t.getDataName();
-
-                    HashMap<String, Object> newVar = new HashMap<String, Object>();
-
-                    for (Decl d : datas.get(dataID).getDeclarations()) {
-
-                        d.getType().accept(this);
-
+                    for (Decl declaration : datas.get(dataName).getDeclarations()) {
+                        declaration.getType().accept(this);
                         operands.pop();
 
-                        Object valorPadrao = new Obj(t.getLine(), t.getColumn(),
-                                d.getId(), d.getType());
-
-                        newVar.put(d.getId(), valorPadrao);
+                        Object defaultObject = new Obj(newExp.getLine(), newExp.getColumn(),
+                                declaration.getId(), declaration.getType());
+                        newVariableMap.put(declaration.getId(), defaultObject);
                     }
-                    operands.push(newVar);
+                    operands.push(newVariableMap);
                 } else {
-                    t.getExp().accept(this);
+                    newExp.getExp().accept(this);
 
-                    String dataID = t.getDataName();
+                    String dataName = newExp.getDataName();
+                    Integer count = (Integer) operands.pop();
+                    List<Object> objectList = new ArrayList<>(count);
 
-                    Integer i = (Integer) operands.pop();
-
-                    List<Object> lista = new ArrayList<Object>(i);
-
-                    for (int k = 0; k < i; k++) {
-
-                        HashMap<String, Object> newVar = new HashMap<String, Object>();
-                        for (Decl d : datas.get(dataID).getDeclarations()) {
-
-                            Object valorPadrao = new Obj(t.getLine(), t.getColumn(),
-                                    d.getId(), d.getType());
-
-                            newVar.put(d.getId(), valorPadrao);
+                    for (int i = 0; i < count; i++) {
+                        HashMap<String, Object> newVariableMap = new HashMap<>();
+                        for (Decl declaration : datas.get(dataName).getDeclarations()) {
+                            Object defaultObject = new Obj(newExp.getLine(), newExp.getColumn(),
+                                    declaration.getId(), declaration.getType());
+                            newVariableMap.put(declaration.getId(), defaultObject);
                         }
-                        lista.add(newVar);
+                        objectList.add(newVariableMap);
                     }
-                    operands.push(lista);
+                    operands.push(objectList);
                 }
             }
-        } catch (Exception x) {
-            throw new RuntimeException(" (" + t.getLine() + ", " + t.getColumn() + ") " + x.getMessage());
+        } catch (Exception e) {
+            throw new RuntimeException(
+                    String.format(" (%d, %d) %s", newExp.getLine(), newExp.getColumn(), e.getMessage()));
         }
     }
 
     @Override
-    public void visit(FunctionReturn f) {
-
+    public void visit(FuncRet funcRet) {
         try {
 
-            Func function = funcs.get(f.getId());
+            Func funcao = funcs.get(funcRet.getId());
 
-            if (f != null) {
-                if (f.getFCallParams() != null) {
-
-                    for (Expression exp : f.getFCallParams().getExps()) {
-                        exp.accept(this);
-                        Object obj = (Object) operands.pop();
-                        parms.push(obj);
-
-                    }
-                }
-
-                function.accept(this);
-                IntDexp valueReturnedPos = (IntDexp) f.getExpIndex();
-
-                if (function.getReturnTypes().size() == 2) {
-                    if ((Integer) valueReturnedPos.getValue() == 0 ||
-                            (Integer) valueReturnedPos.getValue() == 1) {
-                        if ((Integer) valueReturnedPos.getValue() == 0) {
-                            operands.pop();
-                        }
-
-                    } else {
-                        throw new RuntimeException(" (" + f.getLine() + ", " + f.getColumn()
-                                + ") Acesso a posicao invalida de elemento no retorno da funcao");
-                    }
-                } else if (function.getReturnTypes().size() == 1) {
-                    if ((Integer) valueReturnedPos.getValue() == 0) {
-
-                    } else {
-                        throw new RuntimeException(" (" + f.getLine() + ", " + f.getColumn()
-                                + ") Acesso a posicao invalida de elemento no retorno da funcao");
-                    }
-                } else {
-                    throw new RuntimeException(" (" + f.getLine() + ", " + f.getColumn()
-                            + ") A funcao nao apresenta tipos de retorno");
+            if (funcRet != null && funcRet.getFCallParams() != null) {
+                for (Expression exp : funcRet.getFCallParams().getExps()) {
+                    exp.accept(this);
+                    parms.push(operands.pop());
                 }
             }
-        } catch (Exception x) {
-            throw new RuntimeException(" (" + f.getLine() + ", " + f.getColumn() + ") " + x.getMessage());
+
+            if (funcao != null) {
+                funcao.accept(this);
+                IntDexp indiceRetorno = (IntDexp) funcRet.getExpIndex();
+                Integer posicaoRetorno = (Integer) indiceRetorno.getValue();
+                int numTiposRetorno = funcao.getReturnTypes().size();
+
+                if (numTiposRetorno == 2) {
+                    if (posicaoRetorno == 0 || posicaoRetorno == 1) {
+                        if (posicaoRetorno == 0) {
+                            operands.pop();
+                        }
+                    } else {
+                        throw new RuntimeException(
+                                String.format(" (%d, %d) Acesso a uma posição inválida", funcRet.getLine(),
+                                        funcRet.getColumn()));
+                    }
+                }
+
+                else if (numTiposRetorno == 1) {
+                    if (posicaoRetorno != 0) {
+                        throw new RuntimeException(
+                                String.format(" (%d, %d) Acesso a uma posição inválida", funcRet.getLine(),
+                                        funcRet.getColumn()));
+                    }
+                }
+
+                else {
+                    throw new RuntimeException(
+                            String.format(" (%d, %d) A função não possui tipos de retorno válidos", funcRet.getLine(),
+                                    funcRet.getColumn()));
+                }
+            }
+        } catch (Exception ex) {
+            throw new RuntimeException(
+                    String.format(" (%d, %d) %s", funcRet.getLine(), funcRet.getColumn(), ex.getMessage()));
         }
-
     }
-
-    // Partem do lvalue
 
     @Override
     public void visit(LValue l) {
@@ -1014,4 +980,28 @@ public class InterpretVisitor extends Visitor {
     public void visit(Decl d) {
 
     }
+
+    @Override
+    public void visit(Type t) {
+
+    }
+
+    @Override
+    public void visit(PexpIdentifier i) {
+
+    }
+
+    @Override
+    public void visit(ExpP e) {
+
+    }
+
+    private List<Object> createListWithValues(int count, Object value) {
+        List<Object> list = new ArrayList<>(count);
+        for (int i = 0; i < count; i++) {
+            list.add(value);
+        }
+        return list;
+    }
+
 }
