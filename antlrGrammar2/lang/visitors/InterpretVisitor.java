@@ -68,6 +68,9 @@ public class InterpretVisitor extends Visitor {
 
         for (Cmd command : f.getCommands()) {
             command.accept(this);
+            if (retMode) {
+                break; // return das funções !evitar loop infinito
+            }
         }
 
         env.pop();
