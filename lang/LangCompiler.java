@@ -1,6 +1,8 @@
+/*  Trabalho da disciplina DCC045 - Teoria dos Compiladores
+ *  Kleiton Ewerton de Oliveira - MAT 202065050C
+ *  Nikolas Oliver Sales Genesio - MAT 202065072C
+ */
 package lang;
-
-import java.io.*;
 
 import lang.ast.*;
 import lang.parser.*;
@@ -9,7 +11,7 @@ import lang.visitors.*;
 public class LangCompiler {
     public static void main(String[] args) {
         if (args.length < 1) {
-            System.out.println("Lang compiler v 0.0.1 - Agosto de 2024");
+            System.out.println("Lang compiler v 0.0.1 - Agosto de 2024 - Copia do Template do Professor");
             System.out.println("Use java -cp . Lang ação <Caminho para código Fonte> ");
             System.out.println("Ação (uma das seguintes possibilidades): ");
             System.out.println(" -bs : Executa uma bateria de testes sintáticos");
