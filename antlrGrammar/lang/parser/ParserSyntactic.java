@@ -25,9 +25,9 @@ public class ParserSyntactic implements ParseAdaptor {
         }
 
         // Criação do lexer e parser
-        langLexer lexer = new langLexer(input);
+        LangLexer lexer = new LangLexer(input);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
-        langParser parser = new langParser(tokens);
+        LangParser parser = new LangParser(tokens);
 
         // Parsing
         ParseTree tree = parser.prog(); // ou o nome da regra inicial

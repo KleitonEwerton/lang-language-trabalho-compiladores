@@ -1,8 +1,8 @@
- /*  Trabalho da disciplina DCC045 - Teoria dos Compiladores
-  *  Kleiton Ewerton de Oliveira - MAT 202065050C
-  *  Nikolas Oliver Sales Genesio - MAT 202065072C
-  */
-  
+/*  Trabalho da disciplina DCC045 - Teoria dos Compiladores
+ *  Kleiton Ewerton de Oliveira - MAT 202065050C
+ *  Nikolas Oliver Sales Genesio - MAT 202065072C
+ */
+
 package lang.ast;
 
 import java.util.List;
@@ -23,6 +23,14 @@ public class Prog extends Node {
         return defs;
     }
 
+    public void addFunc(Func function) {
+        this.defs.add(function);
+    }
+
+    public void addData(Data data) {
+        this.defs.add(data);
+    }
+
     @Override
     public void accept(Visitor v) {
         v.visit(this);
@@ -31,8 +39,8 @@ public class Prog extends Node {
     @Override
     public String toString() {
         return defs.stream()
-                   .map(Object::toString)
-                   .collect(Collectors.joining("\n"));
+                .map(Object::toString)
+                .collect(Collectors.joining("\n"));
     }
-    
+
 }
