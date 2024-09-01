@@ -6,7 +6,7 @@ import lang.visitors.Visitor;
 import java.util.List;
 import java.util.ArrayList;
 
-public class CmdsList extends Cmd {
+public class BlockCmd extends Cmd {
     /**
      * ---- Regra
      * cmd: OPEN_BRACES cmd* CLOSE_BRACES # CommandsList
@@ -14,12 +14,12 @@ public class CmdsList extends Cmd {
 
     private List<Cmd> commands;
 
-    public CmdsList(int line, int column, List<Cmd> commands) {
+    public BlockCmd(int line, int column, List<Cmd> commands) {
         super(line, column);
         this.commands = commands;
     }
 
-    public CmdsList(int line, int column) {
+    public BlockCmd(int line, int column) {
         super(line, column);
         this.commands = new ArrayList<Cmd>();
     }

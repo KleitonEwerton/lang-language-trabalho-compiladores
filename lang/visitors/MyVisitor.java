@@ -138,7 +138,7 @@ public class MyVisitor extends LangBaseVisitor<Node> {
             cmds.add((Cmd) ctx.cmd().get(i).accept(this));
         }
 
-        return new CmdsList(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine(), cmds);
+        return new BlockCmd(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine(), cmds);
     }
 
     @Override
@@ -344,7 +344,7 @@ public class MyVisitor extends LangBaseVisitor<Node> {
 
         Expr exp = (Expr) ctx.getChild(1).accept(this);
 
-        return new Min(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine(), exp);
+        return new Neg(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine(), exp);
     }
 
     @Override

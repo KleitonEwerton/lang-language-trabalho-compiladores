@@ -3,11 +3,11 @@ package lang.ast;
 
 import lang.visitors.Visitor;
 
-public class Min extends Expr {
+public class Neg extends Expr {
 
     private Expr exp;
 
-    public Min(int line, int column, Expr exp) {
+    public Neg(int line, int column, Expr exp) {
         super(line, column);
         this.exp = exp;
     }

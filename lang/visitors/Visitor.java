@@ -22,7 +22,7 @@ public abstract class Visitor {
 
     public abstract void visit(Cmd c);
 
-    public abstract void visit(CmdsList c);
+    public abstract void visit(BlockCmd c);
 
     public abstract void visit(Data d);
 
@@ -60,7 +60,7 @@ public abstract class Visitor {
 
     public abstract void visit(LValue l);
 
-    public abstract void visit(Min n);
+    public abstract void visit(Neg n);
 
     public abstract void visit(Mod m);
 

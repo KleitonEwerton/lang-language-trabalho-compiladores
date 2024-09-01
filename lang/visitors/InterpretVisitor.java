@@ -201,7 +201,7 @@ public class InterpretVisitor extends Visitor {
     }
 
     @Override
-    public void visit(CmdsList c) {
+    public void visit(BlockCmd c) {
         if (retMode) {
             return;
         }
@@ -685,7 +685,7 @@ public class InterpretVisitor extends Visitor {
     }
 
     @Override
-    public void visit(Min n) {
+    public void visit(Neg n) {
         try {
             n.getExpression().accept(this);
             Object valor = operands.pop();
