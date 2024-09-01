@@ -1,52 +1,53 @@
+/*  Trabalho da disciplina DCC045 - Teoria dos Compiladores
+ *  Kleiton Ewerton de Oliveira - MAT 202065050C
+ *  Nikolas Oliver Sales Genesio - MAT 202065072C
+ */
+
 package lang.ast;
 
-import lang.visitors.Visitor;
-
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
+import lang.visitors.*;
+
+/*
+ * Esta classe representa um bloco de comandos, que contém zero ou mais comandos.
+ */
 
 public class BlockCmd extends Cmd {
-    /**
-     * ---- Regra
-     * cmd: OPEN_BRACES cmd* CLOSE_BRACES # CommandsList
-     */
 
-    private List<Cmd> commands;
-
-    public BlockCmd(int line, int column, List<Cmd> commands) {
-        super(line, column);
-        this.commands = commands;
-    }
+    private List<Cmd> cmds;
 
     public BlockCmd(int line, int column) {
         super(line, column);
-        this.commands = new ArrayList<Cmd>();
+        this.cmds = new ArrayList<Cmd>();
     }
 
-    public List<Cmd> getCommands() {
-        return (this.commands);
+    public BlockCmd(int line, int column, List<Cmd> cmds) {
+        super(line, column);
+        this.cmds = cmds;
     }
 
-    public void setCommands(List<Cmd> cmd) {
-        this.commands = cmd;
+    public List<Cmd> getCmds() {
+        return cmds;
     }
 
-    public void addCommand(Cmd cmd) {
-        commands.add(cmd);
-    }
-
-    @Override
-    public String toString() {
-        String text = " { ";
-        for (Cmd command : commands) {
-            text = text + command.toString();
-        }
-        text = text + " } ";
-        return text;
+    public void addCmd(Cmd cmd) {
+        cmds.add(cmd);
     }
 
     @Override
     public void accept(Visitor v) {
         v.visit(this);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("{\n");
+        for (Cmd cmd : cmds) {
+            sb.append(cmd.toString()).append("\n");
+        }
+        sb.append("}");
+        return sb.toString();
     }
 }

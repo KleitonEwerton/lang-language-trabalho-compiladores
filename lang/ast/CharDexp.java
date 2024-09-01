@@ -1,20 +1,39 @@
+/*  Trabalho da disciplina DCC045 - Teoria dos Compiladores
+ *  Kleiton Ewerton de Oliveira - MAT 202065050C
+ *  Nikolas Oliver Sales Genesio - MAT 202065072C
+ */
+
 package lang.ast;
 
-import lang.visitors.Visitor;
+import lang.visitors.*;
 
 public class CharDexp extends LValue {
 
     private char value;
 
-    public CharDexp(int line, int column, String valueString) {
+    public CharDexp(int line, int column, String value) {
         super(line, column);
-        this.treatString(valueString);
+        interpretChar(value);
     }
 
-    public void treatString(String valueString) {
-        if (valueString.charAt(1) == '\\') {
-            String symbol = valueString.substring(1, valueString.length() - 1);
-            switch (symbol.charAt(1)) {
+    public String getValue() {
+        return Character.toString(value);
+    }
+
+    @Override
+    public void accept(Visitor v) {
+        v.visit(this);
+    }
+
+    @Override
+    public String toString() {
+        return "'" + value + "'";
+    }
+
+    private void interpretChar(String valueString) {
+        if (valueString.length() > 2 && valueString.charAt(1) == '\\') {
+            char escapeChar = valueString.charAt(2);
+            switch (escapeChar) {
                 case 'n':
                     this.value = '\n';
                     break;
@@ -33,34 +52,16 @@ public class CharDexp extends LValue {
                 case '\'':
                     this.value = '\'';
                     break;
+                default:
+                    throw new IllegalArgumentException("Invalid escape sequence: \\" + escapeChar);
             }
-
         } else {
             this.value = valueString.charAt(1);
-
         }
-    }
-
-    public void setValue(char value) {
-        this.value = value;
-    }
-
-    public String getValue() {
-        return value + "";
-    }
-
-    @Override
-    public String toString() {
-        return value + "";
-    }
-
-    @Override
-    public void accept(Visitor v) {
-        v.visit(this);
     }
 
     @Override
     public String getId() {
-        return getId();
+        return null; // CharDexp does not have an identifier, so return null
     }
 }

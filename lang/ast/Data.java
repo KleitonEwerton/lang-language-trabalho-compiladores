@@ -1,47 +1,54 @@
+/*  Trabalho da disciplina DCC045 - Teoria dos Compiladores
+ *  Kleiton Ewerton de Oliveira - MAT 202065050C
+ *  Nikolas Oliver Sales Genesio - MAT 202065072C
+ */
+
 package lang.ast;
 
 import java.util.List;
-import lang.visitors.Visitor;
+import java.util.stream.Collectors;
+
+import lang.visitors.*;
 
 public class Data extends Node {
 
-    private String nameType;
-    private List<Decl> declarations;
+    private String name;
+    private List<Decl> decls;
 
-    public Data(int line, int column, String nameType, List<Decl> declarations) {
+    public Data(int line, int column, String name, List<Decl> decls) {
         super(line, column);
-        this.nameType = nameType;
-        this.declarations = declarations;
+        this.name = name;
+        this.decls = decls;
     }
 
     public void addDeclaration(Decl declaration) {
-        this.declarations.add(declaration);
+        this.decls.add(declaration);
     }
 
     public Decl getDeclarationByPosition(int position) {
-        return this.declarations.get(position);
+        return this.decls.get(position);
     }
 
-    public void setNameType(String nameType) {
-        this.nameType = nameType;
+    public void setName(String nameType) {
+        this.name = nameType;
     }
 
-    public List<Decl> getDeclarations() {
-        return this.declarations;
+    public List<Decl> getDecls() {
+        return this.decls;
     }
 
-    public String getNameType() {
-        return this.nameType;
+    public String getName() {
+        return this.name;
     }
 
     public String getId() {
-        return nameType;
+        return name;
     }
 
     @Override
     public String toString() {
-        String s = "data " + this.nameType + " { \n";
-        for (Decl declaration : declarations) {
+        String s = "data " + this.name + " { \n";
+        for (Decl declaration : decls) {
             s += declaration.toString() + "\n";
         }
         s += " } ";

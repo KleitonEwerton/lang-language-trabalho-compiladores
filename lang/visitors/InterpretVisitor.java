@@ -206,7 +206,7 @@ public class InterpretVisitor extends Visitor {
             return;
         }
         try {
-            for (Cmd command : c.getCommands()) {
+            for (Cmd command : c.getCmds()) {
                 command.accept(this);
 
                 if (retMode) {
@@ -777,7 +777,7 @@ public class InterpretVisitor extends Visitor {
                     String dataName = newExp.getDataName();
                     HashMap<String, Object> newVariableMap = new HashMap<>();
 
-                    for (Decl declaration : datas.get(dataName).getDeclarations()) {
+                    for (Decl declaration : datas.get(dataName).getDecls()) {
                         declaration.getType().accept(this);
                         operands.pop();
 
@@ -795,7 +795,7 @@ public class InterpretVisitor extends Visitor {
 
                     for (int i = 0; i < count; i++) {
                         HashMap<String, Object> newVariableMap = new HashMap<>();
-                        for (Decl declaration : datas.get(dataName).getDeclarations()) {
+                        for (Decl declaration : datas.get(dataName).getDecls()) {
                             Object defaultObject = new Obj(newExp.getLine(), newExp.getColumn(),
                                     declaration.getId(), declaration.getType());
                             newVariableMap.put(declaration.getId(), defaultObject);
