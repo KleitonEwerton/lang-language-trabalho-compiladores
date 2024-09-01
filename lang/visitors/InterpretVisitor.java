@@ -671,7 +671,7 @@ public class InterpretVisitor extends Visitor {
     @Override
     public void visit(Not n) {
         try {
-            n.getExpression().accept(this);
+            n.getExpr().accept(this);
             Object valor = operands.pop();
             if (valor instanceof Boolean) {
                 operands.push(!(boolean) valor);
@@ -687,7 +687,7 @@ public class InterpretVisitor extends Visitor {
     @Override
     public void visit(Neg n) {
         try {
-            n.getExpression().accept(this);
+            n.getExpr().accept(this);
             Object valor = operands.pop();
             if (valor instanceof Float) {
                 operands.push((Float) valor * -1);

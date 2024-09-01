@@ -1,4 +1,8 @@
 
+/*  Trabalho da disciplina DCC045 - Teoria dos Compiladores
+  *  Kleiton Ewerton de Oliveira - MAT 202065050C
+  *  Nikolas Oliver Sales Genesio - MAT 202065072C
+  */
 package lang.ast;
 
 import java.util.ArrayList;
@@ -7,10 +11,11 @@ import java.util.List;
 import lang.visitors.Visitor;
 
 public class FuncCall extends Cmd {
+    private List<LValue> lvalues = new ArrayList<>();
 
     private String id;
-    private CallParam functionCallParams;
-    private List<LValue> lvalues = new ArrayList<>();
+
+    private CallParam fcp;
 
     public FuncCall(int line, int column, String id) {
         super(line, column);
@@ -20,7 +25,7 @@ public class FuncCall extends Cmd {
     public FuncCall(int line, int column, String id, CallParam params) {
         super(line, column);
         this.id = id;
-        this.functionCallParams = params;
+        this.fcp = params;
     }
 
     public String getId() {
@@ -32,11 +37,11 @@ public class FuncCall extends Cmd {
     }
 
     public CallParam getFCallParams() {
-        return functionCallParams;
+        return fcp;
     }
 
     public void setFCallParams(CallParam fCallParams) {
-        this.functionCallParams = fCallParams;
+        this.fcp = fCallParams;
     }
 
     public List<LValue> getLValues() {
@@ -57,12 +62,12 @@ public class FuncCall extends Cmd {
         for (LValue lvalue : lvalues) {
             bld.append(lvalue.toString() + ", ");
         }
-        if (functionCallParams != null) {
+        if (fcp != null) {
             if (bld.length() > 0) {
-                return id + " ( " + functionCallParams.toString() + " ) " +
+                return id + " ( " + fcp.toString() + " ) " +
                         " < " + bld.substring(0, bld.length() - 2) + " > ; ";
             }
-            return id + " ( " + functionCallParams.toString() + " ) ; ";
+            return id + " ( " + fcp.toString() + " ) ; ";
         } else {
             if (bld.length() > 0) {
                 return id + " ( " + "" + " ) " +

@@ -6,8 +6,6 @@
 package lang.ast;
 
 import java.util.List;
-import java.util.stream.Collectors;
-
 import lang.visitors.*;
 
 public class Data extends Node {
