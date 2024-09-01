@@ -208,13 +208,13 @@ public class MyVisitor extends LangBaseVisitor<Node> {
     @Override
     public Node visitFuncCallCmd(FuncCallCmdContext ctx) {
 
-        FunctionCall fcall = new FunctionCall(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine(),
+        FuncCall fcall = new FuncCall(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine(),
                 ctx.getChild(0).getText());
 
         if (ctx.exps() != null) {
             CallParam exps = (CallParam) ctx.exps().accept(this);
 
-            fcall = new FunctionCall(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine(),
+            fcall = new FuncCall(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine(),
                     ctx.getChild(0).getText(), exps);
         }
 

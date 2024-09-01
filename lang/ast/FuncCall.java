@@ -6,18 +6,18 @@ import java.util.List;
 
 import lang.visitors.Visitor;
 
-public class FunctionCall extends Cmd {
+public class FuncCall extends Cmd {
 
     private String id;
     private CallParam functionCallParams;
     private List<LValue> lvalues = new ArrayList<>();
 
-    public FunctionCall(int line, int column, String id) {
+    public FuncCall(int line, int column, String id) {
         super(line, column);
         this.id = id;
     }
 
-    public FunctionCall(int line, int column, String id, CallParam params) {
+    public FuncCall(int line, int column, String id, CallParam params) {
         super(line, column);
         this.id = id;
         this.functionCallParams = params;

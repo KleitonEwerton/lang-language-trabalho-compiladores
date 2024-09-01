@@ -34,11 +34,9 @@ public abstract class Visitor {
 
     public abstract void visit(Equals e);
 
-    public abstract void visit(ExpP e);
-
     public abstract void visit(FloatDexp p);
 
-    public abstract void visit(FunctionCall f);
+    public abstract void visit(FuncCall f);
 
     public abstract void visit(FuncRet f);
 

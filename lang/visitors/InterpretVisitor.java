@@ -408,7 +408,7 @@ public class InterpretVisitor extends Visitor {
     }
 
     @Override
-    public void visit(FunctionCall f) {
+    public void visit(FuncCall f) {
         try {
 
             Func function = funcs.get(f.getId());
@@ -986,11 +986,6 @@ public class InterpretVisitor extends Visitor {
 
     @Override
     public void visit(Type t) {
-
-    }
-
-    @Override
-    public void visit(ExpP e) {
 
     }
 
