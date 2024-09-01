@@ -15,7 +15,7 @@ public class Dot extends LValue {
         this.dataId = dataId;
     }
 
-    public LValue getLValue() {
+    public LValue getlValue() {
         return lvalue;
     }
 

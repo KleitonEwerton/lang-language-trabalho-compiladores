@@ -1,29 +1,43 @@
+/*  Trabalho da disciplina DCC045 - Teoria dos Compiladores
+ *  Kleiton Ewerton de Oliveira - MAT 202065050C
+ *  Nikolas Oliver Sales Genesio - MAT 202065072C
+ */
+
 package lang.ast;
 
-public class BinOP extends Expr {
+/*
+ * Esta classe representa uma Operção binária.
+ * Expr [opreação] Expr
+ */
+import java.util.HashMap;
 
-    protected Expr left;
-    protected Expr right;
+import lang.visitors.Visitor;
 
-    public BinOP(int line, int column, Expr left, Expr right) {
-        super(line, column);
-        this.left = left;
-        this.right = right;
+public abstract class BinOP extends Expr {
+
+    private Expr l;
+    private Expr r;
+
+    public BinOP(int lin, int col, Expr l, Expr r) {
+        super(lin, col);
+        this.l = l;
+        this.r = r;
+    }
+
+    public void setLeft(Expr n) {
+        l = n;
+    }
+
+    public void setRight(Expr n) {
+        r = n;
     }
 
     public Expr getLeft() {
-        return left;
+        return l;
     }
 
     public Expr getRight() {
-        return right;
+        return r;
     }
 
-    public void setLeft(Expr left) {
-        this.left = left;
-    }
-
-    public void setRight(Expr right) {
-        this.right = right;
-    }
 }

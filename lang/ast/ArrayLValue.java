@@ -1,38 +1,45 @@
+
+/*  Trabalho da disciplina DCC045 - Teoria dos Compiladores
+ *  Kleiton Ewerton de Oliveira - MAT 202065050C
+ *  Nikolas Oliver Sales Genesio - MAT 202065072C
+ */
+
 package lang.ast;
 
-import lang.visitors.Visitor;
+import lang.visitors.*;
 
 public class ArrayLValue extends LValue {
 
-    private LValue lvalue;
-    private Expr exp;
+    private LValue lValue;
+    private Expr expr;
 
-    public ArrayLValue(int line, int column, LValue lvalue, Expr exp) {
+    public ArrayLValue(int line, int column, LValue baseLValue, Expr index) {
         super(line, column);
-        this.lvalue = lvalue;
-        this.exp = exp;
+        this.lValue = baseLValue;
+        this.expr = index;
     }
 
-    public LValue getLValue() {
-        return lvalue;
+    public LValue getlValue() {
+        return lValue;
     }
 
-    public Expr getExp() {
-        return exp;
-    }
-
-    @Override
-    public String toString() {
-        return lvalue.toString() + " [ " + exp.toString() + " ] ";
-    }
-
-    @Override
-    public String getId() {
-        return lvalue.getId();
+    public Expr getExpr() {
+        return expr;
     }
 
     @Override
     public void accept(Visitor v) {
         v.visit(this);
     }
+
+    @Override
+    public String toString() {
+        return lValue.toString() + "[" + expr.toString() + "]";
+    }
+
+    @Override
+    public String getId() {
+        return lValue.getId();
+    }
+
 }

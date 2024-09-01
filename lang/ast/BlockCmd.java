@@ -1,6 +1,5 @@
 package lang.ast;
 
-import lang.ast.Cmd;
 import lang.visitors.Visitor;
 
 import java.util.List;

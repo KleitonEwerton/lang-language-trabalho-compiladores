@@ -22,7 +22,7 @@ public class Read extends Cmd {
         v.visit(this);
     }
 
-    public LValue getLValue() {
+    public LValue getlValue() {
         return lvalue;
     }
 }

@@ -26,7 +26,7 @@ public class IfElse extends Cmd {
         v.visit(this);
     }
 
-    public Expr getExp() {
+    public Expr getExpr() {
         return exp;
     }
 

@@ -221,7 +221,7 @@ public class InterpretVisitor extends Visitor {
     @Override
     public void visit(If i) {
         try {
-            i.getExp().accept(this);
+            i.getExpr().accept(this);
 
             if ((boolean) operands.pop()) {
                 i.getCmd().accept(this);
@@ -234,7 +234,7 @@ public class InterpretVisitor extends Visitor {
     @Override
     public void visit(IfElse i) {
         try {
-            i.getExp().accept(this);
+            i.getExpr().accept(this);
 
             if ((boolean) operands.pop()) {
                 i.getCmd().accept(this);
@@ -250,7 +250,7 @@ public class InterpretVisitor extends Visitor {
     public void visit(Iterate i) {
 
         try {
-            i.getExp().accept(this);
+            i.getExpr().accept(this);
             Object obj = operands.pop();
 
             if (obj instanceof Boolean) {
@@ -258,7 +258,7 @@ public class InterpretVisitor extends Visitor {
                 while ((Boolean) obj) {
 
                     i.getCmd().accept(this);
-                    i.getExp().accept(this);
+                    i.getExpr().accept(this);
                     obj = operands.pop();
 
                 }
@@ -277,15 +277,15 @@ public class InterpretVisitor extends Visitor {
     public void visit(Read r) {
         try {
 
-            LValue lvalue = r.getLValue();
+            LValue lvalue = r.getlValue();
             Scanner sc = new Scanner(System.in);
             String input = sc.nextLine();
             if (lvalue instanceof IDLvalue) {
                 env.peek().put(((IDLvalue) lvalue).getId(), input);
             } else if (lvalue instanceof Dot) {
-                if (((Dot) lvalue).getLValue() instanceof ArrayLValue) {
-                    ArrayLValue arrayElement = ((ArrayLValue) ((Dot) lvalue).getLValue());
-                    arrayElement.getExp().accept(this);
+                if (((Dot) lvalue).getlValue() instanceof ArrayLValue) {
+                    ArrayLValue arrayElement = ((ArrayLValue) ((Dot) lvalue).getlValue());
+                    arrayElement.getExpr().accept(this);
 
                     String nomeAtributo = ((Dot) lvalue).getId();
                     Integer position = (Integer) operands.pop();
@@ -303,7 +303,7 @@ public class InterpretVisitor extends Visitor {
                                 + ") Erro: Acesso a uma posicao invalida no array \'" + nomeArray + "\'  !!!");
                     }
                 } else {
-                    Object obj = env.peek().get(((IDLvalue) ((Dot) lvalue).getLValue()).getId());
+                    Object obj = env.peek().get(((IDLvalue) ((Dot) lvalue).getlValue()).getId());
                     ((HashMap<String, Object>) obj).put(((Dot) lvalue).getId(), input);
 
                 }
@@ -339,15 +339,15 @@ public class InterpretVisitor extends Visitor {
     public void visit(LvalueCmd a) {
         try {
 
-            a.getExp().accept(this);
+            a.getExpr().accept(this);
 
-            LValue lvalue = a.getLValue();
+            LValue lvalue = a.getlValue();
 
             if (lvalue instanceof Dot) {
 
-                if (((Dot) lvalue).getLValue() instanceof ArrayLValue) {
-                    ArrayLValue arrayElement = ((ArrayLValue) ((Dot) lvalue).getLValue());
-                    arrayElement.getExp().accept(this);
+                if (((Dot) lvalue).getlValue() instanceof ArrayLValue) {
+                    ArrayLValue arrayElement = ((ArrayLValue) ((Dot) lvalue).getlValue());
+                    arrayElement.getExpr().accept(this);
 
                     String nomeAtributo = ((Dot) lvalue).getId();
                     String nomeObjeto = ((Dot) lvalue).getDataId();
@@ -388,7 +388,7 @@ public class InterpretVisitor extends Visitor {
             } else if (lvalue instanceof ArrayLValue) {
 
                 String nomeArray = ((ArrayLValue) lvalue).getId();
-                ((ArrayLValue) lvalue).getExp().accept(this);
+                ((ArrayLValue) lvalue).getExpr().accept(this);
                 Integer position = (Integer) operands.pop();
 
                 List<Object> objetoArray = ((List<Object>) env.peek().get(nomeArray));
@@ -751,9 +751,9 @@ public class InterpretVisitor extends Visitor {
     public void visit(NewExp newExp) {
         try {
             if (newExp.getType() != null) {
-                if (newExp.getExp() != null) {
+                if (newExp.getExpr() != null) {
                     newExp.getType().accept(this);
-                    newExp.getExp().accept(this);
+                    newExp.getExpr().accept(this);
 
                     if (newExp.getType() instanceof NameType) {
                         Integer count = (Integer) operands.pop();
@@ -773,7 +773,7 @@ public class InterpretVisitor extends Visitor {
                     operands.push(defaultValue);
                 }
             } else {
-                if (newExp.getExp() == null) {
+                if (newExp.getExpr() == null) {
                     String dataName = newExp.getDataName();
                     HashMap<String, Object> newVariableMap = new HashMap<>();
 
@@ -787,7 +787,7 @@ public class InterpretVisitor extends Visitor {
                     }
                     operands.push(newVariableMap);
                 } else {
-                    newExp.getExp().accept(this);
+                    newExp.getExpr().accept(this);
 
                     String dataName = newExp.getDataName();
                     Integer count = (Integer) operands.pop();
@@ -893,13 +893,13 @@ public class InterpretVisitor extends Visitor {
     public void visit(Dot d) {
         try {
 
-            Object obj = env.peek().get(d.getLValue().getId());
-            if (d.getLValue() instanceof ArrayLValue) {
+            Object obj = env.peek().get(d.getlValue().getId());
+            if (d.getlValue() instanceof ArrayLValue) {
 
                 if (obj != null) {
 
-                    ArrayLValue array = ((ArrayLValue) d.getLValue());
-                    array.getExp().accept(this);
+                    ArrayLValue array = ((ArrayLValue) d.getlValue());
+                    array.getExpr().accept(this);
                     Integer position = (Integer) operands.pop();
                     String atributoDoObjeto = d.getId();
                     HashMap objeto = (HashMap) ((List) obj).get(position);
@@ -908,12 +908,12 @@ public class InterpretVisitor extends Visitor {
                         operands.push(objeto.get(atributoDoObjeto));
                     } else {
                         throw new RuntimeException(" (" + d.getLine() + ", " + d.getColumn() + ") Erro: DotLvalue "
-                                + "\'" + d.getId() + "\'" + " obj nao existe " + "\"" + d.getLValue().getId()
+                                + "\'" + d.getId() + "\'" + " obj nao existe " + "\"" + d.getlValue().getId()
                                 + "\" !!!");
                     }
                 } else {
                     throw new RuntimeException(" (" + d.getLine() + ", " + d.getColumn() + ") Erro: O Objeto " + "\""
-                            + d.getLValue().getId() + "\" nao existe!!!");
+                            + d.getlValue().getId() + "\" nao existe!!!");
                 }
             } else {
                 if (obj != null) {
@@ -924,13 +924,13 @@ public class InterpretVisitor extends Visitor {
                     } else {
 
                         throw new RuntimeException(" (" + d.getLine() + ", " + d.getColumn() + ") Erro: Atributo "
-                                + "\'" + d.getId() + "\'" + " eh inexistente no objeto " + "\"" + d.getLValue().getId()
+                                + "\'" + d.getId() + "\'" + " eh inexistente no objeto " + "\"" + d.getlValue().getId()
                                 + "\" !!!");
                     }
                 } else {
 
                     throw new RuntimeException(" (" + d.getLine() + ", " + d.getColumn() + ") Erro: O Objeto " + "\""
-                            + d.getLValue().getId() + "\" nao existe!!!");
+                            + d.getlValue().getId() + "\" nao existe!!!");
                 }
             }
         } catch (Exception x) {
@@ -942,21 +942,21 @@ public class InterpretVisitor extends Visitor {
     public void visit(ArrayLValue a) {
         try {
 
-            Object obj = env.peek().get(a.getLValue().getId());
+            Object obj = env.peek().get(a.getlValue().getId());
             if (obj != null) {
-                a.getExp().accept(this);
+                a.getExpr().accept(this);
                 Integer position = (Integer) operands.pop();
                 Integer tamanhoArray = ((List) obj).size();
                 if ((position >= 0) && (position <= tamanhoArray - 1)) {
                     operands.push(((List) obj).get(position));
                 } else {
                     throw new RuntimeException(" (" + a.getLine() + ", " + a.getColumn()
-                            + ") Erro: Acesso a uma posicao invalida no array \'" + a.getLValue().getId() + "\'  !!!");
+                            + ") Erro: Acesso a uma posicao invalida no array \'" + a.getlValue().getId() + "\'  !!!");
                 }
             } else {
 
                 throw new RuntimeException(" (" + a.getLine() + ", " + a.getColumn() + ") Erro: O array " + "\""
-                        + a.getLValue().getId() + "\" nao existe!!!");
+                        + a.getlValue().getId() + "\" nao existe!!!");
             }
         } catch (Exception x) {
             throw new RuntimeException(" (" + a.getLine() + ", " + a.getColumn() + ") " + x.getMessage());

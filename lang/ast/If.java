@@ -24,7 +24,7 @@ public class If extends Cmd {
         v.visit(this);
     }
 
-    public Expr getExp() {
+    public Expr getExpr() {
         return exp;
     }
 

@@ -17,11 +17,11 @@ public class LvalueCmd extends Cmd {
         this.lvalue = lvalue;
     }
 
-    public LValue getLValue() {
+    public LValue getlValue() {
         return (this.lvalue);
     }
 
-    public Expr getExp() {
+    public Expr getExpr() {
         return (this.exp);
     }
 

@@ -48,7 +48,7 @@ public class NewExp extends Expr {
         v.visit(this);
     }
 
-    public Expr getExp() {
+    public Expr getExpr() {
         return exp;
     }
 
