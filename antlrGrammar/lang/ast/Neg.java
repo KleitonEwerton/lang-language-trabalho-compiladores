@@ -1,8 +1,8 @@
- /*  Trabalho da disciplina DCC045 - Teoria dos Compiladores
-  *  Kleiton Ewerton de Oliveira - MAT 202065050C
-  *  Nikolas Oliver Sales Genesio - MAT 202065072C
-  */
-  
+/*  Trabalho da disciplina DCC045 - Teoria dos Compiladores
+ *  Kleiton Ewerton de Oliveira - MAT 202065050C
+ *  Nikolas Oliver Sales Genesio - MAT 202065072C
+ */
+
 package lang.ast;
 
 import lang.visitors.*;
@@ -14,6 +14,10 @@ public class Neg extends Expr {
     public Neg(int line, int column, Expr expr) {
         super(line, column);
         this.expr = expr;
+    }
+
+    public Expr getExpr() {
+        return expr;
     }
 
     @Override

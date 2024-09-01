@@ -1,8 +1,8 @@
- /*  Trabalho da disciplina DCC045 - Teoria dos Compiladores
-  *  Kleiton Ewerton de Oliveira - MAT 202065050C
-  *  Nikolas Oliver Sales Genesio - MAT 202065072C
-  */
-  
+/*  Trabalho da disciplina DCC045 - Teoria dos Compiladores
+ *  Kleiton Ewerton de Oliveira - MAT 202065050C
+ *  Nikolas Oliver Sales Genesio - MAT 202065072C
+ */
+
 package lang.visitors;
 
 import java.io.IOException;
@@ -30,17 +30,15 @@ public class InterpreterSyntactic implements InterpreterAdaptor {
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         langParser parser = new langParser(tokens);
 
-
         // Parsing
         ParseTree tree = parser.prog(); // ou o nome da regra inicial
-        
 
         // Visitação
         MyVisitor visitor = new MyVisitor();
         Node result = visitor.visit(tree);
         InterpretVisitor interpretVisitor = new InterpretVisitor();
-    
+
         return result; // Retorna o resultado da visitação
     }
-    
+
 }

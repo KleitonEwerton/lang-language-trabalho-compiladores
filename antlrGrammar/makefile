@@ -7,7 +7,13 @@ compile:
 
 run:
 	java -cp .:antlr-4.8-complete.jar lang.LangCompiler -i lang/meu_teste/input.txt
-	
+
+testSintatico:
+	java -cp antlr-4.8-complete.jar:. lang/LangCompiler -bs
+
+testInterpretador:
+	java -cp antlr-4.8-complete.jar:. lang/LangCompiler -byt
+
 clean:
 	rm -f lang/parser/*.class \
 	lang/parser/*.tokens \
@@ -24,6 +30,3 @@ clean:
 	lang/ast/*.class \
 	lang/*.class \
 	lang/visitors/*.class
-
-ex1:
-	java -cp .:antlr-4.8-complete.jar lang.LangCompiler -i lang/meu_teste/input.txt

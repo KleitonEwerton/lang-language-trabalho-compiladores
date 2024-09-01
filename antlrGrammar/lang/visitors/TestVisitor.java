@@ -1,17 +1,15 @@
- /*  Trabalho da disciplina DCC045 - Teoria dos Compiladores
-  *  Kleiton Ewerton de Oliveira - MAT 202065050C
-  *  Nikolas Oliver Sales Genesio - MAT 202065072C
-  */
-  
+/*  Trabalho da disciplina DCC045 - Teoria dos Compiladores
+ *  Kleiton Ewerton de Oliveira - MAT 202065050C
+ *  Nikolas Oliver Sales Genesio - MAT 202065072C
+ */
+
 package lang.visitors;
 
 import java.io.File;
-import lang.visitors.*;
 
 public class TestVisitor {
     private InterpreterAdaptor adp;
     private String okSrcs = "testes/sintaxe/certo/";
-    // private String okSrcs = "lang/meu_teste/";
     private File f;
 
     public TestVisitor(InterpreterAdaptor adp) {

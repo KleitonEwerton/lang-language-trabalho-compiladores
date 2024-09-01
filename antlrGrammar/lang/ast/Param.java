@@ -1,18 +1,13 @@
- /*  Trabalho da disciplina DCC045 - Teoria dos Compiladores
-  *  Kleiton Ewerton de Oliveira - MAT 202065050C
-  *  Nikolas Oliver Sales Genesio - MAT 202065072C
-  */
-  
+/*  Trabalho da disciplina DCC045 - Teoria dos Compiladores
+ *  Kleiton Ewerton de Oliveira - MAT 202065050C
+ *  Nikolas Oliver Sales Genesio - MAT 202065072C
+ */
+
 package lang.ast;
 
 import java.util.ArrayList;
-
-import java.util.HashMap;
 import java.util.List;
-
 import lang.visitors.*;
-import lang.ast.*;
-import lang.parser.*;
 
 /*
  * params: ID TYPE_SRO type (TYPE_COMMA ID TYPE_SRO type)* #paramsName
@@ -37,7 +32,7 @@ public class Param extends Node {
 
       public int size() {
             return id.size();
-        } 
+      }
 
       public List<String> getId() {
             return id;
@@ -57,16 +52,16 @@ public class Param extends Node {
 
       public String getSingleId(int id) {
             return this.id.get(id);
-        }
-    
-        public Type getSingleType(int type) {
-            return this.type.get(type);
-        }
+      }
 
-        public void addParameter(String id, Type type) {
+      public Type getSingleType(int type) {
+            return this.type.get(type);
+      }
+
+      public void addParameter(String id, Type type) {
             this.id.add(id);
             this.type.add(type);
-        }
+      }
 
       @Override
       public String toString() {

@@ -1,8 +1,8 @@
- /*  Trabalho da disciplina DCC045 - Teoria dos Compiladores
-  *  Kleiton Ewerton de Oliveira - MAT 202065050C
-  *  Nikolas Oliver Sales Genesio - MAT 202065072C
-  */
-  
+/*  Trabalho da disciplina DCC045 - Teoria dos Compiladores
+ *  Kleiton Ewerton de Oliveira - MAT 202065050C
+ *  Nikolas Oliver Sales Genesio - MAT 202065072C
+ */
+
 package lang.ast;
 
 import java.util.ArrayList;
@@ -12,9 +12,7 @@ import java.util.ArrayList;
  * ID = Expr
  */
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import lang.visitors.*;
 /*

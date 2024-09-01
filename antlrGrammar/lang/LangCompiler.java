@@ -1,11 +1,9 @@
- /*  Trabalho da disciplina DCC045 - Teoria dos Compiladores
-  *  Kleiton Ewerton de Oliveira - MAT 202065050C
-  *  Nikolas Oliver Sales Genesio - MAT 202065072C
-  */
-  
-package lang;
+/*  Trabalho da disciplina DCC045 - Teoria dos Compiladores
+ *  Kleiton Ewerton de Oliveira - MAT 202065050C
+ *  Nikolas Oliver Sales Genesio - MAT 202065072C
+ */
 
-import java.io.*;
+package lang;
 
 import lang.ast.*;
 import lang.parser.*;
@@ -15,7 +13,7 @@ public class LangCompiler {
     // Recupera o nome base (sem extensão) de um arquivo.
     public static void main(String[] args) {
         if (args.length < 1) {
-            System.out.println("Lang compiler v 0.0.1 - Maio de 2020");
+            System.out.println("Lang compiler v 0.0.1 - Agosto de 2024 - Copia do MODELO do Professor");
             System.out.println("Use java -cp . Lang ação <Caminho para código Fonte> ");
             System.out.println("Ação (uma das seguintes possibilidades): ");
 

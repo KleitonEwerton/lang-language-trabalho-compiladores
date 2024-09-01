@@ -1,22 +1,17 @@
 
- /*  Trabalho da disciplina DCC045 - Teoria dos Compiladores
-  *  Kleiton Ewerton de Oliveira - MAT 202065050C
-  *  Nikolas Oliver Sales Genesio - MAT 202065072C
-  */
-  
-package lang.ast;
+/*  Trabalho da disciplina DCC045 - Teoria dos Compiladores
+ *  Kleiton Ewerton de Oliveira - MAT 202065050C
+ *  Nikolas Oliver Sales Genesio - MAT 202065072C
+ */
 
+package lang.ast;
 
 /*
  * Esta classe representa uma expressão de soma.
  * Expr + Expr
  */
 
-import java.util.HashMap;
-
 import lang.visitors.*;
-import lang.ast.*;
-import lang.parser.*;
 
 public class Add extends BinOP {
 

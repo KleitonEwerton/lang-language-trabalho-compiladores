@@ -1,11 +1,12 @@
- /*  Trabalho da disciplina DCC045 - Teoria dos Compiladores
-  *  Kleiton Ewerton de Oliveira - MAT 202065050C
-  *  Nikolas Oliver Sales Genesio - MAT 202065072C
-  */
-  
+/*  Trabalho da disciplina DCC045 - Teoria dos Compiladores
+ *  Kleiton Ewerton de Oliveira - MAT 202065050C
+ *  Nikolas Oliver Sales Genesio - MAT 202065072C
+ */
+
 package lang.ast;
 
 import java.util.List;
+import java.util.ArrayList;
 
 import lang.visitors.*;
 
@@ -13,7 +14,7 @@ public class FuncCallCmd extends Cmd {
 
     private String id; // Identificador da função
     private FuncArgs funcArgs; // Lista de expressões (argumentos) para a chamada da função
-    private List<LValue> lvalues; // Lista opcional de variáveis genéricas (se houver)
+    private List<LValue> lvalues = new ArrayList<>(); // Lista opcional de variáveis genéricas (se houver)
 
     public FuncCallCmd(int line, int column, String id) {
         super(line, column);

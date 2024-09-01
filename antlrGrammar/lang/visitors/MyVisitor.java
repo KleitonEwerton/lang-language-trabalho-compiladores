@@ -7,7 +7,6 @@ package lang.visitors;
 
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 import org.antlr.v4.runtime.tree.ParseTree;
-
 import java.beans.Expression;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,7 +22,6 @@ public class MyVisitor extends langBaseVisitor<Node> {
      */
     @Override
     public Node visitProgName(langParser.ProgNameContext ctx) {
-        System.out.println("Visitando ProgName");
 
         List<Node> defs = new ArrayList<>();
         for (langParser.DefContext defCtx : ctx.def()) {
@@ -32,37 +30,9 @@ public class MyVisitor extends langBaseVisitor<Node> {
         return new Prog(ctx.start.getLine(), ctx.start.getCharPositionInLine(), defs);
     }
 
-    /*
-     * def: data #dataDef
-     * | fun  #funDef
-     * ;
-     */
-
-    @Override
-    public Node visitDataDef(langParser.DataDefContext ctx) {
-        return visit(ctx.data());
-    }
-    
     @Override
     public Node visitFunDef(langParser.FunDefContext ctx) {
         return visit(ctx.fun());
-    }
-
-    /*
-     * data: TYPE_DATA NAME TYPE_OPEN_BRACE decl* TYPE_CLOSE_BRACE #dataName
-     * ;
-     */
-    @Override
-    public Node visitDataName(langParser.DataNameContext ctx) {
-        String name = ctx.NAME().getText();
-        List<Decl> decls = new ArrayList<Decl>();
-
-        for (int i = 0; i < ctx.decl().size(); i++) {
-            Decl declarationAccept = (Decl) ctx.decl().get(i).accept(this);
-            decls.add(declarationAccept);
-        }
-
-        return new Data(ctx.start.getLine(), ctx.start.getCharPositionInLine(), name, decls);
     }
 
     /*
@@ -77,7 +47,8 @@ public class MyVisitor extends langBaseVisitor<Node> {
     }
 
     /*
-     * fun: ID TYPE_OPEN_PARENTHESIS params? TYPE_CLOSE_PARENTHESIS (TYPE_COLON type (TYPE_COMMA type)*)? TYPE_OPEN_BRACE cmd* TYPE_CLOSE_BRACE #funName
+     * fun: ID TYPE_OPEN_PARENTHESIS params? TYPE_CLOSE_PARENTHESIS (TYPE_COLON type
+     * (TYPE_COMMA type)*)? TYPE_OPEN_BRACE cmd* TYPE_CLOSE_BRACE #funName
      * ;
      */
 
@@ -120,7 +91,6 @@ public class MyVisitor extends langBaseVisitor<Node> {
      */
     @Override
     public Node visitParamsName(langParser.ParamsNameContext ctx) {
-        System.out.println("Visitando Params");
         // Criação de listas para armazenar os IDs e tipos dos parâmetros
         List<String> ids = new ArrayList<>();
         List<Type> types = new ArrayList<>();
@@ -140,7 +110,7 @@ public class MyVisitor extends langBaseVisitor<Node> {
 
     /*
      * type: type TYPE_OPEN_BRACKET TYPE_CLOSE_BRACKET #typeName
-     * |  btype #btypeName
+     * | btype #btypeName
      * ;
      */
     @Override
@@ -161,12 +131,12 @@ public class MyVisitor extends langBaseVisitor<Node> {
     }
 
     /*
-     * btype: TYPE_INT   #intType
-     * | TYPE_CHAR    #charType
-     * | TYPE_BOOL    #boolType
-     * | TYPE_FLOAT   #floatType
-     * | NAME         #nameType
-     * | ID           #idType
+     * btype: TYPE_INT #intType
+     * | TYPE_CHAR #charType
+     * | TYPE_BOOL #boolType
+     * | TYPE_FLOAT #floatType
+     * | NAME #nameType
+     * | ID #idType
      * ;
      */
     @Override
@@ -181,6 +151,19 @@ public class MyVisitor extends langBaseVisitor<Node> {
     }
 
     @Override
+    public Node visitDataName(langParser.DataNameContext ctx) {
+        String name = ctx.NAME().getText();
+        List<Decl> decls = new ArrayList<Decl>();
+
+        for (int i = 0; i < ctx.decl().size(); i++) {
+            Decl declarationAccept = (Decl) ctx.decl().get(i).accept(this);
+            decls.add(declarationAccept);
+        }
+
+        return new Data(ctx.start.getLine(), ctx.start.getCharPositionInLine(), name, decls);
+    }
+
+    @Override
     public Node visitBoolType(langParser.BoolTypeContext ctx) {
         return new TyBool(ctx.start.getLine(), ctx.start.getCharPositionInLine());
     }
@@ -192,30 +175,30 @@ public class MyVisitor extends langBaseVisitor<Node> {
 
     @Override
     public Node visitNameType(langParser.NameTypeContext ctx) {
-        // Extrai o nome do contexto e cria uma instância de NameType
         String name = ctx.NAME().getText();
         return new NameType(ctx.start.getLine(), ctx.start.getCharPositionInLine(), name);
     }
 
     @Override
     public Node visitIdType(langParser.IdTypeContext ctx) {
-        // Extrai o ID do contexto e cria uma instância de IdType
         String id = ctx.ID().getText();
         return new IdType(ctx.start.getLine(), ctx.start.getCharPositionInLine(), id);
     }
 
-
     /*
-     * cmd: TYPE_OPEN_BRACE cmd* TYPE_CLOSE_BRACE                                           #blockCmd
-     *    | TYPE_IF TYPE_OPEN_PARENTHESIS exp TYPE_CLOSE_PARENTHESIS cmd                    #ifCmd
-     *    | TYPE_IF TYPE_OPEN_PARENTHESIS exp TYPE_CLOSE_PARENTHESIS cmd TYPE_ELSE cmd      #ifElseCmd
-     *    | TYPE_ITERATE TYPE_OPEN_PARENTHESIS exp TYPE_CLOSE_PARENTHESIS cmd               #iterateCmd
-     *    | TYPE_READ lvalue TYPE_SEMI                                                      #readCmd
-     *    | TYPE_PRINT exp TYPE_SEMI                                                        #printCmd
-     *    | TYPE_RETURN exp (TYPE_COMMA exp)* TYPE_SEMI                                     #returnCmd
-     *    | lvalue TYPE_EQUAL exp TYPE_SEMI                                                 #lvalueCmd
-     *    | ID TYPE_OPEN_PARENTHESIS exps TYPE_CLOSE_PARENTHESIS (TYPE_LESS_THAN lvalue (TYPE_COMMA lvalue)* TYPE_GREATER_THAN)? TYPE_SEMI #funcCallCmd
-     *    ;
+     * cmd: TYPE_OPEN_BRACE cmd* TYPE_CLOSE_BRACE #blockCmd
+     * | TYPE_IF TYPE_OPEN_PARENTHESIS exp TYPE_CLOSE_PARENTHESIS cmd #ifCmd
+     * | TYPE_IF TYPE_OPEN_PARENTHESIS exp TYPE_CLOSE_PARENTHESIS cmd TYPE_ELSE cmd
+     * #ifElseCmd
+     * | TYPE_ITERATE TYPE_OPEN_PARENTHESIS exp TYPE_CLOSE_PARENTHESIS cmd
+     * #iterateCmd
+     * | TYPE_READ lvalue TYPE_SEMI #readCmd
+     * | TYPE_PRINT exp TYPE_SEMI #printCmd
+     * | TYPE_RETURN exp (TYPE_COMMA exp)* TYPE_SEMI #returnCmd
+     * | lvalue TYPE_EQUAL exp TYPE_SEMI #lvalueCmd
+     * | ID TYPE_OPEN_PARENTHESIS exps TYPE_CLOSE_PARENTHESIS (TYPE_LESS_THAN lvalue
+     * (TYPE_COMMA lvalue)* TYPE_GREATER_THAN)? TYPE_SEMI #funcCallCmd
+     * ;
      */
     @Override
     public Node visitBlockCmd(langParser.BlockCmdContext ctx) {
@@ -312,7 +295,6 @@ public class MyVisitor extends langBaseVisitor<Node> {
 
     @Override
     public Node visitLvalueCmd(langParser.LvalueCmdContext ctx) {
-        System.out.println("Visitando lvaluecmd");
         // Visitar o lvalue
         LValue lvalue = (LValue) ctx.lvalue().accept(this);
 
@@ -323,32 +305,10 @@ public class MyVisitor extends langBaseVisitor<Node> {
         return new LvalueCmd(ctx.start.getLine(), ctx.start.getCharPositionInLine(), lvalue, expr);
     }
 
-    @Override
-    public Node visitFuncCallCmd(langParser.FuncCallCmdContext ctx) {
-
-        // Obter o identificador da função
-        String id = ctx.ID().getText();
-        FuncCallCmd funcCallCmd = new FuncCallCmd(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine(),
-                id);
-
-        if (ctx.exps() != null) {
-            FuncArgs exps = (FuncArgs) ctx.exps().accept(this);
-
-            funcCallCmd = new FuncCallCmd(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine(),
-                    id, exps);
-        }
-
-        for (int i = 0; i < ctx.lvalue().size() && this.shouldVisitNextChild(ctx, this.defaultResult()); i++) {
-            ParseTree childTree = ctx.lvalue(i);
-            funcCallCmd.addLValue((LValue) this.aggregateResult(this.defaultResult(), childTree.accept(this)));
-        }
-        return funcCallCmd;
-    }
-
     /*
      * exp: exp TYPE_AND exp #andExp
-     *    | cexpr            #cexprExp
-     *    ;
+     * | cexpr #cexprExp
+     * ;
      */
     @Override
     public Node visitAndExp(langParser.AndExpContext ctx) {
@@ -363,21 +323,19 @@ public class MyVisitor extends langBaseVisitor<Node> {
     @Override
     public Node visitCexprExp(langParser.CexprExpContext ctx) {
         // Implementação para visitCexprExp
-        System.out.println("Visitando cexprExp");
         return super.visitCexprExp(ctx);
     }
 
     /*
-     * cexpr: baexp TYPE_LESS_THAN baexp     #lessThanCexpr
-     *    |   cexpr TYPE_EQUAL_EQUAL baexp   #equalsCexpr
-     *    |   cexpr TYPE_NO_EQUAL baexp      #notEqualsCexpr
-     *    |   baexp                          #baexpCexpr
-     *    ;
+     * cexpr: baexp TYPE_LESS_THAN baexp #lessThanCexpr
+     * | cexpr TYPE_EQUAL_EQUAL baexp #equalsCexpr
+     * | cexpr TYPE_NO_EQUAL baexp #notEqualsCexpr
+     * | baexp #baexpCexpr
+     * ;
      */
     @Override
     public Node visitLessThanCexpr(langParser.LessThanCexprContext ctx) {
         // Visitar as expressões à esquerda e à direita do operador <
-        System.out.println("Visitando lessThanCexpr");
         Expr left = (Expr) ctx.baexp(0).accept(this);
         Expr right = (Expr) ctx.baexp(1).accept(this);
 
@@ -415,9 +373,9 @@ public class MyVisitor extends langBaseVisitor<Node> {
     }
 
     /*
-     * baexp: baexp TYPE_PLUS opexp          #addBaexp
-     *    |   baexp TYPE_MINUS opexp         #subBaexp
-     *    |   opexp                          #opexpBaexp
+     * baexp: baexp TYPE_PLUS opexp #addBaexp
+     * | baexp TYPE_MINUS opexp #subBaexp
+     * | opexp #opexpBaexp
      * ;
      */
     @Override
@@ -425,7 +383,6 @@ public class MyVisitor extends langBaseVisitor<Node> {
 
         Expr left = (Expr) ctx.baexp().accept(this);
         Expr right = (Expr) ctx.opexp().accept(this);
-        System.out.println("Visitando AddBaexp visitor " + left + " + " + right);
 
         return new Add(ctx.start.getLine(), ctx.start.getCharPositionInLine(), left, right);
     }
@@ -440,23 +397,20 @@ public class MyVisitor extends langBaseVisitor<Node> {
 
     @Override
     public Node visitOpexpBaexp(langParser.OpexpBaexpContext ctx) {
-        System.out.println("Visitando opexpBaexp");
         return super.visitOpexpBaexp(ctx);
     }
 
     /*
-     * opexp: opexp TYPE_ASTERISK dexp       #mulOpexp
-     *    |   opexp TYPE_DIV dexp            #divOpexp
-     *    |   opexp TYPE_MOD dexp            #modOpexp
-     *    |   dexp                           #dexpOpexp
-     *    ;
+     * opexp: opexp TYPE_ASTERISK dexp #mulOpexp
+     * | opexp TYPE_DIV dexp #divOpexp
+     * | opexp TYPE_MOD dexp #modOpexp
+     * | dexp #dexpOpexp
+     * ;
      */
     @Override
     public Node visitMulOpexp(langParser.MulOpexpContext ctx) {
         Expr left = (Expr) ctx.opexp().accept(this);
         Expr right = (Expr) ctx.dexp().accept(this);
-
-        System.out.println("Visitando MulOpexp visitor " + left + " * " + right);
 
         return new Mul(ctx.start.getLine(), ctx.start.getCharPositionInLine(), left, right);
     }
@@ -488,23 +442,21 @@ public class MyVisitor extends langBaseVisitor<Node> {
     }
 
     /*
-     * dexp: TYPE_EXCLAMATION dexp           #notDexp
-     *    |  TYPE_MINUS dexp                 #negDexp
-     *    |  TYPE_TRUE                       #trueDexp
-     *    |  TYPE_FALSE                      #falseDexp
-     *    |  TYPE_NULL                       #nullDexp
-     *    |  INT                             #intDexp
-     *    |  FLOAT                           #floatDexp
-     *    |  CHAR                            #charDexp
-     *    |  rexp                            #rexpDexp
-     *    ;
+     * dexp: TYPE_EXCLAMATION dexp #notDexp
+     * | TYPE_MINUS dexp #negDexp
+     * | TYPE_TRUE #trueDexp
+     * | TYPE_FALSE #falseDexp
+     * | TYPE_NULL #nullDexp
+     * | INT #intDexp
+     * | FLOAT #floatDexp
+     * | CHAR #charDexp
+     * | rexp #rexpDexp
+     * ;
      */
     @Override
     public Node visitNotDexp(langParser.NotDexpContext ctx) {
         // Visitar a expressão que está sendo negada
-        System.out.println("Visitando Not");
         Expr expr = (Expr) ctx.dexp().accept(this);
-        System.out.println("Expressão: " + expr.toString());
 
         // Criar uma nova instância de NotDexp com a linha e a coluna atuais
         return new Not(ctx.start.getLine(), ctx.start.getCharPositionInLine(), expr);
@@ -540,7 +492,6 @@ public class MyVisitor extends langBaseVisitor<Node> {
 
     @Override
     public Node visitIntDexp(langParser.IntDexpContext ctx) {
-        System.out.println("Visitando intDexp");
         // Obtém o valor do inteiro do contexto
         int value = Integer.parseInt(ctx.INT().getText());
 
@@ -569,28 +520,26 @@ public class MyVisitor extends langBaseVisitor<Node> {
     @Override
     public Node visitRexpDexp(langParser.RexpDexpContext ctx) {
         // Implementação para visitRexpDexp
-        System.out.println("Visitando rexpDexp");
         return super.visitRexpDexp(ctx);
     }
 
     /*
-     * rexp: lvalue                                                                                             #lvalueRexp
-     *    | TYPE_OPEN_PARENTHESIS exp TYPE_CLOSE_PARENTHESIS                                                    #parenRexp
-     *    | TYPE_NEW type (TYPE_OPEN_BRACKET exp TYPE_CLOSE_BRACKET)?                                           #newRexp
-     *    | ID TYPE_OPEN_PARENTHESIS exps? TYPE_CLOSE_PARENTHESIS TYPE_OPEN_BRACKET exp TYPE_CLOSE_BRACKET      #funcCallRexp
-     *    ;
+     * rexp: lvalue #lvalueRexp
+     * | TYPE_OPEN_PARENTHESIS exp TYPE_CLOSE_PARENTHESIS #parenRexp
+     * | TYPE_NEW type (TYPE_OPEN_BRACKET exp TYPE_CLOSE_BRACKET)? #newRexp
+     * | ID TYPE_OPEN_PARENTHESIS exps? TYPE_CLOSE_PARENTHESIS TYPE_OPEN_BRACKET exp
+     * TYPE_CLOSE_BRACKET #funcCallRexp
+     * ;
      */
     @Override
     public Node visitLvalueRexp(langParser.LvalueRexpContext ctx) {
         // Implementação para visitLvalueRexp
-        System.out.println("Visitando lvalueRexp");
         return super.visitLvalueRexp(ctx);
     }
 
     @Override
     public Node visitParenRexp(langParser.ParenRexpContext ctx) {
         // Obtém a expressão dentro dos parênteses
-        System.out.println("Visitando parenRexp");
         Expr expr = (Expr) ctx.exp().accept(this);
         return expr;
     }
@@ -638,10 +587,10 @@ public class MyVisitor extends langBaseVisitor<Node> {
     }
 
     /*
-     * lvalue: ID                                                        #idLvalue
-     *       | lvalue TYPE_OPEN_BRACKET exp TYPE_CLOSE_BRACKET           #arrayLvalue
-     *       | lvalue TYPE_DOT ID                                        #dotLvalue
-     *       ;
+     * lvalue: ID #idLvalue
+     * | lvalue TYPE_OPEN_BRACKET exp TYPE_CLOSE_BRACKET #arrayLvalue
+     * | lvalue TYPE_DOT ID #dotLvalue
+     * ;
      */
     @Override
     public Node visitIdLvalue(langParser.IdLvalueContext ctx) {
@@ -679,8 +628,8 @@ public class MyVisitor extends langBaseVisitor<Node> {
     }
 
     /*
-     * exps: exp (TYPE_COMMA exp)*                                       #expsName
-     *       ;
+     * exps: exp (TYPE_COMMA exp)* #expsName
+     * ;
      */
     @Override
     public Node visitExpsName(langParser.ExpsNameContext ctx) {
@@ -692,5 +641,38 @@ public class MyVisitor extends langBaseVisitor<Node> {
         }
         funcArgs.setExprs(exps);
         return funcArgs;
+    }
+
+    /*
+     * def: data #dataDef
+     * | fun #funDef
+     * ;
+     */
+
+    @Override
+    public Node visitDataDef(langParser.DataDefContext ctx) {
+        return visit(ctx.data());
+    }
+
+    @Override
+    public Node visitFuncCallCmd(langParser.FuncCallCmdContext ctx) {
+
+        // Obter o identificador da função
+        String id = ctx.ID().getText();
+        FuncCallCmd funcCallCmd = new FuncCallCmd(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine(),
+                id);
+
+        if (ctx.exps() != null) {
+            FuncArgs exps = (FuncArgs) ctx.exps().accept(this);
+
+            funcCallCmd = new FuncCallCmd(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine(),
+                    id, exps);
+        }
+
+        for (int i = 0; i < ctx.lvalue().size() && this.shouldVisitNextChild(ctx, this.defaultResult()); i++) {
+            ParseTree childTree = ctx.lvalue(i);
+            funcCallCmd.addLValue((LValue) this.aggregateResult(this.defaultResult(), childTree.accept(this)));
+        }
+        return funcCallCmd;
     }
 }

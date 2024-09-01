@@ -5,25 +5,20 @@
 
 package lang.visitors;
 
-import java.beans.Expression;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.EmptyStackException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Stack;
-import java.util.function.Function;
-
 import lang.ast.*;
 
+@SuppressWarnings("unchecked")
 public class InterpretVisitor extends Visitor {
 
     private Stack<HashMap<String, Object>> env; // escopo
     private HashMap<String, Func> funcs; // funções
     private HashMap<String, Data> datas; // tipo data
-    private Map<String, Object> context; // contexto
     private Stack<Object> params; // parametros de funções
     private Stack<Object> operands; // operandos
     private boolean retMode, debug;
@@ -35,11 +30,10 @@ public class InterpretVisitor extends Visitor {
         env.push(new HashMap<String, Object>());
         funcs = new HashMap<String, Func>();
         datas = new HashMap<String, Data>();
-        context = new HashMap<String, Object>();
         operands = new Stack<Object>();
         params = new Stack<Object>();
         retMode = false;
-        debug = true;
+        debug = false;
     }
 
     @Override
@@ -705,6 +699,7 @@ public class InterpretVisitor extends Visitor {
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void visit(LvalueCmd lvalueCmd) {
         if (debug) {
@@ -989,6 +984,7 @@ public class InterpretVisitor extends Visitor {
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void visit(Read read) {
         if (debug) {
