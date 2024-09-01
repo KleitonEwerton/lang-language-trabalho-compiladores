@@ -1,8 +1,4 @@
 
- /*  Trabalho da disciplina DCC045 - Teoria dos Compiladores
-  *  Kleiton Ewerton de Oliveira - MAT 202065050C
-  *  Nikolas Oliver Sales Genesio - MAT 202065072C
-  */
 package lang.ast;
 
 import java.util.ArrayList;
@@ -13,14 +9,14 @@ public class Func extends Node {
 
     private String id;
     private Param params;
-    private List<Type> additionalTypes;
+    private List<Type> returnTypes;
     private List<Cmd> commands;
 
-    public Func(int line, int column, String id, Param param) {
+    public Func(int line, int column, String id, Param params) {
         super(line, column);
         this.id = id;
-        this.params = param;
-        this.additionalTypes = new ArrayList<Type>();
+        this.params = params;
+        this.returnTypes = new ArrayList<Type>();
         this.commands = new ArrayList<Cmd>();
     }
 
@@ -28,11 +24,11 @@ public class Func extends Node {
         super(line, column);
         this.id = id;
         this.params = new Param(line, column);
-        this.additionalTypes = new ArrayList<Type>();
+        this.returnTypes = new ArrayList<Type>();
         this.commands = new ArrayList<Cmd>();
     }
 
-    public String getName() {
+    public String getId() {
         return id;
     }
 
@@ -40,11 +36,11 @@ public class Func extends Node {
         return params;
     }
 
-    public List<Type> getAdditionalTypes() {
-        return additionalTypes;
+    public List<Type> getReturnTypes() {
+        return returnTypes;
     }
 
-    public List<Cmd> getCmds() {
+    public List<Cmd> getCommands() {
         return commands;
     }
 
@@ -53,20 +49,20 @@ public class Func extends Node {
     }
 
     public void addReturnTypes(Type returnType) {
-        this.additionalTypes.add(returnType);
+        this.returnTypes.add(returnType);
     }
 
     @Override
     public String toString() {
         String s = id.toString() + "(";
         s += params.toString();
-        if (additionalTypes.size() > 0) {
+        if (returnTypes.size() > 0) {
             s += ") : ";
-            for (int i = 0; i < additionalTypes.size() - 1; i++) {
-                String typeAux = additionalTypes.get(i).toString();
+            for (int i = 0; i < returnTypes.size() - 1; i++) {
+                String typeAux = returnTypes.get(i).toString();
                 s += typeAux.toString() + ", ";
             }
-            s += additionalTypes.get(additionalTypes.size() - 1).toString();
+            s += returnTypes.get(returnTypes.size() - 1).toString();
         } else {
             s += ")";
         }
@@ -78,11 +74,11 @@ public class Func extends Node {
         return s;
     }
 
-    public void setCmds(List<Cmd> commands) {
+    public void setCommands(List<Cmd> commands) {
         this.commands = commands;
     }
 
-    public void setFuncName(String id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -90,8 +86,8 @@ public class Func extends Node {
         this.params = parameters;
     }
 
-    public void setAdditionalTypes(List<Type> returnTypes) {
-        this.additionalTypes = returnTypes;
+    public void setReturnTypes(List<Type> returnTypes) {
+        this.returnTypes = returnTypes;
     }
 
     @Override

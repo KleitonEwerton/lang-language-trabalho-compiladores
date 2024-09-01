@@ -1,4 +1,3 @@
-
 /*  Trabalho da disciplina DCC045 - Teoria dos Compiladores
  *  Kleiton Ewerton de Oliveira - MAT 202065050C
  *  Nikolas Oliver Sales Genesio - MAT 202065072C
@@ -11,35 +10,35 @@ import java.util.List;
 
 public class FuncArgs extends Expr {
 
-    private List<Expr> exprs;
+    private List<Expr> exps;
 
     public FuncArgs(int line, int column, List<Expr> exps) {
         super(line, column);
-        this.exprs = exps;
+        this.exps = exps;
     }
 
     public FuncArgs(int line, int column) {
         super(line, column);
-        this.exprs = null;
+        this.exps = null;
     }
 
-    public List<Expr> getExprs() {
-        return exprs;
+    public List<Expr> getExps() {
+        return exps;
     }
 
-    public void setExprs(List<Expr> e) {
-        this.exprs = e;
+    public void setExps(List<Expr> e) {
+        this.exps = e;
     }
 
     public void addExp(Expr e) {
-        this.exprs.add(e);
+        this.exps.add(e);
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        for (Expr Expr : exprs) {
-            sb.append(Expr).append(", ");
+        for (Expr expression : exps) {
+            sb.append(expression).append(", ");
         }
         if (sb.length() > 0) {
             sb.setLength(sb.length() - 2);

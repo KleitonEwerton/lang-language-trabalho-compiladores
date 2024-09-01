@@ -28,15 +28,15 @@ public class Obj extends LValue {
         this.tipo = tipo;
     }
 
-    public String getName() {
+    public String getId() {
         return this.id;
     }
 
-    public Type getBaseType() {
+    public Type getType() {
         return tipo;
     }
 
-    public void setFuncName(String id) {
+    public void setId(String id) {
         this.id = id;
     }
 

@@ -1,15 +1,16 @@
- /*  Trabalho da disciplina DCC045 - Teoria dos Compiladores
-  *  Kleiton Ewerton de Oliveira - MAT 202065050C
-  *  Nikolas Oliver Sales Genesio - MAT 202065072C
-  */
+/*  Trabalho da disciplina DCC045 - Teoria dos Compiladores
+ *  Kleiton Ewerton de Oliveira - MAT 202065050C
+ *  Nikolas Oliver Sales Genesio - MAT 202065072C
+ */
+
 package lang.ast;
 
-import lang.visitors.Visitor;
+import lang.visitors.*;
 
 public class Decl extends Node {
 
-    String id;
-    Type type;
+    private String id;
+    private Type type;
 
     public Decl(int line, int column, String id, Type type) {
         super(line, column);
@@ -17,7 +18,7 @@ public class Decl extends Node {
         this.type = type;
     }
 
-    public String getName() {
+    public String getId() {
         return id;
     }
 
@@ -26,12 +27,12 @@ public class Decl extends Node {
     }
 
     @Override
-    public String toString() {
-        return id + " :: " + type + "; ";
+    public void accept(Visitor v) {
+        v.visit(this);
     }
 
     @Override
-    public void accept(Visitor v) {
-        v.visit(this);
+    public String toString() {
+        return id + " :: " + type.toString() + ";";
     }
 }

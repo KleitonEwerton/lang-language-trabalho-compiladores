@@ -5,20 +5,25 @@
 
 package lang.ast;
 
+/*
+ * Esta classe representa um comando de Impressão.
+ * Expr
+ */
 public abstract class Expr extends Node {
 
-    private Expr Expr;
+    private Expr expr;
 
-    public Expr(int line, int column) {
-        super(line, column);
+    public Expr(int lin, int col) {
+        super(lin, col);
     }
 
-    public Expr(int line, int column, Expr Expr) {
-        super(line, column);
-        this.Expr = Expr;
+    public Expr(int lin, int col, Expr expr) {
+        super(lin, col);
+        this.expr = expr;
     }
 
     public Expr getExpr() {
-        return Expr;
+        return expr;
     }
+
 }

@@ -2,27 +2,26 @@
  *  Kleiton Ewerton de Oliveira - MAT 202065050C
  *  Nikolas Oliver Sales Genesio - MAT 202065072C
  */
-
 package lang.ast;
 
 import lang.visitors.Visitor;
 
 public class Print extends Cmd {
 
-    private Expr expr;// Expressão a ser impressa
+    private Expr exp;
 
-    public Print(int line, int column, Expr expr) {
+    public Print(int line, int column, Expr exp) {
         super(line, column);
-        this.expr = expr;
+        this.exp = exp;
     }
 
-    public Expr getExpr() {
-        return expr;
+    public Expr getExpression() {
+        return exp;
     }
 
     @Override
     public String toString() {
-        return " print " + expr.toString() + " ; ";
+        return " print " + exp.toString() + " ; ";
     }
 
     @Override

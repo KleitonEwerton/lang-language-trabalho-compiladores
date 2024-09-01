@@ -2,9 +2,10 @@
  *  Kleiton Ewerton de Oliveira - MAT 202065050C
  *  Nikolas Oliver Sales Genesio - MAT 202065072C
  */
+
 package lang.ast;
 
-import lang.visitors.Visitor;
+import lang.visitors.*;
 
 public class CharDexp extends LValue {
 
@@ -12,7 +13,21 @@ public class CharDexp extends LValue {
 
     public CharDexp(int line, int column, String value) {
         super(line, column);
-        this.interpretChar(value);
+        interpretChar(value);
+    }
+
+    public String getValue() {
+        return Character.toString(value);
+    }
+
+    @Override
+    public void accept(Visitor v) {
+        v.visit(this);
+    }
+
+    @Override
+    public String toString() {
+        return "'" + value + "'";
     }
 
     private void interpretChar(String valueString) {
@@ -45,26 +60,8 @@ public class CharDexp extends LValue {
         }
     }
 
-    public void setValue(char value) {
-        this.value = value;
-    }
-
-    public String getValue() {
-        return value + "";
-    }
-
     @Override
-    public String toString() {
-        return value + "";
-    }
-
-    @Override
-    public void accept(Visitor v) {
-        v.visit(this);
-    }
-
-    @Override
-    public String getName() {
-        return getName();
+    public String getId() {
+        return null; // CharDexp does not have an identifier, so return null
     }
 }

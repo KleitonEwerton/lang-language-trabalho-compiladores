@@ -1,28 +1,27 @@
-
- /*  Trabalho da disciplina DCC045 - Teoria dos Compiladores
-  *  Kleiton Ewerton de Oliveira - MAT 202065050C
-  *  Nikolas Oliver Sales Genesio - MAT 202065072C
-  */  
+/*  Trabalho da disciplina DCC045 - Teoria dos Compiladores
+ *  Kleiton Ewerton de Oliveira - MAT 202065050C
+ *  Nikolas Oliver Sales Genesio - MAT 202065072C
+ */
 package lang.ast;
 
 import lang.visitors.Visitor;
 
 public class Iterate extends Cmd {
 
-    private String itString;
-    private Expr condition; // Expressão condicional para o loop
-    private Cmd cmd; // Comando a ser repetido enquanto a condição for verdadeira
+    private String it;
+    private Expr expr;
+    private Cmd cmd;
 
-    public Iterate(int line, int column, String itString, Expr condition, Cmd cmd) {
+    public Iterate(int line, int column, String it, Expr expr, Cmd cmd) {
         super(line, column);
-        this.itString = itString;
-        this.condition = condition;
+        this.it = it;
+        this.expr = expr;
         this.cmd = cmd;
     }
 
     @Override
     public String toString() {
-        return itString + " ( " + condition.toString() + " ) " + cmd.toString();
+        return it + " ( " + expr.toString() + " ) " + cmd.toString();
     }
 
     @Override
@@ -30,20 +29,20 @@ public class Iterate extends Cmd {
         v.visit(this);
     }
 
-    public Expr getCondition() {
-        return condition;
+    public void setExp(Expr exp) {
+        this.expr = exp;
     }
 
-    public void setCondition(Expr exp) {
-        this.condition = exp;
-    }
-
-    public Cmd getTrueCmd() {
+    public Cmd getCmd() {
         return cmd;
     }
 
     public void setCmd(Cmd cmd) {
         this.cmd = cmd;
+    }
+
+    public Expr getExpr() {
+        return this.expr;
     }
 
 }

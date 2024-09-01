@@ -1,27 +1,27 @@
- /*  Trabalho da disciplina DCC045 - Teoria dos Compiladores
-  *  Kleiton Ewerton de Oliveira - MAT 202065050C
-  *  Nikolas Oliver Sales Genesio - MAT 202065072C
-  */  
+/*  Trabalho da disciplina DCC045 - Teoria dos Compiladores
+ *  Kleiton Ewerton de Oliveira - MAT 202065050C
+ *  Nikolas Oliver Sales Genesio - MAT 202065072C
+ */
 package lang.ast;
 
 import lang.visitors.Visitor;
 
 public class IfElse extends Cmd {
 
-    private Expr condition;
-    private Cmd trueCmd;
-    private Cmd falseCmd;
+    private Expr exp;
+    private Cmd cmd;
+    private Cmd elseCmd;
 
-    public IfElse(int line, int column, Expr condition, Cmd trueCmd, Cmd falseCmd) {
+    public IfElse(int line, int column, Expr exp, Cmd cmd, Cmd elseCmd) {
         super(line, column);
-        this.condition = condition;
-        this.trueCmd = trueCmd;
-        this.falseCmd = falseCmd;
+        this.exp = exp;
+        this.cmd = cmd;
+        this.elseCmd = elseCmd;
     }
 
     @Override
     public String toString() {
-        return " if ( " + condition.toString() + " ) " + trueCmd.toString() + " else " + falseCmd.toString();
+        return " if ( " + exp.toString() + " ) " + cmd.toString() + " else " + elseCmd.toString();
     }
 
     @Override
@@ -29,15 +29,15 @@ public class IfElse extends Cmd {
         v.visit(this);
     }
 
-    public Expr getCondition() {
-        return condition;
+    public Expr getExpr() {
+        return exp;
     }
 
-    public Cmd getTrueCmd() {
-        return trueCmd;
+    public Cmd getCmd() {
+        return cmd;
     }
 
-    public Cmd getFalseCmd() {
-        return falseCmd;
+    public Cmd getElseCmd() {
+        return elseCmd;
     }
 }

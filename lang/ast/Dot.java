@@ -2,6 +2,7 @@
  *  Kleiton Ewerton de Oliveira - MAT 202065050C
  *  Nikolas Oliver Sales Genesio - MAT 202065072C
  */
+
 package lang.ast;
 
 import lang.visitors.Visitor;
@@ -9,22 +10,22 @@ import lang.visitors.Visitor;
 public class Dot extends LValue {
 
     private LValue lvalue;
-    private String name;
+    private String id;
     private String dataId;
 
     public Dot(int line, int column, LValue lvalue, String id, String dataId) {
         super(line, column);
         this.lvalue = lvalue;
-        this.name = id;
+        this.id = id;
         this.dataId = dataId;
     }
 
-    public LValue getLValue() {
+    public LValue getlValue() {
         return lvalue;
     }
 
-    public String getName() {
-        return name;
+    public String getId() {
+        return id;
     }
 
     public String getDataId() {
@@ -33,11 +34,12 @@ public class Dot extends LValue {
 
     @Override
     public String toString() {
-        return lvalue.toString() + "." + name;
+        return lvalue.toString() + "." + id;
     }
 
     @Override
     public void accept(Visitor v) {
         v.visit(this);
     }
+
 }

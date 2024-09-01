@@ -1,4 +1,3 @@
-
 /*  Trabalho da disciplina DCC045 - Teoria dos Compiladores
  *  Kleiton Ewerton de Oliveira - MAT 202065050C
  *  Nikolas Oliver Sales Genesio - MAT 202065072C
@@ -9,7 +8,7 @@ import lang.visitors.Visitor;
 
 public class Read extends Cmd {
 
-    private LValue lvalue;// Lvalue onde o valor será lido
+    private LValue lvalue;
 
     public Read(int line, int column, LValue lvalue) {
         super(line, column);
@@ -26,7 +25,7 @@ public class Read extends Cmd {
         v.visit(this);
     }
 
-    public LValue getLValue() {
+    public LValue getlValue() {
         return lvalue;
     }
 }

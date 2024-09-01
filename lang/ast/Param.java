@@ -11,8 +11,8 @@ import lang.visitors.Visitor;
 
 public class Param extends Node {
 
-    private List<String> id;// ID do parâmetro
-    private List<Type> type;// Tipo do parâmetro
+    private List<String> id;
+    private List<Type> type;
 
     public Param(int line, int column) {
         super(line, column);
@@ -30,7 +30,7 @@ public class Param extends Node {
         return id.size();
     }
 
-    public List<String> getName() {
+    public List<String> getId() {
         return id;
     }
 
@@ -46,7 +46,7 @@ public class Param extends Node {
         this.id = id;
     }
 
-    public List<Type> getBaseType() {
+    public List<Type> getType() {
         return type;
     }
 

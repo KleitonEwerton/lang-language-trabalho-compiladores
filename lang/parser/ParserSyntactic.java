@@ -29,10 +29,10 @@ public class ParserSyntactic implements ParseAdaptor {
         LangLexer lexer = new LangLexer(input);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         LangParser parser = new LangParser(tokens);
+
         // Parsing
-        ParseTree tree = parser.prog(); // nome da regra inicial
-        MyVisitor ast = new MyVisitor();
-        Node node = ast.visit(tree);
-        return node;
+        ParseTree tree = parser.prog(); // ou o nome da regra inicial
+
+        return (SuperNode) new MyVisitor().visit(tree);
     }
 }

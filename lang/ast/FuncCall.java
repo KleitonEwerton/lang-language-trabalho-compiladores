@@ -1,4 +1,3 @@
-
 /*  Trabalho da disciplina DCC045 - Teoria dos Compiladores
  *  Kleiton Ewerton de Oliveira - MAT 202065050C
  *  Nikolas Oliver Sales Genesio - MAT 202065072C
@@ -9,20 +8,20 @@ import lang.visitors.Visitor;
 
 public class FuncCall extends Expr {
 
-    private String funcName;
-    private FuncArgs funcArgs;
-    private Expr expr;
+    private String id;
+    private FuncArgs fFuncArgss;
+    private Expr exp;
 
-    public FuncCall(int line, int column, String id, FuncArgs funcArgs, Expr expr) {
+    public FuncCall(int line, int column, String id, FuncArgs fFuncArgss, Expr exp) {
         super(line, column);
-        this.funcName = id;
-        this.funcArgs = funcArgs;
-        this.expr = expr;
+        this.id = id;
+        this.fFuncArgss = fFuncArgss;
+        this.exp = exp;
     }
 
     @Override
     public String toString() {
-        return funcName + " ( " + (funcArgs != null ? funcArgs : "") + " ) [ " + expr + " ] ";
+        return id + " ( " + (fFuncArgss != null ? fFuncArgss : "") + " ) [ " + exp + " ] ";
     }
 
     @Override
@@ -30,27 +29,27 @@ public class FuncCall extends Expr {
         v.visit(this);
     }
 
-    public String getName() {
-        return funcName;
+    public String getId() {
+        return id;
     }
 
-    public void setFuncName(String id) {
-        this.funcName = id;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public FuncArgs getFFuncArgss() {
-        return funcArgs;
+        return fFuncArgss;
     }
 
     public void setFFuncArgss(FuncArgs fFuncArgss) {
-        this.funcArgs = fFuncArgss;
+        this.fFuncArgss = fFuncArgss;
     }
 
     public Expr getExpIndex() {
-        return expr;
+        return exp;
     }
 
     public void setExpIndex(Expr exp) {
-        this.expr = exp;
+        this.exp = exp;
     }
 }

@@ -1,7 +1,8 @@
- /*  Trabalho da disciplina DCC045 - Teoria dos Compiladores
+
+/*  Trabalho da disciplina DCC045 - Teoria dos Compiladores
   *  Kleiton Ewerton de Oliveira - MAT 202065050C
   *  Nikolas Oliver Sales Genesio - MAT 202065072C
-  */  
+  */
 package lang.ast;
 
 import java.util.ArrayList;
@@ -9,37 +10,37 @@ import java.util.List;
 
 import lang.visitors.Visitor;
 
-public class FuncCallCmd extends Cmd {
+public class FuncCallCMD extends Cmd {
 
-    private String id; // Identificador da função
-    private FuncArgs functionFuncArgss; // Lista de expressões (argumentos) para a chamada da função
-    private List<LValue> lvalues = new ArrayList<>(); // Lista opcional de variáveis genéricas (se houver)
+    private List<LValue> lvalues = new ArrayList<>();
+    private String id;
+    private FuncArgs fcp;
 
-    public FuncCallCmd(int line, int column, String id) {
+    public FuncCallCMD(int line, int column, String id) {
         super(line, column);
         this.id = id;
     }
 
-    public FuncCallCmd(int line, int column, String id, FuncArgs funcArgs) {
+    public FuncCallCMD(int line, int column, String id, FuncArgs params) {
         super(line, column);
         this.id = id;
-        this.functionFuncArgss = funcArgs;
+        this.fcp = params;
     }
 
-    public String getName() {
+    public String getId() {
         return id;
     }
 
-    public void setFuncName(String id) {
+    public void setId(String id) {
         this.id = id;
     }
 
     public FuncArgs getFFuncArgss() {
-        return functionFuncArgss;
+        return fcp;
     }
 
     public void setFFuncArgss(FuncArgs fFuncArgss) {
-        this.functionFuncArgss = fFuncArgss;
+        this.fcp = fFuncArgss;
     }
 
     public List<LValue> getLValues() {
@@ -60,12 +61,12 @@ public class FuncCallCmd extends Cmd {
         for (LValue lvalue : lvalues) {
             bld.append(lvalue.toString() + ", ");
         }
-        if (functionFuncArgss != null) {
+        if (fcp != null) {
             if (bld.length() > 0) {
-                return id + " ( " + functionFuncArgss.toString() + " ) " +
+                return id + " ( " + fcp.toString() + " ) " +
                         " < " + bld.substring(0, bld.length() - 2) + " > ; ";
             }
-            return id + " ( " + functionFuncArgss.toString() + " ) ; ";
+            return id + " ( " + fcp.toString() + " ) ; ";
         } else {
             if (bld.length() > 0) {
                 return id + " ( " + "" + " ) " +

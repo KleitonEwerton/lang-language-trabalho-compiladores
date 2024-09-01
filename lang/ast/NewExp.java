@@ -8,32 +8,32 @@ import lang.visitors.Visitor;
 
 public class NewExp extends Expr {
 
-    private Expr expr;
+    private Expr exp;
     private Type type;
     private String dataName;
 
-    public NewExp(int line, int column, Expr expr, Type type) {
+    public NewExp(int line, int column, Expr exp, Type type) {
         super(line, column);
-        this.expr = expr;
+        this.exp = exp;
         this.type = type;
     }
 
-    public NewExp(int line, int column, Expr expr, String dataName) {
+    public NewExp(int line, int column, Expr exp, String dataName) {
         super(line, column);
-        this.expr = expr;
+        this.exp = exp;
         this.type = null;
         this.dataName = dataName;
     }
 
     public NewExp(int line, int column, Type type) {
         super(line, column);
-        this.expr = null;
+        this.exp = null;
         this.type = type;
     }
 
     public NewExp(int line, int column, String dataName) {
         super(line, column);
-        this.expr = null;
+        this.exp = null;
         this.type = null;
         this.dataName = dataName;
     }
@@ -41,9 +41,9 @@ public class NewExp extends Expr {
     @Override
     public String toString() {
         if (type != null) {
-            return " new " + type + (expr != null ? (" [ " + expr + " ] ") : " ");
+            return " new " + type + (exp != null ? (" [ " + exp + " ] ") : " ");
         } else
-            return " new " + dataName + (expr != null ? (" [ " + expr + " ] ") : " ");
+            return " new " + dataName + (exp != null ? (" [ " + exp + " ] ") : " ");
     }
 
     @Override
@@ -51,15 +51,15 @@ public class NewExp extends Expr {
         v.visit(this);
     }
 
-    public Expr getCondition() {
-        return expr;
+    public Expr getExpr() {
+        return exp;
     }
 
-    public void setCondition(Expr exp) {
-        this.expr = exp;
+    public void setExp(Expr exp) {
+        this.exp = exp;
     }
 
-    public Type getBaseType() {
+    public Type getType() {
         return type;
     }
 

@@ -3,7 +3,6 @@
  *  Kleiton Ewerton de Oliveira - MAT 202065050C
  *  Nikolas Oliver Sales Genesio - MAT 202065072C
  */
-
 package lang.visitors;
 
 import java.util.ArrayList;
@@ -12,7 +11,7 @@ import java.util.List;
 import lang.ast.*;
 import lang.parser.LangBaseVisitor;
 import lang.parser.LangParser.*;
-
+import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTree;
 
 public class MyVisitor extends LangBaseVisitor<Node> {
@@ -20,9 +19,9 @@ public class MyVisitor extends LangBaseVisitor<Node> {
     /*
      * prog: def* #progName;
      */
+
     @Override
     public Node visitProgName(ProgNameContext ctx) {
-
         // Criando um novo objeto Program, similar ao primeiro visitante
         Prog program = new Prog(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine());
 
@@ -47,6 +46,7 @@ public class MyVisitor extends LangBaseVisitor<Node> {
      * | fun #funDef
      * ;
      */
+
     @Override
     public Node visitDataDef(DataDefContext ctx) {
         return visit(ctx.data());
@@ -329,13 +329,13 @@ public class MyVisitor extends LangBaseVisitor<Node> {
 
         // Obter o identificador da função
         String id = ctx.ID().getText();
-        FuncCallCmd funcCallCmd = new FuncCallCmd(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine(),
+        FuncCallCMD funcCallCmd = new FuncCallCMD(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine(),
                 id);
 
         if (ctx.exps() != null) {
             FuncArgs exps = (FuncArgs) ctx.exps().accept(this);
 
-            funcCallCmd = new FuncCallCmd(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine(),
+            funcCallCmd = new FuncCallCMD(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine(),
                     id, exps);
         }
 
@@ -523,14 +523,16 @@ public class MyVisitor extends LangBaseVisitor<Node> {
 
     @Override
     public Node visitTrueDexp(TrueDexpContext ctx) {
-        // Cria uma instância de TrueDexp usando as informações de linha e coluna
-        return new True(ctx.start.getLine(), ctx.start.getCharPositionInLine());
+        // Cria um objeto BoolDexp representando o valor booleano 'true'
+        boolean trueValue = Boolean.parseBoolean(ctx.getChild(0).getText());
+        return new BoolDexp(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine(), trueValue);
     }
 
     @Override
     public Node visitFalseDexp(FalseDexpContext ctx) {
-        // Cria uma instância de TrueDexp usando as informações de linha e coluna
-        return new False(ctx.start.getLine(), ctx.start.getCharPositionInLine());
+        // Cria um objeto BoolDexp representando o valor booleano 'false'
+        boolean falseValue = Boolean.parseBoolean(ctx.getChild(0).getText());
+        return new BoolDexp(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine(), falseValue);
     }
 
     @Override
@@ -693,7 +695,7 @@ public class MyVisitor extends LangBaseVisitor<Node> {
         for (int i = 0; i < ctx.exp().size(); i++) {
             exps.add((Expr) ctx.exp().get(i).accept(this));
         }
-        funcArgs.setExprs(exps);
+        funcArgs.setExps(exps);
         return funcArgs;
     }
 }

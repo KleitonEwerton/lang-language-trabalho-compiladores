@@ -1,33 +1,23 @@
-
-
 /*  Trabalho da disciplina DCC045 - Teoria dos Compiladores
  *  Kleiton Ewerton de Oliveira - MAT 202065050C
  *  Nikolas Oliver Sales Genesio - MAT 202065072C
  */
+
 package lang.ast;
 
-import lang.visitors.Visitor;
+import lang.visitors.*;
 
 public class FloatDexp extends LValue {
 
-    private Float value;
+    private final float value;
 
-    public FloatDexp(int line, int column, Float value) {
+    public FloatDexp(int line, int column, float value) {
         super(line, column);
         this.value = value;
     }
 
-    public void setValue(Float value) {
-        this.value = value;
-    }
-
-    public Float getValue() {
+    public float getValue() {
         return value;
-    }
-
-    @Override
-    public String toString() {
-        return " " + value.toString() + " ";
     }
 
     @Override
@@ -36,7 +26,12 @@ public class FloatDexp extends LValue {
     }
 
     @Override
-    public String getName() {
-        return null;
+    public String toString() {
+        return Float.toString(value);
+    }
+
+    @Override
+    public String getId() {
+        return this.getId();
     }
 }

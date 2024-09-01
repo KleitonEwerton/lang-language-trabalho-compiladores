@@ -1,5 +1,3 @@
-
-
 /*  Trabalho da disciplina DCC045 - Teoria dos Compiladores
  *  Kleiton Ewerton de Oliveira - MAT 202065050C
  *  Nikolas Oliver Sales Genesio - MAT 202065072C
@@ -7,14 +5,6 @@
 package lang.visitors;
 
 import java.io.*;
-import lang.ast.SuperNode;
-import lang.parser.*;
-import lang.visitors.*;
-
-import java.util.List;
-
-// Adaptador para classe do interpretador. 
-// a Função interpretFile deve retornar null caso o parser resulte em erro. 
 
 public class TestVisitor {
     private InterpreterAdaptor adp;
@@ -58,7 +48,7 @@ public class TestVisitor {
                 System.out.println("Total de acertos: " + flips);
                 System.out.println("Total de erros: " + flops);
             } else {
-                System.out.println("O caNegho " + f.getPath() + " não é um diretório ou não existe.");
+                System.out.println("O caminho " + f.getPath() + " não é um diretório ou não existe.");
             }
 
         } catch (Exception e) {

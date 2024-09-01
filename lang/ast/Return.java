@@ -1,4 +1,3 @@
-
 /*  Trabalho da disciplina DCC045 - Teoria dos Compiladores
  *  Kleiton Ewerton de Oliveira - MAT 202065050C
  *  Nikolas Oliver Sales Genesio - MAT 202065072C
@@ -12,29 +11,29 @@ import lang.visitors.Visitor;
 
 public class Return extends Cmd {
 
-    private List<Expr> exprs = new ArrayList<>();// Lista de expressões a serem retornadas
+    private List<Expr> exps = new ArrayList<>();
 
     public Return(int line, int column, List<Expr> exps) {
         super(line, column);
-        this.exprs = exps;
+        this.exps = exps;
     }
 
-    public List<Expr> getExprs() {
-        return exprs;
+    public List<Expr> getExps() {
+        return exps;
     }
 
-    public void setExprs(List<Expr> exps) {
-        this.exprs = exps;
+    public void setExps(List<Expr> exps) {
+        this.exps = exps;
     }
 
     @Override
     public String toString() {
         String s = "";
-        for (Expr Expr : exprs) {
-            s += Expr.toString() + ", ";
+        for (Expr expression : exps) {
+            s += expression.toString() + ", ";
         }
         s = "return " + s;
-        if (exprs.size() > 0) {
+        if (exps.size() > 0) {
             s = s.substring(0, s.length() - 2);
         }
         s += ";";

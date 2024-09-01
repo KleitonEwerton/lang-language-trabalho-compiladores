@@ -1,4 +1,3 @@
-
 /*  Trabalho da disciplina DCC045 - Teoria dos Compiladores
  *  Kleiton Ewerton de Oliveira - MAT 202065050C
  *  Nikolas Oliver Sales Genesio - MAT 202065072C
@@ -6,9 +5,6 @@
 package lang.parser;
 
 import java.io.*;
-import lang.ast.SuperNode;
-import lang.parser.*;
-import java.util.List;
 
 // Adaptador para classe de parser. a Função parseFile deve retornar null caso o parser resulte em erro. 
 public class TestParser {
@@ -53,7 +49,7 @@ public class TestParser {
                 System.out.println("Total de acertos: " + flips);
                 System.out.println("Total de erros: " + flops);
             } else {
-                System.out.println("O caNegho " + f.getPath() + " não é um diretório ou não existe.");
+                System.out.println("O caminho " + f.getPath() + " não é um diretório ou não existe.");
             }
 
         } catch (Exception e) {
