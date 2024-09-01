@@ -3,7 +3,7 @@ package lang.ast;
 
 import lang.visitors.Visitor;
 
-public class Null extends Expression {
+public class Null extends Expr {
 
     private String value = null;
 

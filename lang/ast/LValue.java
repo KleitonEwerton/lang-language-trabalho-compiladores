@@ -3,7 +3,7 @@ package lang.ast;
 
 import lang.visitors.Visitor;
 
-public abstract class LValue extends Expression {
+public abstract class LValue extends Expr {
 
     public abstract String getId();
 

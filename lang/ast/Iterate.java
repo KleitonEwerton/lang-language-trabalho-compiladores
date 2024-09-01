@@ -6,10 +6,10 @@ import lang.visitors.Visitor;
 public class Iterate extends Cmd {
 
     private String it;
-    private Expression exp;
+    private Expr exp;
     private Cmd cmd;
 
-    public Iterate(int line, int column, String it, Expression exp, Cmd cmd) {
+    public Iterate(int line, int column, String it, Expr exp, Cmd cmd) {
         super(line, column);
         this.it = it;
         this.exp = exp;
@@ -26,11 +26,11 @@ public class Iterate extends Cmd {
         v.visit(this);
     }
 
-    public Expression getExp() {
+    public Expr getExp() {
         return exp;
     }
 
-    public void setExp(Expression exp) {
+    public void setExp(Expr exp) {
         this.exp = exp;
     }
 

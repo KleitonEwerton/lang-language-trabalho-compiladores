@@ -5,9 +5,9 @@ import lang.visitors.Visitor;
 public class ArrayLValue extends LValue {
 
     private LValue lvalue;
-    private Expression exp;
+    private Expr exp;
 
-    public ArrayLValue(int line, int column, LValue lvalue, Expression exp) {
+    public ArrayLValue(int line, int column, LValue lvalue, Expr exp) {
         super(line, column);
         this.lvalue = lvalue;
         this.exp = exp;
@@ -17,7 +17,7 @@ public class ArrayLValue extends LValue {
         return lvalue;
     }
 
-    public Expression getExp() {
+    public Expr getExp() {
         return exp;
     }
 

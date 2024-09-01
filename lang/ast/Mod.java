@@ -5,7 +5,7 @@ import lang.visitors.Visitor;
 
 public class Mod extends BinOP {
 
-    public Mod(int line, int column, Expression left, Expression right) {
+    public Mod(int line, int column, Expr left, Expr right) {
         super(line, column, left, right);
     }
 

@@ -3,10 +3,10 @@ package lang.ast;
 
 import lang.visitors.Visitor;
 
-public class Not extends Expression {
-    private Expression exp;
+public class Not extends Expr {
+    private Expr exp;
 
-    public Not(int line, int column, Expression exp) {
+    public Not(int line, int column, Expr exp) {
         super(line, column);
         this.exp = exp;
     }

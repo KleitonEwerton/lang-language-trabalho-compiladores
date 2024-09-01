@@ -12,7 +12,7 @@ public abstract class Visitor {
 
     public abstract void visit(ArrayType t);
 
-    public abstract void visit(Attr a);
+    public abstract void visit(LvalueCmd a);
 
     public abstract void visit(BoolDexp b);
 
@@ -30,7 +30,7 @@ public abstract class Visitor {
 
     public abstract void visit(Div d);
 
-    public abstract void visit(DotLvalue d);
+    public abstract void visit(Dot d);
 
     public abstract void visit(Equals e);
 
@@ -72,13 +72,11 @@ public abstract class Visitor {
 
     public abstract void visit(Not n);
 
-    public abstract void visit(NotEqual n);
+    public abstract void visit(NotEquals n);
 
     public abstract void visit(Null n);
 
     public abstract void visit(Param p);
-
-    public abstract void visit(PexpIdentifier i);
 
     public abstract void visit(Print i);
 
@@ -92,11 +90,11 @@ public abstract class Visitor {
 
     public abstract void visit(Type t);
 
-    public abstract void visit(TypeBool t);
+    public abstract void visit(TyBool t);
 
-    public abstract void visit(TypeChar t);
+    public abstract void visit(TyChar t);
 
-    public abstract void visit(TypeFloat t);
+    public abstract void visit(TyFloat t);
 
-    public abstract void visit(TypeInt t);
+    public abstract void visit(TyInt t);
 }

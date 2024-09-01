@@ -4,7 +4,7 @@ import lang.visitors.Visitor;
 
 public class Sub extends BinOP {
 
-    public Sub(int line, int column, Expression left, Expression right) {
+    public Sub(int line, int column, Expr left, Expr right) {
         super(line, column, left, right);
     }
 

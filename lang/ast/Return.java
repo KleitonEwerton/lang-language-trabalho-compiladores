@@ -8,25 +8,25 @@ import lang.visitors.Visitor;
 
 public class Return extends Cmd {
 
-    private List<Expression> exps = new ArrayList<>();
+    private List<Expr> exps = new ArrayList<>();
 
-    public Return(int line, int column, List<Expression> exps) {
+    public Return(int line, int column, List<Expr> exps) {
         super(line, column);
         this.exps = exps;
     }
 
-    public List<Expression> getExps() {
+    public List<Expr> getExps() {
         return exps;
     }
 
-    public void setExps(List<Expression> exps) {
+    public void setExps(List<Expr> exps) {
         this.exps = exps;
     }
 
     @Override
     public String toString() {
         String s = "";
-        for (Expression expression : exps) {
+        for (Expr expression : exps) {
             s += expression.toString() + ", ";
         }
         s = "return " + s;

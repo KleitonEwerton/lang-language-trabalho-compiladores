@@ -3,23 +3,19 @@ package lang.ast;
 
 import lang.visitors.Visitor;
 
-public class ExpP extends Expr {
+public class TyFloat extends Type {
 
-    private Expr exp;
-
-    public ExpP(int line, int column, Expr exp) {
+    public TyFloat(int line, int column) {
         super(line, column);
-        this.exp = exp;
     }
 
     @Override
     public String toString() {
-        return " ( " + exp.toString() + " ) ";
+        return "Float";
     }
 
     @Override
     public void accept(Visitor v) {
         v.visit(this);
     }
-
 }

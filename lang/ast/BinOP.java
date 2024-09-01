@@ -1,29 +1,29 @@
 package lang.ast;
 
-public class BinOP extends Expression {
+public class BinOP extends Expr {
 
-    protected Expression left;
-    protected Expression right;
+    protected Expr left;
+    protected Expr right;
 
-    public BinOP(int line, int column, Expression left, Expression right) {
+    public BinOP(int line, int column, Expr left, Expr right) {
         super(line, column);
         this.left = left;
         this.right = right;
     }
 
-    public Expression getLeft() {
+    public Expr getLeft() {
         return left;
     }
 
-    public Expression getRight() {
+    public Expr getRight() {
         return right;
     }
 
-    public void setLeft(Expression left) {
+    public void setLeft(Expr left) {
         this.left = left;
     }
 
-    public void setRight(Expression right) {
+    public void setRight(Expr right) {
         this.right = right;
     }
 }

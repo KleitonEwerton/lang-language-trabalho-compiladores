@@ -5,7 +5,7 @@ import lang.visitors.Visitor;
 
 public class Mul extends BinOP {
 
-    public Mul(int line, int column, Expression left, Expression right) {
+    public Mul(int line, int column, Expr left, Expr right) {
         super(line, column, left, right);
     }
 

@@ -3,19 +3,19 @@ package lang.ast;
 
 import lang.visitors.Visitor;
 
-public class NewExp extends Expression {
+public class NewExp extends Expr {
 
-    private Expression exp;
+    private Expr exp;
     private Type type;
     private String dataName;
 
-    public NewExp(int line, int column, Expression exp, Type type) {
+    public NewExp(int line, int column, Expr exp, Type type) {
         super(line, column);
         this.exp = exp;
         this.type = type;
     }
 
-    public NewExp(int line, int column, Expression exp, String dataName) {
+    public NewExp(int line, int column, Expr exp, String dataName) {
         super(line, column);
         this.exp = exp;
         this.type = null;
@@ -48,11 +48,11 @@ public class NewExp extends Expression {
         v.visit(this);
     }
 
-    public Expression getExp() {
+    public Expr getExp() {
         return exp;
     }
 
-    public void setExp(Expression exp) {
+    public void setExp(Expr exp) {
         this.exp = exp;
     }
 

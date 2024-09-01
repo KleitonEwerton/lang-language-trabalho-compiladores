@@ -2,7 +2,7 @@ package lang.ast;
 
 import lang.visitors.Visitor;
 
-public class BoolDexp extends Expression {
+public class BoolDexp extends Expr {
 
     private Boolean value;
 

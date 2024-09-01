@@ -3,11 +3,11 @@ package lang.ast;
 
 import lang.visitors.Visitor;
 
-public class Min extends Expression {
+public class Min extends Expr {
 
-    private Expression exp;
+    private Expr exp;
 
-    public Min(int line, int column, Expression exp) {
+    public Min(int line, int column, Expr exp) {
         super(line, column);
         this.exp = exp;
     }

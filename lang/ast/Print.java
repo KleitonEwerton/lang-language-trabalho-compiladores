@@ -5,14 +5,14 @@ import lang.visitors.Visitor;
 
 public class Print extends Cmd {
 
-    private Expression exp;
+    private Expr exp;
 
-    public Print(int line, int column, Expression exp) {
+    public Print(int line, int column, Expr exp) {
         super(line, column);
         this.exp = exp;
     }
 
-    public Expression getExpression() {
+    public Expr getExpression() {
         return exp;
     }
 

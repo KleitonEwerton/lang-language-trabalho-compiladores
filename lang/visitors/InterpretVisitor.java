@@ -106,7 +106,7 @@ public class InterpretVisitor extends Visitor {
     }
 
     @Override
-    public void visit(TypeInt t) {
+    public void visit(TyInt t) {
         try {
             boolean isParam = false;
             if (parms.size() != 0) {
@@ -123,7 +123,7 @@ public class InterpretVisitor extends Visitor {
     }
 
     @Override
-    public void visit(TypeChar t) {
+    public void visit(TyChar t) {
         try {
             boolean isParam = false;
             if (parms.size() != 0) {
@@ -139,7 +139,7 @@ public class InterpretVisitor extends Visitor {
     }
 
     @Override
-    public void visit(TypeBool t) {
+    public void visit(TyBool t) {
         try {
             boolean isParam = false;
             if (parms.size() != 0) {
@@ -155,7 +155,7 @@ public class InterpretVisitor extends Visitor {
     }
 
     @Override
-    public void visit(TypeFloat t) {
+    public void visit(TyFloat t) {
         try {
             boolean isParam = false;
             if (parms.size() != 0) {
@@ -282,12 +282,12 @@ public class InterpretVisitor extends Visitor {
             String input = sc.nextLine();
             if (lvalue instanceof IDLvalue) {
                 env.peek().put(((IDLvalue) lvalue).getId(), input);
-            } else if (lvalue instanceof DotLvalue) {
-                if (((DotLvalue) lvalue).getLValue() instanceof ArrayLValue) {
-                    ArrayLValue arrayElement = ((ArrayLValue) ((DotLvalue) lvalue).getLValue());
+            } else if (lvalue instanceof Dot) {
+                if (((Dot) lvalue).getLValue() instanceof ArrayLValue) {
+                    ArrayLValue arrayElement = ((ArrayLValue) ((Dot) lvalue).getLValue());
                     arrayElement.getExp().accept(this);
 
-                    String nomeAtributo = ((DotLvalue) lvalue).getId();
+                    String nomeAtributo = ((Dot) lvalue).getId();
                     Integer position = (Integer) operands.pop();
 
                     String nomeArray = arrayElement.getId();
@@ -303,8 +303,8 @@ public class InterpretVisitor extends Visitor {
                                 + ") Erro: Acesso a uma posicao invalida no array \'" + nomeArray + "\'  !!!");
                     }
                 } else {
-                    Object obj = env.peek().get(((IDLvalue) ((DotLvalue) lvalue).getLValue()).getId());
-                    ((HashMap<String, Object>) obj).put(((DotLvalue) lvalue).getId(), input);
+                    Object obj = env.peek().get(((IDLvalue) ((Dot) lvalue).getLValue()).getId());
+                    ((HashMap<String, Object>) obj).put(((Dot) lvalue).getId(), input);
 
                 }
             }
@@ -329,28 +329,28 @@ public class InterpretVisitor extends Visitor {
 
     @Override
     public void visit(Return r) {
-        for (Expression exp : r.getExps()) {
+        for (Expr exp : r.getExps()) {
             exp.accept(this);
         }
         retMode = true;
     }
 
     @Override
-    public void visit(Attr a) {
+    public void visit(LvalueCmd a) {
         try {
 
             a.getExp().accept(this);
 
             LValue lvalue = a.getLValue();
 
-            if (lvalue instanceof DotLvalue) {
+            if (lvalue instanceof Dot) {
 
-                if (((DotLvalue) lvalue).getLValue() instanceof ArrayLValue) {
-                    ArrayLValue arrayElement = ((ArrayLValue) ((DotLvalue) lvalue).getLValue());
+                if (((Dot) lvalue).getLValue() instanceof ArrayLValue) {
+                    ArrayLValue arrayElement = ((ArrayLValue) ((Dot) lvalue).getLValue());
                     arrayElement.getExp().accept(this);
 
-                    String nomeAtributo = ((DotLvalue) lvalue).getId();
-                    String nomeObjeto = ((DotLvalue) lvalue).getDataId();
+                    String nomeAtributo = ((Dot) lvalue).getId();
+                    String nomeObjeto = ((Dot) lvalue).getDataId();
                     Integer position = (Integer) operands.pop();
                     Integer valorAtribuicao = (Integer) operands.pop();
                     String nomeArray = arrayElement.getId();
@@ -367,8 +367,8 @@ public class InterpretVisitor extends Visitor {
                                 + ") Erro: Acesso a uma posicao invalida no array \'" + nomeArray + "\'  !!!");
                     }
                 } else {
-                    String nomeAtributo = ((DotLvalue) lvalue).getId();
-                    String nomeObjeto = ((DotLvalue) lvalue).getDataId();
+                    String nomeAtributo = ((Dot) lvalue).getId();
+                    String nomeObjeto = ((Dot) lvalue).getDataId();
 
                     Object atributo = operands.pop();
 
@@ -417,7 +417,7 @@ public class InterpretVisitor extends Visitor {
 
                 if (f.getFCallParams() != null) {
 
-                    for (Expression exp : f.getFCallParams().getExps()) {
+                    for (Expr exp : f.getFCallParams().getExps()) {
                         exp.accept(this);
                         Object obj = (Object) operands.pop();
                         parms.push(obj);
@@ -521,7 +521,7 @@ public class InterpretVisitor extends Visitor {
     }
 
     @Override
-    public void visit(NotEqual n) {
+    public void visit(NotEquals n) {
         try {
             n.getLeft().accept(this);
             n.getRight().accept(this);
@@ -818,7 +818,7 @@ public class InterpretVisitor extends Visitor {
             Func funcao = funcs.get(funcRet.getId());
 
             if (funcRet != null && funcRet.getFCallParams() != null) {
-                for (Expression exp : funcRet.getFCallParams().getExps()) {
+                for (Expr exp : funcRet.getFCallParams().getExps()) {
                     exp.accept(this);
                     parms.push(operands.pop());
                 }
@@ -890,7 +890,7 @@ public class InterpretVisitor extends Visitor {
     }
 
     @Override
-    public void visit(DotLvalue d) {
+    public void visit(Dot d) {
         try {
 
             Object obj = env.peek().get(d.getLValue().getId());
@@ -966,7 +966,7 @@ public class InterpretVisitor extends Visitor {
     @Override
     public void visit(CallParam f) {
         try {
-            for (Expression expression : f.getExps()) {
+            for (Expr expression : f.getExps()) {
                 expression.accept(this);
             }
         } catch (Exception x) {
@@ -986,11 +986,6 @@ public class InterpretVisitor extends Visitor {
 
     @Override
     public void visit(Type t) {
-
-    }
-
-    @Override
-    public void visit(PexpIdentifier i) {
 
     }
 

@@ -3,7 +3,7 @@ package lang.ast;
 
 import lang.visitors.Visitor;
 
-public class ID extends Expression {
+public class ID extends Expr {
     private String value;
 
     public ID(int line, int column, String value) {

@@ -1,12 +1,12 @@
 package lang.ast;
 
 import lang.ast.BinOP;
-import lang.ast.Expression;
+import lang.ast.Expr;
 import lang.visitors.Visitor;
 
 public class Div extends BinOP {
 
-    public Div(int line, int column, Expression left, Expression right) {
+    public Div(int line, int column, Expr left, Expr right) {
         super(line, column, left, right);
     }
 

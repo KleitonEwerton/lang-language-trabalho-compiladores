@@ -5,7 +5,7 @@ import lang.visitors.Visitor;
 
 public class Equals extends BinOP {
 
-    public Equals(int line, int column, Expression left, Expression right) {
+    public Equals(int line, int column, Expr left, Expr right) {
         super(line, column, left, right);
     }
 

@@ -3,20 +3,19 @@ package lang.ast;
 
 import lang.visitors.Visitor;
 
-public class LessThan extends BinOP {
+public class NotEquals extends BinOP {
 
-    public LessThan(int line, int column, Expr left, Expr right) {
+    public NotEquals(int line, int column, Expr left, Expr right) {
         super(line, column, left, right);
     }
 
     @Override
     public String toString() {
-        return left.toString() + " < " + right.toString();
+        return left.toString() + " != " + right.toString();
     }
 
     @Override
     public void accept(Visitor v) {
         v.visit(this);
     }
-
 }

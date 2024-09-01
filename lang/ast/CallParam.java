@@ -5,11 +5,11 @@ import lang.visitors.Visitor;
 
 import java.util.List;
 
-public class CallParam extends Expression {
+public class CallParam extends Expr {
 
-    private List<Expression> exps;
+    private List<Expr> exps;
 
-    public CallParam(int line, int column, List<Expression> exps) {
+    public CallParam(int line, int column, List<Expr> exps) {
         super(line, column);
         this.exps = exps;
     }
@@ -19,22 +19,22 @@ public class CallParam extends Expression {
         this.exps = null;
     }
 
-    public List<Expression> getExps() {
+    public List<Expr> getExps() {
         return exps;
     }
 
-    public void setExps(List<Expression> e) {
+    public void setExps(List<Expr> e) {
         this.exps = e;
     }
 
-    public void addExp(Expression e) {
+    public void addExp(Expr e) {
         this.exps.add(e);
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        for (Expression expression : exps) {
+        for (Expr expression : exps) {
             sb.append(expression).append(", ");
         }
         if (sb.length() > 0) {

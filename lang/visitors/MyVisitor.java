@@ -93,7 +93,7 @@ public class MyVisitor extends LangBaseVisitor<Node> {
 
         int line = ctx.getStart().getLine();
         int column = ctx.getStart().getCharPositionInLine();
-        return new TypeInt(line, column);
+        return new TyInt(line, column);
     }
 
     @Override
@@ -101,7 +101,7 @@ public class MyVisitor extends LangBaseVisitor<Node> {
 
         int line = ctx.getStart().getLine();
         int column = ctx.getStart().getCharPositionInLine();
-        return new TypeChar(line, column);
+        return new TyChar(line, column);
     }
 
     @Override
@@ -109,7 +109,7 @@ public class MyVisitor extends LangBaseVisitor<Node> {
 
         int line = ctx.getStart().getLine();
         int column = ctx.getStart().getCharPositionInLine();
-        return new TypeBool(line, column);
+        return new TyBool(line, column);
     }
 
     @Override
@@ -117,7 +117,7 @@ public class MyVisitor extends LangBaseVisitor<Node> {
 
         int line = ctx.getStart().getLine();
         int column = ctx.getStart().getCharPositionInLine();
-        return new TypeFloat(line, column);
+        return new TyFloat(line, column);
     }
 
     @Override
@@ -144,7 +144,7 @@ public class MyVisitor extends LangBaseVisitor<Node> {
     @Override
     public Node visitIfCmd(IfCmdContext ctx) {
 
-        Expression exp = (Expression) ctx.getChild(2).accept(this);
+        Expr exp = (Expr) ctx.getChild(2).accept(this);
         Cmd cmd = (Cmd) ctx.getChild(4).accept(this);
 
         return new If(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine(), exp, cmd);
@@ -153,7 +153,7 @@ public class MyVisitor extends LangBaseVisitor<Node> {
     @Override
     public Node visitIfElseCmd(IfElseCmdContext ctx) {
 
-        Expression exp = (Expression) ctx.getChild(2).accept(this);
+        Expr exp = (Expr) ctx.getChild(2).accept(this);
         Cmd cmd = (Cmd) ctx.getChild(4).accept(this);
         Cmd elseCmd = (Cmd) ctx.getChild(6).accept(this);
 
@@ -163,7 +163,7 @@ public class MyVisitor extends LangBaseVisitor<Node> {
     @Override
     public Node visitIterateCmd(IterateCmdContext ctx) {
 
-        Expression exp = (Expression) ctx.getChild(2).accept(this);
+        Expr exp = (Expr) ctx.getChild(2).accept(this);
         Cmd cmd = (Cmd) ctx.getChild(4).accept(this);
 
         return new Iterate(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine(), ctx.getChild(0).getText(),
@@ -182,17 +182,17 @@ public class MyVisitor extends LangBaseVisitor<Node> {
     @Override
     public Node visitPrintCmd(PrintCmdContext ctx) {
 
-        Expression expression = (Expression) ctx.exp().accept(this);
+        Expr expression = (Expr) ctx.exp().accept(this);
         return new Print(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine(), expression);
     }
 
     @Override
     public Node visitReturnCmd(ReturnCmdContext ctx) {
 
-        List<Expression> exps = new ArrayList<Expression>();
+        List<Expr> exps = new ArrayList<Expr>();
 
         for (int i = 0; i < ctx.exp().size(); i++) {
-            exps.add((Expression) ctx.exp().get(i).accept(this));
+            exps.add((Expr) ctx.exp().get(i).accept(this));
         }
 
         return new Return(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine(), exps);
@@ -201,8 +201,8 @@ public class MyVisitor extends LangBaseVisitor<Node> {
     @Override
     public Node visitLvalueCmd(LvalueCmdContext ctx) {
 
-        return new Attr(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine(),
-                (LValue) ctx.lvalue().accept(this), (Expression) ctx.exp().accept(this));
+        return new LvalueCmd(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine(),
+                (LValue) ctx.lvalue().accept(this), (Expr) ctx.exp().accept(this));
     }
 
     @Override
@@ -235,8 +235,8 @@ public class MyVisitor extends LangBaseVisitor<Node> {
     @Override
     public Node visitAndExp(AndExpContext ctx) {
 
-        Expression left = (Expression) ctx.getChild(0).accept(this);
-        Expression right = (Expression) ctx.getChild(2).accept(this);
+        Expr left = (Expr) ctx.getChild(0).accept(this);
+        Expr right = (Expr) ctx.getChild(2).accept(this);
 
         return new And(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine(), left, right);
     }
@@ -244,8 +244,8 @@ public class MyVisitor extends LangBaseVisitor<Node> {
     @Override
     public Node visitLessThanCexpr(LessThanCexprContext ctx) {
 
-        Expression left = (Expression) ctx.getChild(0).accept(this);
-        Expression right = (Expression) ctx.getChild(2).accept(this);
+        Expr left = (Expr) ctx.getChild(0).accept(this);
+        Expr right = (Expr) ctx.getChild(2).accept(this);
 
         return new LessThan(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine(), left, right);
     }
@@ -253,8 +253,8 @@ public class MyVisitor extends LangBaseVisitor<Node> {
     @Override
     public Node visitEqualsCexpr(EqualsCexprContext ctx) {
 
-        Expression left = (Expression) ctx.getChild(0).accept(this);
-        Expression right = (Expression) ctx.getChild(2).accept(this);
+        Expr left = (Expr) ctx.getChild(0).accept(this);
+        Expr right = (Expr) ctx.getChild(2).accept(this);
 
         return new Equals(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine(), left, right);
     }
@@ -262,17 +262,17 @@ public class MyVisitor extends LangBaseVisitor<Node> {
     @Override
     public Node visitNotEqualsCexpr(NotEqualsCexprContext ctx) {
 
-        Expression left = (Expression) ctx.getChild(0).accept(this);
-        Expression right = (Expression) ctx.getChild(2).accept(this);
+        Expr left = (Expr) ctx.getChild(0).accept(this);
+        Expr right = (Expr) ctx.getChild(2).accept(this);
 
-        return new NotEqual(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine(), left, right);
+        return new NotEquals(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine(), left, right);
     }
 
     @Override
     public Node visitAddBaexp(AddBaexpContext ctx) {
 
-        Expression left = (Expression) ctx.getChild(0).accept(this);
-        Expression right = (Expression) ctx.getChild(2).accept(this);
+        Expr left = (Expr) ctx.getChild(0).accept(this);
+        Expr right = (Expr) ctx.getChild(2).accept(this);
 
         return new Add(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine(), left, right);
     }
@@ -280,8 +280,8 @@ public class MyVisitor extends LangBaseVisitor<Node> {
     @Override
     public Node visitSubBaexp(SubBaexpContext ctx) {
 
-        Expression left = (Expression) ctx.getChild(0).accept(this);
-        Expression right = (Expression) ctx.getChild(2).accept(this);
+        Expr left = (Expr) ctx.getChild(0).accept(this);
+        Expr right = (Expr) ctx.getChild(2).accept(this);
 
         return new Sub(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine(), left, right);
     }
@@ -289,8 +289,8 @@ public class MyVisitor extends LangBaseVisitor<Node> {
     @Override
     public Node visitModOpexp(ModOpexpContext ctx) {
 
-        Expression left = (Expression) ctx.getChild(0).accept(this);
-        Expression right = (Expression) ctx.getChild(2).accept(this);
+        Expr left = (Expr) ctx.getChild(0).accept(this);
+        Expr right = (Expr) ctx.getChild(2).accept(this);
 
         return new Mod(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine(), left, right);
     }
@@ -310,8 +310,8 @@ public class MyVisitor extends LangBaseVisitor<Node> {
     @Override
     public Node visitDivOpexp(DivOpexpContext ctx) {
 
-        Expression left = (Expression) ctx.getChild(0).accept(this);
-        Expression right = (Expression) ctx.getChild(2).accept(this);
+        Expr left = (Expr) ctx.getChild(0).accept(this);
+        Expr right = (Expr) ctx.getChild(2).accept(this);
 
         return new Div(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine(), left, right);
     }
@@ -325,8 +325,8 @@ public class MyVisitor extends LangBaseVisitor<Node> {
     @Override
     public Node visitMulOpexp(MulOpexpContext ctx) {
 
-        Expression left = (Expression) ctx.getChild(0).accept(this);
-        Expression right = (Expression) ctx.getChild(2).accept(this);
+        Expr left = (Expr) ctx.getChild(0).accept(this);
+        Expr right = (Expr) ctx.getChild(2).accept(this);
 
         return new Mul(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine(), left, right);
     }
@@ -334,7 +334,7 @@ public class MyVisitor extends LangBaseVisitor<Node> {
     @Override
     public Node visitNotDexp(NotDexpContext ctx) {
 
-        Expression exp = (Expression) ctx.getChild(1).accept(this);
+        Expr exp = (Expr) ctx.getChild(1).accept(this);
 
         return new Not(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine(), exp);
     }
@@ -342,7 +342,7 @@ public class MyVisitor extends LangBaseVisitor<Node> {
     @Override
     public Node visitNegDexp(NegDexpContext ctx) {
 
-        Expression exp = (Expression) ctx.getChild(1).accept(this);
+        Expr exp = (Expr) ctx.getChild(1).accept(this);
 
         return new Min(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine(), exp);
     }
@@ -367,7 +367,7 @@ public class MyVisitor extends LangBaseVisitor<Node> {
         LValue lVal = (LValue) ctx.lvalue().accept(this);
         String str = ctx.getChild(2).getText();
         String dataId = ctx.lvalue().getText();
-        return new DotLvalue(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine(), lVal, str, dataId);
+        return new Dot(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine(), lVal, str, dataId);
     }
 
     @Override
@@ -413,10 +413,10 @@ public class MyVisitor extends LangBaseVisitor<Node> {
     public Node visitExpsName(ExpsNameContext ctx) {
 
         CallParam fcall = new CallParam(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine());
-        List<Expression> exps = new ArrayList<>();
+        List<Expr> exps = new ArrayList<>();
 
         for (int i = 0; i < ctx.exp().size(); i++) {
-            exps.add((Expression) ctx.exp().get(i).accept(this));
+            exps.add((Expr) ctx.exp().get(i).accept(this));
         }
         fcall.setExps(exps);
         return fcall;
@@ -425,7 +425,7 @@ public class MyVisitor extends LangBaseVisitor<Node> {
     @Override
     public Node visitParenRexp(ParenRexpContext ctx) {
 
-        return (Expression) ctx.getChild(1).accept(this);
+        return (Expr) ctx.getChild(1).accept(this);
     }
 
     @Override
@@ -434,7 +434,7 @@ public class MyVisitor extends LangBaseVisitor<Node> {
         if (ctx.type().accept(this) instanceof NameType) {
 
             if (ctx.exp() != null) {
-                Expression exp = (Expression) ctx.exp().accept(this);
+                Expr exp = (Expr) ctx.exp().accept(this);
 
                 return new NewExp(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine(), exp,
                         ctx.type().getText());
@@ -445,7 +445,7 @@ public class MyVisitor extends LangBaseVisitor<Node> {
         }
 
         if (ctx.exp() != null) {
-            Expression exp = (Expression) ctx.exp().accept(this);
+            Expr exp = (Expr) ctx.exp().accept(this);
             Type type = (Type) ctx.type().accept(this);
 
             return new NewExp(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine(), exp, type);
@@ -460,7 +460,7 @@ public class MyVisitor extends LangBaseVisitor<Node> {
 
         String str = ctx.ID().getText();
         CallParam fCallPar = (CallParam) ctx.exps().accept(this);
-        Expression exp = (Expression) ctx.exp().accept(this);
+        Expr exp = (Expr) ctx.exp().accept(this);
         return new FuncRet(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine(), str, fCallPar, exp);
     }
 
@@ -468,7 +468,7 @@ public class MyVisitor extends LangBaseVisitor<Node> {
     public Node visitArrayLvalue(ArrayLvalueContext ctx) {
 
         LValue lVal = (LValue) ctx.getChild(0).accept(this);
-        Expression exp = (Expression) ctx.getChild(2).accept(this);
+        Expr exp = (Expr) ctx.getChild(2).accept(this);
 
         return new ArrayLValue(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine(), lVal, exp);
     }

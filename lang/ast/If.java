@@ -5,10 +5,10 @@ import lang.visitors.Visitor;
 
 public class If extends Cmd {
 
-    private Expression exp;
+    private Expr exp;
     private Cmd cmd;
 
-    public If(int line, int column, Expression exp, Cmd cmd) {
+    public If(int line, int column, Expr exp, Cmd cmd) {
         super(line, column);
         this.exp = exp;
         this.cmd = cmd;
@@ -24,7 +24,7 @@ public class If extends Cmd {
         v.visit(this);
     }
 
-    public Expression getExp() {
+    public Expr getExp() {
         return exp;
     }
 

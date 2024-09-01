@@ -3,23 +3,19 @@ package lang.ast;
 
 import lang.visitors.Visitor;
 
-public class ExpP extends Expr {
+public class TyInt extends Type {
 
-    private Expr exp;
-
-    public ExpP(int line, int column, Expr exp) {
+    public TyInt(int line, int column) {
         super(line, column);
-        this.exp = exp;
     }
 
     @Override
     public String toString() {
-        return " ( " + exp.toString() + " ) ";
+        return "Int";
     }
 
     @Override
     public void accept(Visitor v) {
         v.visit(this);
     }
-
 }
