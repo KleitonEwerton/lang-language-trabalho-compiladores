@@ -6,7 +6,7 @@ compile:
 	javac -cp .:antlr-4.8-complete.jar lang/parser/*.java lang/ast/*.java lang/*.java lang/visitors/*.java
 
 run:
-	java -cp .:antlr-4.8-complete.jar lang.LangCompiler -i lang/meu_teste/input.txt
+	java -cp .:antlr-4.8-complete.jar lang.LangCompiler -i teste.txt
 
 testSintatico:
 	java -cp antlr-4.8-complete.jar:. lang/LangCompiler -bs
