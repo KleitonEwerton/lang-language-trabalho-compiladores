@@ -13,7 +13,7 @@ import org.antlr.v4.runtime.tree.ParseTree;
 public class MyVisitor extends LangBaseVisitor<Node> {
 
     @Override
-    public Node visitProgram(ProgramContext ctx) {
+    public Node visitProgName(ProgNameContext ctx) {
 
         Prog program = new Prog(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine()); // Linha e
                                                                                                    // coluna
@@ -32,7 +32,7 @@ public class MyVisitor extends LangBaseVisitor<Node> {
     }
 
     @Override
-    public Node visitDataDeclaration(DataDeclarationContext ctx) {
+    public Node visitDataName(DataNameContext ctx) {
 
         String nametype = ctx.NAME_TYPE().getText();
         List<Decl> decls = new ArrayList<Decl>();
@@ -46,7 +46,7 @@ public class MyVisitor extends LangBaseVisitor<Node> {
     }
 
     @Override
-    public Node visitVarDeclaration(VarDeclarationContext ctx) {
+    public Node visitDeclName(DeclNameContext ctx) {
 
         return new Decl(
                 ctx.getStart().getLine(),
@@ -56,7 +56,7 @@ public class MyVisitor extends LangBaseVisitor<Node> {
     }
 
     @Override
-    public Node visitFunction(FunctionContext ctx) {
+    public Node visitFunName(FunNameContext ctx) {
 
         int line = ctx.getStart().getLine();
         int column = ctx.getStart().getCharPositionInLine();
@@ -84,7 +84,7 @@ public class MyVisitor extends LangBaseVisitor<Node> {
     }
 
     @Override
-    public Node visitParametersFunction(ParametersFunctionContext ctx) {
+    public Node visitParamsName(ParamsNameContext ctx) {
 
         List<String> ids = new ArrayList<>();
         List<Type> types = new ArrayList<>();
@@ -101,20 +101,20 @@ public class MyVisitor extends LangBaseVisitor<Node> {
     }
 
     @Override
-    public Node visitBTypeCall(BTypeCallContext ctx) {
+    public Node visitBtypeName(BtypeNameContext ctx) {
 
-        return super.visitBTypeCall(ctx);
+        return super.visitBtypeName(ctx);
     }
 
     @Override
-    public Node visitTypeDeclaration(TypeDeclarationContext ctx) {
+    public Node visitTypeName(TypeNameContext ctx) {
 
         Type type = (Type) ctx.type().accept(this);
         return new ArrayType(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine(), type);
     }
 
     @Override
-    public Node visitBTypeInt(BTypeIntContext ctx) {
+    public Node visitIntType(IntTypeContext ctx) {
 
         int line = ctx.getStart().getLine();
         int column = ctx.getStart().getCharPositionInLine();
@@ -122,7 +122,7 @@ public class MyVisitor extends LangBaseVisitor<Node> {
     }
 
     @Override
-    public Node visitBTypeChar(BTypeCharContext ctx) {
+    public Node visitCharType(CharTypeContext ctx) {
 
         int line = ctx.getStart().getLine();
         int column = ctx.getStart().getCharPositionInLine();
@@ -130,7 +130,7 @@ public class MyVisitor extends LangBaseVisitor<Node> {
     }
 
     @Override
-    public Node visitBTypeBool(BTypeBoolContext ctx) {
+    public Node visitBoolType(BoolTypeContext ctx) {
 
         int line = ctx.getStart().getLine();
         int column = ctx.getStart().getCharPositionInLine();
@@ -138,7 +138,7 @@ public class MyVisitor extends LangBaseVisitor<Node> {
     }
 
     @Override
-    public Node visitBTypeFloat(BTypeFloatContext ctx) {
+    public Node visitFloatType(FloatTypeContext ctx) {
 
         int line = ctx.getStart().getLine();
         int column = ctx.getStart().getCharPositionInLine();
@@ -146,7 +146,7 @@ public class MyVisitor extends LangBaseVisitor<Node> {
     }
 
     @Override
-    public Node visitBTypeNameType(BTypeNameTypeContext ctx) {
+    public Node visitIdType(IdTypeContext ctx) {
 
         String nameType = ctx.getChild(0).getText();
         int line = ctx.getStart().getLine();
@@ -155,7 +155,7 @@ public class MyVisitor extends LangBaseVisitor<Node> {
     }
 
     @Override
-    public Node visitCommandsList(CommandsListContext ctx) {
+    public Node visitBlockCmd(BlockCmdContext ctx) {
 
         List<Cmd> cmds = new ArrayList<>();
 
@@ -167,7 +167,7 @@ public class MyVisitor extends LangBaseVisitor<Node> {
     }
 
     @Override
-    public Node visitIf(IfContext ctx) {
+    public Node visitIfCmd(IfCmdContext ctx) {
 
         Expression exp = (Expression) ctx.getChild(2).accept(this);
         Cmd cmd = (Cmd) ctx.getChild(4).accept(this);
@@ -176,7 +176,7 @@ public class MyVisitor extends LangBaseVisitor<Node> {
     }
 
     @Override
-    public Node visitIfElse(IfElseContext ctx) {
+    public Node visitIfElseCmd(IfElseCmdContext ctx) {
 
         Expression exp = (Expression) ctx.getChild(2).accept(this);
         Cmd cmd = (Cmd) ctx.getChild(4).accept(this);
@@ -186,7 +186,7 @@ public class MyVisitor extends LangBaseVisitor<Node> {
     }
 
     @Override
-    public Node visitIterate(IterateContext ctx) {
+    public Node visitIterateCmd(IterateCmdContext ctx) {
 
         Expression exp = (Expression) ctx.getChild(2).accept(this);
         Cmd cmd = (Cmd) ctx.getChild(4).accept(this);
@@ -196,7 +196,7 @@ public class MyVisitor extends LangBaseVisitor<Node> {
     }
 
     @Override
-    public Node visitRead(ReadContext ctx) {
+    public Node visitReadCmd(ReadCmdContext ctx) {
 
         LValue lValue = (LValue) ctx.getChild(1).accept(this);
         int line = ctx.getStart().getLine();
@@ -205,14 +205,14 @@ public class MyVisitor extends LangBaseVisitor<Node> {
     }
 
     @Override
-    public Node visitPrint(PrintContext ctx) {
+    public Node visitPrintCmd(PrintCmdContext ctx) {
 
         Expression expression = (Expression) ctx.exp().accept(this);
         return new Print(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine(), expression);
     }
 
     @Override
-    public Node visitReturn(ReturnContext ctx) {
+    public Node visitReturnCmd(ReturnCmdContext ctx) {
 
         List<Expression> exps = new ArrayList<Expression>();
 
@@ -224,14 +224,14 @@ public class MyVisitor extends LangBaseVisitor<Node> {
     }
 
     @Override
-    public Node visitAttribution(AttributionContext ctx) {
+    public Node visitLvalueCmd(LvalueCmdContext ctx) {
 
         return new Attr(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine(),
                 (LValue) ctx.lvalue().accept(this), (Expression) ctx.exp().accept(this));
     }
 
     @Override
-    public Node visitFunctionCall(FunctionCallContext ctx) {
+    public Node visitFuncCallCmd(FuncCallCmdContext ctx) {
 
         FunctionCall fcall = new FunctionCall(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine(),
                 ctx.getChild(0).getText());
@@ -252,13 +252,13 @@ public class MyVisitor extends LangBaseVisitor<Node> {
     }
 
     @Override
-    public Node visitRExpCall(RExpCallContext ctx) {
+    public Node visitCexprExp(CexprExpContext ctx) {
 
-        return super.visitRExpCall(ctx);
+        return super.visitCexprExp(ctx);
     }
 
     @Override
-    public Node visitAndOperation(AndOperationContext ctx) {
+    public Node visitAndExp(AndExpContext ctx) {
 
         Expression left = (Expression) ctx.getChild(0).accept(this);
         Expression right = (Expression) ctx.getChild(2).accept(this);

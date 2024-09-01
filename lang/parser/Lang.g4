@@ -4,63 +4,63 @@ grammar Lang;
     package lang.parser;    
 }
 
-prog: data* func*   # Program
+prog: data* func*   # progName 
     ;
-data: DATA_TYPE NAME_TYPE OPEN_BRACES decl* CLOSE_BRACES    # DataDeclaration
+data: DATA_TYPE NAME_TYPE OPEN_BRACES decl* CLOSE_BRACES    # dataName;
+
+decl: ID DOUBLE_COLON type SEMI                             # declName
     ;
-decl: ID DOUBLE_COLON type SEMI                             # VarDeclaration
+func: ID OPEN_PARENT params? CLOSE_PARENT (COLON type (COMMA type)*)? OPEN_BRACES cmd* CLOSE_BRACES    #funName
     ;
-func: ID OPEN_PARENT params? CLOSE_PARENT (COLON type (COMMA type)*)? OPEN_BRACES cmd* CLOSE_BRACES    # Function
-    ;
-params: ID DOUBLE_COLON type (COMMA ID DOUBLE_COLON type)*  # ParametersFunction
+params: ID DOUBLE_COLON type (COMMA ID DOUBLE_COLON type)*  #paramsName
       ;
-type: type OPEN_BRACKET CLOSE_BRACKET   # TypeDeclaration 
-    | btype     # BTypeCall
+type: type OPEN_BRACKET CLOSE_BRACKET   #typeName
+    | btype     # btypeName
     ;
-btype: INT_TYPE     # BTypeInt
-    | CHAR_TYPE     # BTypeChar
-    | BOOL_TYPE     # BTypeBool
-    | FLOAT_TYPE    # BTypeFloat
-    | NAME_TYPE     # BTypeNameType
+btype: INT_TYPE     # intType
+    | CHAR_TYPE     # charType
+    | BOOL_TYPE     # boolType
+    | FLOAT_TYPE    # floatType
+    | NAME_TYPE     # idType
     ;
-cmd: OPEN_BRACES cmd* CLOSE_BRACES      # CommandsList
-    | IF OPEN_PARENT exp CLOSE_PARENT cmd   # If
-    | IF OPEN_PARENT exp CLOSE_PARENT cmd ELSE cmd  # IfElse
-    | ITERATE OPEN_PARENT exp CLOSE_PARENT cmd  # Iterate
-    | READ lvalue SEMI  # Read
-    | PRINT exp SEMI    # Print
-    | RETURN exp (COMMA exp)* SEMI  # Return
-    | lvalue EQUALS exp SEMI    # Attribution
-    | ID OPEN_PARENT exps? CLOSE_PARENT (LESS_THAN lvalue (COMMA lvalue)* GREATER_THAN)? SEMI   # FunctionCall
+cmd: OPEN_BRACES cmd* CLOSE_BRACES      #blockCmd
+    | IF OPEN_PARENT exp CLOSE_PARENT cmd   # ifCmd
+    | IF OPEN_PARENT exp CLOSE_PARENT cmd ELSE cmd  # ifElseCmd
+    | ITERATE OPEN_PARENT exp CLOSE_PARENT cmd  # iterateCmd
+    | READ lvalue SEMI  # readCmd
+    | PRINT exp SEMI    # printCmd
+    | RETURN exp (COMMA exp)* SEMI  # returnCmd
+    | lvalue EQUALS exp SEMI    # lvalueCmd
+    | ID OPEN_PARENT exps? CLOSE_PARENT (LESS_THAN lvalue (COMMA lvalue)* GREATER_THAN)? SEMI   # funcCallCmd
     ;
-exp:<assoc=left> exp AND exp    # AndOperation
-    | rexp      # RExpCall
+exp:<assoc=left> exp AND exp   #andExp
+    | cexpr       #cexprExp
     ;
-rexp: aexp LESS_THAN aexp   # LessThan
-    |<assoc=left>rexp EQUALITY aexp    # Equality
-    |<assoc=left>rexp DIFFERENCE aexp  # Difference
-    | aexp      # AExpCall
+cexpr: baexp LESS_THAN baexp   # LessThan
+    |<assoc=left>cexpr EQUALITY baexp    # Equality
+    |<assoc=left>cexpr DIFFERENCE baexp  # Difference
+    | baexp      # AExpCall
     ;
-aexp: aexp PLUS mexp    # AdditionOperation
-    | aexp MINUS mexp   # SubtractionOperation
-    | mexp      # MExpCall
+baexp: baexp PLUS opexp    # AdditionOperation
+    | baexp MINUS opexp   # SubtractionOperation
+    | opexp      # MExpCall
     ;
-mexp:<assoc=left>mexp TIMES sexp   # MultiplicationOperation
-    |<assoc=left>mexp SLASH sexp   # DivisionOperation
-    |<assoc=left>mexp PERCENT sexp # ModularOperation
-    | sexp      # SExpCall
+opexp:<assoc=left>opexp TIMES dexp   # MultiplicationOperation
+    |<assoc=left>opexp SLASH dexp   # DivisionOperation
+    |<assoc=left>opexp PERCENT dexp # ModularOperation
+    | dexp      # SExpCall
     ;
-sexp:<assoc=right>EXCLAMATION sexp # Not
-    |<assoc=right>MINUS sexp   # Minus 
+dexp:<assoc=right>EXCLAMATION dexp # Not
+    |<assoc=right>MINUS dexp   # Minus 
     | TRUE  # True
     | FALSE # False
     | NULL  # Null
     | INT   # IntegerNumber
     | FLOAT # FloatNumber
     | CHAR  # CharLitteral
-    | pexp  # PExpCall
+    | rexp  # PExpCall
     ;
-pexp: lvalue    # PexpIdentifier    
+rexp: lvalue    # PexpIdentifier    
     |<assoc=left>OPEN_PARENT exp CLOSE_PARENT  # ExpParenthesis
     | NEW type (OPEN_BRACKET exp CLOSE_BRACKET)?    # TypeInstanciate
     | ID OPEN_PARENT exps? CLOSE_PARENT OPEN_BRACKET exp CLOSE_BRACKET  # FunctionReturn 

@@ -108,11 +108,11 @@ type
 btype
 cmd
 exp
+cexpr
+baexp
+opexp
+dexp
 rexp
-aexp
-mexp
-sexp
-pexp
 lvalue
 exps
 
