@@ -1,5 +1,10 @@
 grammar Lang;
 
+ /*  Trabalho da disciplina DCC045 - Teoria dos Compiladores
+  *  Kleiton Ewerton de Oliveira - MAT 202065050C
+  *  Nikolas Oliver Sales Genesio - MAT 202065072C
+  */
+
 @header{
     package lang.parser;    
 }
@@ -36,47 +41,46 @@ cmd: OPEN_BRACES cmd* CLOSE_BRACES      #blockCmd
 exp:<assoc=left> exp AND exp   #andExp
     | cexpr       #cexprExp
     ;
-cexpr: baexp LESS_THAN baexp   # LessThan
-    |<assoc=left>cexpr EQUALITY baexp    # Equality
-    |<assoc=left>cexpr DIFFERENCE baexp  # Difference
-    | baexp      # AExpCall
+cexpr: baexp LESS_THAN baexp   #lessThanCexpr
+    |<assoc=left>cexpr EQUALITY baexp    #equalsCexpr
+    |<assoc=left>cexpr DIFFERENCE baexp   #notEqualsCexpr
+    | baexp      #baexpCexpr
     ;
-baexp: baexp PLUS opexp    # AdditionOperation
-    | baexp MINUS opexp   # SubtractionOperation
-    | opexp      # MExpCall
+baexp: baexp PLUS opexp    # addBaexp
+    | baexp MINUS opexp   # subBaexp
+    | opexp      # opexpBaexp
     ;
-opexp:<assoc=left>opexp TIMES dexp   # MultiplicationOperation
-    |<assoc=left>opexp SLASH dexp   # DivisionOperation
-    |<assoc=left>opexp PERCENT dexp # ModularOperation
-    | dexp      # SExpCall
+opexp:<assoc=left>opexp TIMES dexp   #mulOpexp
+    |<assoc=left>opexp SLASH dexp   #divOpexp
+    |<assoc=left>opexp PERCENT dexp #modOpexp
+    | dexp      #dexpOpexp
     ;
-dexp:<assoc=right>EXCLAMATION dexp # Not
-    |<assoc=right>MINUS dexp   # Minus 
-    | TRUE  # True
-    | FALSE # False
-    | NULL  # Null
-    | INT   # IntegerNumber
-    | FLOAT # FloatNumber
-    | CHAR  # CharLitteral
-    | rexp  # PExpCall
+dexp:<assoc=right>EXCLAMATION dexp #notDexp
+    |<assoc=right>MINUS dexp   #negDexp
+    | TRUE  #trueDexp
+    | FALSE #falseDexp
+    | NULL  #nullDexp
+    | INT   #intDexp
+    | FLOAT #floatDexp
+    | CHAR  #charDexp
+    | rexp   #rexpDexp
     ;
-rexp: lvalue    # PexpIdentifier    
-    |<assoc=left>OPEN_PARENT exp CLOSE_PARENT  # ExpParenthesis
-    | NEW type (OPEN_BRACKET exp CLOSE_BRACKET)?    # TypeInstanciate
-    | ID OPEN_PARENT exps? CLOSE_PARENT OPEN_BRACKET exp CLOSE_BRACKET  # FunctionReturn 
+rexp: lvalue    #lvalueRexp   
+    |<assoc=left>OPEN_PARENT exp CLOSE_PARENT  #parenRexp
+    | NEW type (OPEN_BRACKET exp CLOSE_BRACKET)?    #newRexp
+    | ID OPEN_PARENT exps? CLOSE_PARENT OPEN_BRACKET exp CLOSE_BRACKET  #funcCallRexp
     ;
-lvalue: ID      # Identifier
-    |<assoc=left>lvalue OPEN_BRACKET exp CLOSE_BRACKET # ArrayAccess
-    |<assoc=left>lvalue DOT ID     # DataAccess
+lvalue: ID      #idLvalue
+    |<assoc=left>lvalue OPEN_BRACKET exp CLOSE_BRACKET #arrayLvalue
+    |<assoc=left>lvalue DOT ID     #dotLvalue
     ;
-exps: exp (COMMA exp)*      # FCallParams
+exps: exp (COMMA exp)*      #expsName
     ;
 
 EOL: '\r' ? '\n' -> skip;                               
 WS : [ \t]+ -> skip;                                    
 SINGLE_LINE_COMMENT: '--' .*? EOL -> skip;             
 MULTI_LINE_COMMENT: '{-' .*? '-}' -> skip;
-
 
 INT_TYPE: 'Int';
 FLOAT_TYPE: 'Float';
@@ -127,11 +131,11 @@ NAME_TYPE : [A-Z][a-zA-Z0-9_]* ;
 INT: [0-9]+ ;
 FLOAT: [0-9]* '.' ([0-9] [0-9]*) ;
 CHAR: ('\''([\u0000-\u0026]|[\u0028-\u005B]|[\u005D-\u007F])'\'')      
-    | ('\'''\\n''\'')           // '\n' => Contrabarra_n
-    | ('\'''\\t''\'')           // '\t' => Contrabarra_t
-    | ('\'''\\b''\'')           // '\b' => Contrabarra_b
-    | ('\'''\\r''\'')           // '\r' => Contrabarra_r
-    | ('\'''\\\\''\'')          // Especifica '\\' que é a '\' => Contrabarra
-    | ('\'\\\'\'')              // Especifica a aspas simples: "\\\'" => \' => '
+    | ('\'''\\n''\'')          
+    | ('\'''\\t''\'')          
+    | ('\'''\\b''\'')           
+    | ('\'''\\r''\'')          
+    | ('\'''\\\\''\'')          
+    | ('\'\\\'\'')          
     ;
     

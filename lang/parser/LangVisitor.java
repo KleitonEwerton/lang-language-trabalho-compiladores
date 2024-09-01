@@ -174,199 +174,199 @@ public interface LangVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitCexprExp(LangParser.CexprExpContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code AExpCall}
+	 * Visit a parse tree produced by the {@code equalsCexpr}
 	 * labeled alternative in {@link LangParser#cexpr}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitAExpCall(LangParser.AExpCallContext ctx);
+	T visitEqualsCexpr(LangParser.EqualsCexprContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code LessThan}
+	 * Visit a parse tree produced by the {@code baexpCexpr}
 	 * labeled alternative in {@link LangParser#cexpr}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitLessThan(LangParser.LessThanContext ctx);
+	T visitBaexpCexpr(LangParser.BaexpCexprContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code Equality}
+	 * Visit a parse tree produced by the {@code notEqualsCexpr}
 	 * labeled alternative in {@link LangParser#cexpr}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitEquality(LangParser.EqualityContext ctx);
+	T visitNotEqualsCexpr(LangParser.NotEqualsCexprContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code Difference}
+	 * Visit a parse tree produced by the {@code lessThanCexpr}
 	 * labeled alternative in {@link LangParser#cexpr}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitDifference(LangParser.DifferenceContext ctx);
+	T visitLessThanCexpr(LangParser.LessThanCexprContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code AdditionOperation}
+	 * Visit a parse tree produced by the {@code subBaexp}
 	 * labeled alternative in {@link LangParser#baexp}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitAdditionOperation(LangParser.AdditionOperationContext ctx);
+	T visitSubBaexp(LangParser.SubBaexpContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code SubtractionOperation}
+	 * Visit a parse tree produced by the {@code addBaexp}
 	 * labeled alternative in {@link LangParser#baexp}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitSubtractionOperation(LangParser.SubtractionOperationContext ctx);
+	T visitAddBaexp(LangParser.AddBaexpContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code MExpCall}
+	 * Visit a parse tree produced by the {@code opexpBaexp}
 	 * labeled alternative in {@link LangParser#baexp}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitMExpCall(LangParser.MExpCallContext ctx);
+	T visitOpexpBaexp(LangParser.OpexpBaexpContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code DivisionOperation}
+	 * Visit a parse tree produced by the {@code divOpexp}
 	 * labeled alternative in {@link LangParser#opexp}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitDivisionOperation(LangParser.DivisionOperationContext ctx);
+	T visitDivOpexp(LangParser.DivOpexpContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code SExpCall}
+	 * Visit a parse tree produced by the {@code dexpOpexp}
 	 * labeled alternative in {@link LangParser#opexp}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitSExpCall(LangParser.SExpCallContext ctx);
+	T visitDexpOpexp(LangParser.DexpOpexpContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code MultiplicationOperation}
+	 * Visit a parse tree produced by the {@code mulOpexp}
 	 * labeled alternative in {@link LangParser#opexp}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitMultiplicationOperation(LangParser.MultiplicationOperationContext ctx);
+	T visitMulOpexp(LangParser.MulOpexpContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code ModularOperation}
+	 * Visit a parse tree produced by the {@code modOpexp}
 	 * labeled alternative in {@link LangParser#opexp}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitModularOperation(LangParser.ModularOperationContext ctx);
+	T visitModOpexp(LangParser.ModOpexpContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code Not}
+	 * Visit a parse tree produced by the {@code notDexp}
 	 * labeled alternative in {@link LangParser#dexp}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitNot(LangParser.NotContext ctx);
+	T visitNotDexp(LangParser.NotDexpContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code Minus}
+	 * Visit a parse tree produced by the {@code negDexp}
 	 * labeled alternative in {@link LangParser#dexp}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitMinus(LangParser.MinusContext ctx);
+	T visitNegDexp(LangParser.NegDexpContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code True}
+	 * Visit a parse tree produced by the {@code trueDexp}
 	 * labeled alternative in {@link LangParser#dexp}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitTrue(LangParser.TrueContext ctx);
+	T visitTrueDexp(LangParser.TrueDexpContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code False}
+	 * Visit a parse tree produced by the {@code falseDexp}
 	 * labeled alternative in {@link LangParser#dexp}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitFalse(LangParser.FalseContext ctx);
+	T visitFalseDexp(LangParser.FalseDexpContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code Null}
+	 * Visit a parse tree produced by the {@code nullDexp}
 	 * labeled alternative in {@link LangParser#dexp}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitNull(LangParser.NullContext ctx);
+	T visitNullDexp(LangParser.NullDexpContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code IntegerNumber}
+	 * Visit a parse tree produced by the {@code intDexp}
 	 * labeled alternative in {@link LangParser#dexp}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitIntegerNumber(LangParser.IntegerNumberContext ctx);
+	T visitIntDexp(LangParser.IntDexpContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code FloatNumber}
+	 * Visit a parse tree produced by the {@code floatDexp}
 	 * labeled alternative in {@link LangParser#dexp}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitFloatNumber(LangParser.FloatNumberContext ctx);
+	T visitFloatDexp(LangParser.FloatDexpContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code CharLitteral}
+	 * Visit a parse tree produced by the {@code charDexp}
 	 * labeled alternative in {@link LangParser#dexp}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitCharLitteral(LangParser.CharLitteralContext ctx);
+	T visitCharDexp(LangParser.CharDexpContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code PExpCall}
+	 * Visit a parse tree produced by the {@code rexpDexp}
 	 * labeled alternative in {@link LangParser#dexp}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitPExpCall(LangParser.PExpCallContext ctx);
+	T visitRexpDexp(LangParser.RexpDexpContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code PexpIdentifier}
+	 * Visit a parse tree produced by the {@code lvalueRexp}
 	 * labeled alternative in {@link LangParser#rexp}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitPexpIdentifier(LangParser.PexpIdentifierContext ctx);
+	T visitLvalueRexp(LangParser.LvalueRexpContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code ExpParenthesis}
+	 * Visit a parse tree produced by the {@code parenRexp}
 	 * labeled alternative in {@link LangParser#rexp}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitExpParenthesis(LangParser.ExpParenthesisContext ctx);
+	T visitParenRexp(LangParser.ParenRexpContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code TypeInstanciate}
+	 * Visit a parse tree produced by the {@code newRexp}
 	 * labeled alternative in {@link LangParser#rexp}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitTypeInstanciate(LangParser.TypeInstanciateContext ctx);
+	T visitNewRexp(LangParser.NewRexpContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code FunctionReturn}
+	 * Visit a parse tree produced by the {@code funcCallRexp}
 	 * labeled alternative in {@link LangParser#rexp}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitFunctionReturn(LangParser.FunctionReturnContext ctx);
+	T visitFuncCallRexp(LangParser.FuncCallRexpContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code ArrayAccess}
+	 * Visit a parse tree produced by the {@code dotLvalue}
 	 * labeled alternative in {@link LangParser#lvalue}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitArrayAccess(LangParser.ArrayAccessContext ctx);
+	T visitDotLvalue(LangParser.DotLvalueContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code Identifier}
+	 * Visit a parse tree produced by the {@code idLvalue}
 	 * labeled alternative in {@link LangParser#lvalue}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitIdentifier(LangParser.IdentifierContext ctx);
+	T visitIdLvalue(LangParser.IdLvalueContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code DataAccess}
+	 * Visit a parse tree produced by the {@code arrayLvalue}
 	 * labeled alternative in {@link LangParser#lvalue}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitDataAccess(LangParser.DataAccessContext ctx);
+	T visitArrayLvalue(LangParser.ArrayLvalueContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code FCallParams}
+	 * Visit a parse tree produced by the {@code expsName}
 	 * labeled alternative in {@link LangParser#exps}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitFCallParams(LangParser.FCallParamsContext ctx);
+	T visitExpsName(LangParser.ExpsNameContext ctx);
 }

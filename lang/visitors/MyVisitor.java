@@ -1,4 +1,8 @@
 
+/*  Trabalho da disciplina DCC045 - Teoria dos Compiladores
+ *  Kleiton Ewerton de Oliveira - MAT 202065050C
+ *  Nikolas Oliver Sales Genesio - MAT 202065072C
+ */
 package lang.visitors;
 
 import java.util.ArrayList;
@@ -13,25 +17,6 @@ import org.antlr.v4.runtime.tree.ParseTree;
 public class MyVisitor extends LangBaseVisitor<Node> {
 
     @Override
-    public Node visitProgName(ProgNameContext ctx) {
-
-        Prog program = new Prog(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine()); // Linha e
-                                                                                                   // coluna
-
-        for (int i = 0; i < (ctx.data().size()) && this.shouldVisitNextChild(ctx, this.defaultResult()); i++) {
-            ParseTree childTree = ctx.data(i);
-            program.addData((Data) this.aggregateResult(this.defaultResult(), childTree.accept(this)));
-        }
-
-        for (int i = 0; i < (ctx.func().size()) && this.shouldVisitNextChild(ctx, this.defaultResult()); i++) {
-            ParseTree childTree = ctx.func(i);
-            program.addFunction((Func) this.aggregateResult(this.defaultResult(), childTree.accept(this)));
-        }
-
-        return program;
-    }
-
-    @Override
     public Node visitDataName(DataNameContext ctx) {
 
         String nametype = ctx.NAME_TYPE().getText();
@@ -43,16 +28,6 @@ public class MyVisitor extends LangBaseVisitor<Node> {
         }
 
         return new Data(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine(), nametype, decls);
-    }
-
-    @Override
-    public Node visitDeclName(DeclNameContext ctx) {
-
-        return new Decl(
-                ctx.getStart().getLine(),
-                ctx.getStart().getCharPositionInLine(),
-                ctx.getChild(0).getText(),
-                (Type) ctx.type().accept(this));
     }
 
     @Override
@@ -267,13 +242,7 @@ public class MyVisitor extends LangBaseVisitor<Node> {
     }
 
     @Override
-    public Node visitAExpCall(AExpCallContext ctx) {
-
-        return super.visitAExpCall(ctx);
-    }
-
-    @Override
-    public Node visitLessThan(LessThanContext ctx) {
+    public Node visitLessThanCexpr(LessThanCexprContext ctx) {
 
         Expression left = (Expression) ctx.getChild(0).accept(this);
         Expression right = (Expression) ctx.getChild(2).accept(this);
@@ -282,7 +251,7 @@ public class MyVisitor extends LangBaseVisitor<Node> {
     }
 
     @Override
-    public Node visitEquality(EqualityContext ctx) {
+    public Node visitEqualsCexpr(EqualsCexprContext ctx) {
 
         Expression left = (Expression) ctx.getChild(0).accept(this);
         Expression right = (Expression) ctx.getChild(2).accept(this);
@@ -291,7 +260,7 @@ public class MyVisitor extends LangBaseVisitor<Node> {
     }
 
     @Override
-    public Node visitDifference(DifferenceContext ctx) {
+    public Node visitNotEqualsCexpr(NotEqualsCexprContext ctx) {
 
         Expression left = (Expression) ctx.getChild(0).accept(this);
         Expression right = (Expression) ctx.getChild(2).accept(this);
@@ -300,7 +269,7 @@ public class MyVisitor extends LangBaseVisitor<Node> {
     }
 
     @Override
-    public Node visitAdditionOperation(AdditionOperationContext ctx) {
+    public Node visitAddBaexp(AddBaexpContext ctx) {
 
         Expression left = (Expression) ctx.getChild(0).accept(this);
         Expression right = (Expression) ctx.getChild(2).accept(this);
@@ -309,7 +278,7 @@ public class MyVisitor extends LangBaseVisitor<Node> {
     }
 
     @Override
-    public Node visitSubtractionOperation(SubtractionOperationContext ctx) {
+    public Node visitSubBaexp(SubBaexpContext ctx) {
 
         Expression left = (Expression) ctx.getChild(0).accept(this);
         Expression right = (Expression) ctx.getChild(2).accept(this);
@@ -318,37 +287,7 @@ public class MyVisitor extends LangBaseVisitor<Node> {
     }
 
     @Override
-    public Node visitMExpCall(MExpCallContext ctx) {
-
-        return super.visitMExpCall(ctx);
-    }
-
-    @Override
-    public Node visitDivisionOperation(DivisionOperationContext ctx) {
-
-        Expression left = (Expression) ctx.getChild(0).accept(this);
-        Expression right = (Expression) ctx.getChild(2).accept(this);
-
-        return new Div(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine(), left, right);
-    }
-
-    @Override
-    public Node visitSExpCall(SExpCallContext ctx) {
-
-        return super.visitSExpCall(ctx);
-    }
-
-    @Override
-    public Node visitMultiplicationOperation(MultiplicationOperationContext ctx) {
-
-        Expression left = (Expression) ctx.getChild(0).accept(this);
-        Expression right = (Expression) ctx.getChild(2).accept(this);
-
-        return new Mul(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine(), left, right);
-    }
-
-    @Override
-    public Node visitModularOperation(ModularOperationContext ctx) {
+    public Node visitModOpexp(ModOpexpContext ctx) {
 
         Expression left = (Expression) ctx.getChild(0).accept(this);
         Expression right = (Expression) ctx.getChild(2).accept(this);
@@ -357,7 +296,43 @@ public class MyVisitor extends LangBaseVisitor<Node> {
     }
 
     @Override
-    public Node visitNot(NotContext ctx) {
+    public Node visitBaexpCexpr(BaexpCexprContext ctx) {
+
+        return super.visitBaexpCexpr(ctx);
+    }
+
+    @Override
+    public Node visitOpexpBaexp(OpexpBaexpContext ctx) {
+
+        return super.visitOpexpBaexp(ctx);
+    }
+
+    @Override
+    public Node visitDivOpexp(DivOpexpContext ctx) {
+
+        Expression left = (Expression) ctx.getChild(0).accept(this);
+        Expression right = (Expression) ctx.getChild(2).accept(this);
+
+        return new Div(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine(), left, right);
+    }
+
+    @Override
+    public Node visitDexpOpexp(DexpOpexpContext ctx) {
+
+        return super.visitDexpOpexp(ctx);
+    }
+
+    @Override
+    public Node visitMulOpexp(MulOpexpContext ctx) {
+
+        Expression left = (Expression) ctx.getChild(0).accept(this);
+        Expression right = (Expression) ctx.getChild(2).accept(this);
+
+        return new Mul(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine(), left, right);
+    }
+
+    @Override
+    public Node visitNotDexp(NotDexpContext ctx) {
 
         Expression exp = (Expression) ctx.getChild(1).accept(this);
 
@@ -365,7 +340,7 @@ public class MyVisitor extends LangBaseVisitor<Node> {
     }
 
     @Override
-    public Node visitMinus(MinusContext ctx) {
+    public Node visitNegDexp(NegDexpContext ctx) {
 
         Expression exp = (Expression) ctx.getChild(1).accept(this);
 
@@ -373,66 +348,88 @@ public class MyVisitor extends LangBaseVisitor<Node> {
     }
 
     @Override
-    public Node visitTrue(TrueContext ctx) {
+    public Node visitTrueDexp(TrueDexpContext ctx) {
 
         return new BoolDexp(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine(),
                 Boolean.parseBoolean(ctx.getChild(0).getText()));
     }
 
     @Override
-    public Node visitFalse(FalseContext ctx) {
+    public Node visitFalseDexp(FalseDexpContext ctx) {
 
         return new BoolDexp(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine(),
                 Boolean.parseBoolean(ctx.getChild(0).getText()));
     }
 
     @Override
-    public Node visitNull(NullContext ctx) {
+    public Node visitDotLvalue(DotLvalueContext ctx) {
+
+        LValue lVal = (LValue) ctx.lvalue().accept(this);
+        String str = ctx.getChild(2).getText();
+        String dataId = ctx.lvalue().getText();
+        return new DotLvalue(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine(), lVal, str, dataId);
+    }
+
+    @Override
+    public Node visitNullDexp(NullDexpContext ctx) {
 
         return new Null(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine());
     }
 
     @Override
-    public Node visitIntegerNumber(IntegerNumberContext ctx) {
+    public Node visitIntDexp(IntDexpContext ctx) {
 
         return new IntDexp(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine(),
                 Integer.parseInt(ctx.getChild(0).getText()));
     }
 
     @Override
-    public Node visitFloatNumber(FloatNumberContext ctx) {
+    public Node visitFloatDexp(FloatDexpContext ctx) {
 
         return new FloatDexp(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine(),
                 Float.parseFloat(ctx.FLOAT().getText()));
     }
 
     @Override
-    public Node visitCharLitteral(CharLitteralContext ctx) {
+    public Node visitCharDexp(CharDexpContext ctx) {
 
         return new CharDexp(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine(),
                 ctx.CHAR().getText());
     }
 
     @Override
-    public Node visitPExpCall(PExpCallContext ctx) {
+    public Node visitRexpDexp(RexpDexpContext ctx) {
 
-        return super.visitPExpCall(ctx);
+        return super.visitRexpDexp(ctx);
     }
 
     @Override
-    public Node visitPexpIdentifier(PexpIdentifierContext ctx) {
+    public Node visitLvalueRexp(LvalueRexpContext ctx) {
 
-        return super.visitPexpIdentifier(ctx);
+        return super.visitLvalueRexp(ctx);
     }
 
     @Override
-    public Node visitExpParenthesis(ExpParenthesisContext ctx) {
+    public Node visitExpsName(ExpsNameContext ctx) {
+
+        CallParam fcall = new CallParam(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine());
+        List<Expression> exps = new ArrayList<>();
+
+        for (int i = 0; i < ctx.exp().size(); i++) {
+            exps.add((Expression) ctx.exp().get(i).accept(this));
+        }
+        fcall.setExps(exps);
+        return fcall;
+    }
+
+    @Override
+    public Node visitParenRexp(ParenRexpContext ctx) {
 
         return (Expression) ctx.getChild(1).accept(this);
     }
 
     @Override
-    public Node visitTypeInstanciate(TypeInstanciateContext ctx) {
+    public Node visitNewRexp(NewRexpContext ctx) {
 
         if (ctx.type().accept(this) instanceof NameType) {
 
@@ -459,7 +456,7 @@ public class MyVisitor extends LangBaseVisitor<Node> {
     }
 
     @Override
-    public Node visitFunctionReturn(FunctionReturnContext ctx) {
+    public Node visitFuncCallRexp(FuncCallRexpContext ctx) {
 
         String str = ctx.ID().getText();
         CallParam fCallPar = (CallParam) ctx.exps().accept(this);
@@ -468,7 +465,7 @@ public class MyVisitor extends LangBaseVisitor<Node> {
     }
 
     @Override
-    public Node visitArrayAccess(ArrayAccessContext ctx) {
+    public Node visitArrayLvalue(ArrayLvalueContext ctx) {
 
         LValue lVal = (LValue) ctx.getChild(0).accept(this);
         Expression exp = (Expression) ctx.getChild(2).accept(this);
@@ -477,31 +474,39 @@ public class MyVisitor extends LangBaseVisitor<Node> {
     }
 
     @Override
-    public Node visitIdentifier(IdentifierContext ctx) {
+    public Node visitIdLvalue(IdLvalueContext ctx) {
 
         return new IDLvalue(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine(),
                 ctx.ID().getText());
     }
 
     @Override
-    public Node visitDataAccess(DataAccessContext ctx) {
+    public Node visitProgName(ProgNameContext ctx) {
 
-        LValue lVal = (LValue) ctx.lvalue().accept(this);
-        String str = ctx.getChild(2).getText();
-        String dataId = ctx.lvalue().getText();
-        return new DotLvalue(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine(), lVal, str, dataId);
+        Prog program = new Prog(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine()); // Linha e
+                                                                                                   // coluna
+
+        for (int i = 0; i < (ctx.data().size()) && this.shouldVisitNextChild(ctx, this.defaultResult()); i++) {
+            ParseTree childTree = ctx.data(i);
+            program.addData((Data) this.aggregateResult(this.defaultResult(), childTree.accept(this)));
+        }
+
+        for (int i = 0; i < (ctx.func().size()) && this.shouldVisitNextChild(ctx, this.defaultResult()); i++) {
+            ParseTree childTree = ctx.func(i);
+            program.addFunction((Func) this.aggregateResult(this.defaultResult(), childTree.accept(this)));
+        }
+
+        return program;
     }
 
     @Override
-    public Node visitFCallParams(FCallParamsContext ctx) {
+    public Node visitDeclName(DeclNameContext ctx) {
 
-        CallParam fcall = new CallParam(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine());
-        List<Expression> exps = new ArrayList<>();
-
-        for (int i = 0; i < ctx.exp().size(); i++) {
-            exps.add((Expression) ctx.exp().get(i).accept(this));
-        }
-        fcall.setExps(exps);
-        return fcall;
+        return new Decl(
+                ctx.getStart().getLine(),
+                ctx.getStart().getCharPositionInLine(),
+                ctx.getChild(0).getText(),
+                (Type) ctx.type().accept(this));
     }
+
 }

@@ -180,194 +180,194 @@ public class LangBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements L
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitAExpCall(LangParser.AExpCallContext ctx) { return visitChildren(ctx); }
+	@Override public T visitEqualsCexpr(LangParser.EqualsCexprContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitLessThan(LangParser.LessThanContext ctx) { return visitChildren(ctx); }
+	@Override public T visitBaexpCexpr(LangParser.BaexpCexprContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitEquality(LangParser.EqualityContext ctx) { return visitChildren(ctx); }
+	@Override public T visitNotEqualsCexpr(LangParser.NotEqualsCexprContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitDifference(LangParser.DifferenceContext ctx) { return visitChildren(ctx); }
+	@Override public T visitLessThanCexpr(LangParser.LessThanCexprContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitAdditionOperation(LangParser.AdditionOperationContext ctx) { return visitChildren(ctx); }
+	@Override public T visitSubBaexp(LangParser.SubBaexpContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitSubtractionOperation(LangParser.SubtractionOperationContext ctx) { return visitChildren(ctx); }
+	@Override public T visitAddBaexp(LangParser.AddBaexpContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitMExpCall(LangParser.MExpCallContext ctx) { return visitChildren(ctx); }
+	@Override public T visitOpexpBaexp(LangParser.OpexpBaexpContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitDivisionOperation(LangParser.DivisionOperationContext ctx) { return visitChildren(ctx); }
+	@Override public T visitDivOpexp(LangParser.DivOpexpContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitSExpCall(LangParser.SExpCallContext ctx) { return visitChildren(ctx); }
+	@Override public T visitDexpOpexp(LangParser.DexpOpexpContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitMultiplicationOperation(LangParser.MultiplicationOperationContext ctx) { return visitChildren(ctx); }
+	@Override public T visitMulOpexp(LangParser.MulOpexpContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitModularOperation(LangParser.ModularOperationContext ctx) { return visitChildren(ctx); }
+	@Override public T visitModOpexp(LangParser.ModOpexpContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitNot(LangParser.NotContext ctx) { return visitChildren(ctx); }
+	@Override public T visitNotDexp(LangParser.NotDexpContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitMinus(LangParser.MinusContext ctx) { return visitChildren(ctx); }
+	@Override public T visitNegDexp(LangParser.NegDexpContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitTrue(LangParser.TrueContext ctx) { return visitChildren(ctx); }
+	@Override public T visitTrueDexp(LangParser.TrueDexpContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitFalse(LangParser.FalseContext ctx) { return visitChildren(ctx); }
+	@Override public T visitFalseDexp(LangParser.FalseDexpContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitNull(LangParser.NullContext ctx) { return visitChildren(ctx); }
+	@Override public T visitNullDexp(LangParser.NullDexpContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitIntegerNumber(LangParser.IntegerNumberContext ctx) { return visitChildren(ctx); }
+	@Override public T visitIntDexp(LangParser.IntDexpContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitFloatNumber(LangParser.FloatNumberContext ctx) { return visitChildren(ctx); }
+	@Override public T visitFloatDexp(LangParser.FloatDexpContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitCharLitteral(LangParser.CharLitteralContext ctx) { return visitChildren(ctx); }
+	@Override public T visitCharDexp(LangParser.CharDexpContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitPExpCall(LangParser.PExpCallContext ctx) { return visitChildren(ctx); }
+	@Override public T visitRexpDexp(LangParser.RexpDexpContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitPexpIdentifier(LangParser.PexpIdentifierContext ctx) { return visitChildren(ctx); }
+	@Override public T visitLvalueRexp(LangParser.LvalueRexpContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitExpParenthesis(LangParser.ExpParenthesisContext ctx) { return visitChildren(ctx); }
+	@Override public T visitParenRexp(LangParser.ParenRexpContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitTypeInstanciate(LangParser.TypeInstanciateContext ctx) { return visitChildren(ctx); }
+	@Override public T visitNewRexp(LangParser.NewRexpContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitFunctionReturn(LangParser.FunctionReturnContext ctx) { return visitChildren(ctx); }
+	@Override public T visitFuncCallRexp(LangParser.FuncCallRexpContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitArrayAccess(LangParser.ArrayAccessContext ctx) { return visitChildren(ctx); }
+	@Override public T visitDotLvalue(LangParser.DotLvalueContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitIdentifier(LangParser.IdentifierContext ctx) { return visitChildren(ctx); }
+	@Override public T visitIdLvalue(LangParser.IdLvalueContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitDataAccess(LangParser.DataAccessContext ctx) { return visitChildren(ctx); }
+	@Override public T visitArrayLvalue(LangParser.ArrayLvalueContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitFCallParams(LangParser.FCallParamsContext ctx) { return visitChildren(ctx); }
+	@Override public T visitExpsName(LangParser.ExpsNameContext ctx) { return visitChildren(ctx); }
 }
