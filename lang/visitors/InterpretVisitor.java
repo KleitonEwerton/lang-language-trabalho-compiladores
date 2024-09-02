@@ -41,27 +41,31 @@ public class InterpretVisitor extends Visitor {
 
     @Override
     public void visit(Prog prog) {
+        // Exibe uma mensagem indicando que a interpretação começou
         if (debug) {
-            System.out.println("Interpretando Program"); // Exibe uma mensagem indicando que a interpretação começou
+            System.out.println("Interpretando Program");
         }
 
         try {
+            // Carrega as definições de dados, se houver
             if (prog.getDatas() != null) {
-                for (Data data : prog.getDatas()) {
-                    datas.put(data.getId(), data);
-                }
+                prog.getDatas().forEach(data -> datas.put(data.getId(), data));
             }
 
-            for (Func f : prog.getFunctions()) {
-                funcs.put(f.getId(), f);
-                if (f.getId().equals("main")) {
-                    main = f;
+            // Itera sobre todas as funções definidas no programa
+            prog.getFunctions().forEach(func -> {
+                funcs.put(func.getId(), func); // Armazena a função no mapa
+                if ("main".equals(func.getId())) { // Verifica se a função atual é a função main
+                    main = func; // Define a função main como o ponto de entrada
                 }
-            }
+            });
 
+            // Se a função main não foi encontrada, lança uma exceção
             if (main == null) {
                 throw new RuntimeException("Não há uma função chamada \'main\' ! abortando !");
             }
+
+            // Inicia a execução da função main
             main.accept(this);
         } catch (Exception e) {
             throw new RuntimeException(" (" + prog.getLine() + ", " + prog.getColumn() + ") " + e.getMessage());

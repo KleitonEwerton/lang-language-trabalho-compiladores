@@ -6,7 +6,6 @@ package lang.parser;
 
 import java.io.*;
 
-// Adaptador para classe de parser. a Função parseFile deve retornar null caso o parser resulte em erro. 
 public class TestParser {
     private ParseAdaptor adp;
     private String okSrcs = "testes/sintaxe/certo/";

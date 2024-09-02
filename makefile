@@ -5,11 +5,14 @@ generate:
 compile:
 	javac -cp .:antlr-4.8-complete.jar lang/parser/*.java lang/ast/*.java lang/*.java lang/visitors/*.java
 
-testInterpretador:
+testSintatico:
 	java -cp antlr-4.8-complete.jar:. lang/LangCompiler -bs
 
-testSintatico:
-	java -cp antlr-4.8-complete.jar:. lang/LangCompiler -byt
+testsInterpretador:
+	java -cp antlr-4.8-complete.jar:. lang/LangCompiler -bsm
+
+testInterpretador:
+	java -cp antlr-4.8-complete.jar:. lang/LangCompiler -i
 
 clean:
 	rm -f lang/parser/*.class \
@@ -51,5 +54,5 @@ ex11:
 	java -cp antlr-4.8-complete.jar:. lang/LangCompiler -i ./testes/semantica/certo/teste11.lan
 ex12:
 	java -cp antlr-4.8-complete.jar:. lang/LangCompiler -i ./testes/semantica/certo/teste12.lan
-ex14:
+ex13:
 	java -cp antlr-4.8-complete.jar:. lang/LangCompiler -i ./testes/semantica/certo/teste14.lan
