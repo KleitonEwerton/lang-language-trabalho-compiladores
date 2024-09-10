@@ -8,6 +8,10 @@ package lang.ast;
 
 import lang.visitors.*;
 
+/*
+ * Esta classe representa uma expressão booleana.
+ * Expr && Expr
+ */
 public class And extends BinOP {
 
     public And(int line, int column, Expr left, Expr right) {

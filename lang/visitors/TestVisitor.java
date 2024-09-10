@@ -8,7 +8,7 @@ import java.io.*;
 
 public class TestVisitor {
     private InterpreterAdaptor adp;
-    private String okSrcs = "testes/semantica/certo/";
+    private String okSrcs = "testes/sintaxe/certo/";
     private File f;
 
     public TestVisitor(InterpreterAdaptor adp) {

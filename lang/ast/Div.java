@@ -6,8 +6,8 @@
 package lang.ast;
 
 /*
- * Esta classe representa uma expressão de soma.
- * Expr + Expr
+ * Esta classe representa uma expressão de divisão.
+ * Expr / Expr
  */
 
 import lang.visitors.*;
