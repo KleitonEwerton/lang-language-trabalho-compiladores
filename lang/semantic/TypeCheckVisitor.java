@@ -278,9 +278,9 @@ public class TypeCheckVisitor extends Visitor {
         // Pega o ambiente da função
         ArrayList<LocalAmbiente> inded = (ArrayList) env.getFuncoes(f.getId());
         temp = (LocalAmbiente<SType>) inded.get(0); // Só uma funcao
-        if (funcFinded.size() > 1) { // Tem sobrecarga
-            for (int i = 0; i < funcFinded.size(); i++) {
-                LocalAmbiente<SType> funcaoBase = funcFinded.get(i);
+        if (inded.size() > 1) { // Tem sobrecarga
+            for (int i = 0; i < inded.size(); i++) {
+                LocalAmbiente<SType> funcaoBase = inded.get(i);
                 STyFun funcaoBaseTipo = (STyFun) funcaoBase.getFuncType();
 
                 // Se a funcao tem o mesmo numero de parametros entao pode ser a correta
@@ -297,7 +297,7 @@ public class TypeCheckVisitor extends Visitor {
                         }
                     }
                     if (counterTypes == funcaoBaseTipo.getTypes().length) {
-                        temp = (LocalAmbiente<SType>) funcFinded.get(i);
+                        temp = (LocalAmbiente<SType>) inded.get(i);
                         break;
                     }
                 }
@@ -316,7 +316,7 @@ public class TypeCheckVisitor extends Visitor {
 
         boolean verificacaoIf = false;
         for (int i = 0; i < f.getCommands().size(); i++) {
-            Command command = f.getCommands().get(i);
+            Cmd command = f.getCommands().get(i);
             command.accept(this);
             if (command instanceof If && i == f.getCommands().size() - 1) { // Ultimo comando é um if
                 verificacaoIf = true;
@@ -352,15 +352,17 @@ public class TypeCheckVisitor extends Visitor {
 
     // Partem do Type
     @Override
-    public void visit(TypeArray t) {
-        if (t.getType() instanceof NameType && datas.get(((NameType) t.getType()).getID()) == null) { // Tipo data nao
-                                                                                                      // existe
+    public void visit(ArrayType t) {
+        if (t.getBaseType() instanceof NameType && datas.get(((NameType) t.getBaseType()).getID()) == null) { // Tipo
+                                                                                                              // data
+                                                                                                              // nao
+            // existe
             logError.add("(" + getLineNumber() + ") Erro em (linha: " + t.getLine() + ", coluna: "
-                    + t.getColumn() + "): O tipo data \'" + t.getType()
+                    + t.getColumn() + "): O tipo data \'" + t.getBaseType()
                     + "\' nao existe para poder ser criado um array.");
             stk.push(tyErr);
         } else {
-            t.getType().accept(this); // Empilha o tipo do array
+            t.getBaseType().accept(this); // Empilha o tipo do array
             SType tipo = stk.pop();
             if (tipo instanceof STyData) { // Array de data ==> Testar se o data existe
                 if (datas.get(((STyData) tipo).getName()) != null) { // Verifica se o tipo Data existe
@@ -374,7 +376,7 @@ public class TypeCheckVisitor extends Visitor {
                 }
             } else if (tipo instanceof STyErr) {
                 logError.add("(" + getLineNumber() + ") Erro em (linha: " + t.getLine() + ", coluna: "
-                        + t.getColumn() + "): O tipo data \'" + t.getType()
+                        + t.getColumn() + "): O tipo data \'" + t.getBaseType()
                         + "\' nao existe para poder se criar um array.");
                 stk.push(tyErr);
             } else {
@@ -438,7 +440,7 @@ public class TypeCheckVisitor extends Visitor {
 
     @Override
     public void visit(If i) {
-        i.getExp().accept(this); // Empilha a expressao de verificacao do If
+        i.getExpr().accept(this); // Empilha a expressao de verificacao do If
         SType expressao = stk.pop();
         if (expressao.match(tyBool)) {
             retChk = false; // a variavel de retorno de função é falsa até encontrar um commando return
@@ -456,7 +458,7 @@ public class TypeCheckVisitor extends Visitor {
         boolean begin;
         boolean end = true;// end = true;
 
-        i.getExp().accept(this); // Empilha a expressao de verificacao do If e Else
+        i.getExpr().accept(this); // Empilha a expressao de verificacao do If e Else
         SType expressao = stk.pop();
         if (expressao.match(tyBool)) {
             retChk = false; // a variavel de retorno de função é falsa até encontrar um commando return
@@ -479,7 +481,7 @@ public class TypeCheckVisitor extends Visitor {
 
     @Override
     public void visit(Iterate i) {
-        i.getExp().accept(this); // Empilha o valor lógico da expressão
+        i.getExpr().accept(this); // Empilha o valor lógico da expressão
         SType expressao = stk.pop();
         if (expressao.match(tyBool)) {
             i.getCmd().accept(this);
@@ -574,7 +576,7 @@ public class TypeCheckVisitor extends Visitor {
         // Variavel que vai ter os dados atribuidos nela
         LValue lvalue = a.getLValue();
 
-        if (lvalue instanceof Identifier) {
+        if (lvalue instanceof LValue) {
             // Empilha o tipo da expressao que sera atribuida
             a.getExp().accept(this);
 
@@ -623,10 +625,10 @@ public class TypeCheckVisitor extends Visitor {
                 }
             }
 
-        } else if (lvalue instanceof ArrayAccess) {
-            if (((ArrayAccess) lvalue).getLValue() != null
-                    && ((ArrayAccess) lvalue).getLValue() instanceof ArrayAccess) { // Trata o caso de matriz
-                ArrayAccess matriz = (ArrayAccess) ((ArrayAccess) lvalue).getLValue();
+        } else if (lvalue instanceof ArrayLValue) {
+            if (((ArrayLValue) lvalue).getClass() != null
+                    && ((ArrayLValue) lvalue).getlValue() instanceof ArrayLValue) { // Trata o caso de matriz
+                ArrayLValue matriz = (ArrayLValue) ((ArrayLValue) lvalue).getlValue();
 
                 lvalue.accept(this); // Empilha o tipo da matriz e verifica os indices
 
@@ -648,7 +650,7 @@ public class TypeCheckVisitor extends Visitor {
                                              // variavel
 
                     // se nao for variavel, confere o valor
-                    if (!(a.getExp() instanceof Identifier)) {
+                    if (!(a.getExp() instanceof LValue)) {
                         SType tipoExpAtribuicao = stk.pop();
                         SType tipoMatriz = stk.pop();
 
@@ -666,7 +668,7 @@ public class TypeCheckVisitor extends Visitor {
                 }
             } else { // Array
                 // aceita a expressao e joga pro topo da pilha. vai verificar posteriormente
-                // dentro do ArrayAccess se casa
+                // dentro do ArrayLValue se casa
 
                 lvalue.accept(this); // Empilha o tipo do array
 
@@ -699,13 +701,13 @@ public class TypeCheckVisitor extends Visitor {
                     }
                 }
             }
-        } else if (lvalue instanceof DataAccess) {
+        } else if (lvalue instanceof Dot) {
             // aceita a expresso e joga pro topo da pilha. vai verificar posteriormente
             // dentro do dataAccess se casa
 
-            if (((DataAccess) lvalue).getLValue() != null && ((DataAccess) lvalue).getLValue() instanceof ArrayAccess) { // Matriz
-                                                                                                                         // de
-                                                                                                                         // data
+            if (((Dot) lvalue).getClass() != null && ((Dot) lvalue).getlValue() instanceof ArrayLValue) { // Matriz
+                                                                                                          // de
+                                                                                                          // data
 
                 a.getExp().accept(this); // Empilha o tipo da expressao que será atribuida
 
@@ -718,7 +720,7 @@ public class TypeCheckVisitor extends Visitor {
 
             SType tipoVariavel = stk.pop();
             SType tipoExpressao = stk.pop();
-            DataAccess d = (DataAccess) lvalue;
+            Dot d = (Dot) lvalue;
             if (!tipoExpressao.match(tipoVariavel)) { // Compara o tipo da expressao com o do atributo
                 logError.add("(" + getLineNumber() + ") Erro em (linha: " + d.getLine() + ", coluna: " + d.getColumn()
                         + "): Tipos incompativeis. O tipo do atributo \'" + d.getId()
@@ -731,7 +733,7 @@ public class TypeCheckVisitor extends Visitor {
     }
 
     @Override
-    public void visit(FunctionCall f) {
+    public void visit(FuncCallCMD f) {
         // Trata chamadas de função do tipo: fat(10)<q>
         /**
          * ---- Regra cmd: ID OPEN_PARENT exps? CLOSE_PARENT (LESS_THAN lvalue (COMMA
@@ -744,8 +746,8 @@ public class TypeCheckVisitor extends Visitor {
          */
         // Informacoes da funcao que sera retomada no functionReturn
         Integer qtdParamPassados = 0; // A funcao nao foi passado parametros
-        if (f.getFCallParams() != null) {
-            qtdParamPassados = f.getFCallParams().getExps().size(); // A funcao foi passada parametros
+        if (f.getFFuncArgss() != null) {
+            qtdParamPassados = f.getFFuncArgss().getExps().size(); // A funcao foi passada parametros
         }
         String nomeFuncao = f.getId();
 
@@ -755,7 +757,7 @@ public class TypeCheckVisitor extends Visitor {
         // Pega a função correspondente
         LocalAmbiente<SType> Func = (LocalAmbiente<SType>) funcFinded.get(0); // Só uma funcao
         if (funcFinded.size() > 1) { // Tem sobrecarga
-            ArrayList<Func> funcoesAST = getFunctionAST(nomeFuncao);
+            ArrayList<Func> funcoesAST = getFuncAST(nomeFuncao);
             for (int i = 0; i < funcFinded.size(); i++) {
                 LocalAmbiente<SType> funcaoBase = funcFinded.get(i);
 
@@ -768,7 +770,7 @@ public class TypeCheckVisitor extends Visitor {
                     // Empilha os tipos das expressões passadas como parametro na chamada da
                     // FunctionReturn
                     // Compara com os tipos da função Find e verifica se coincide
-                    for (Expression exp : f.getFCallParams().getExps()) {
+                    for (Expr exp : f.getFFuncArgss().getExps()) {
                         // Empilha a expressao do parametro
                         exp.accept(this);
                         SType tipoParametro = funcaoBaseTipo.getTypes()[indiceExp]; // Tipo do parametro do campo da
@@ -789,28 +791,6 @@ public class TypeCheckVisitor extends Visitor {
                     }
                 }
 
-                // Nao compara retornos pois na descricao do trabalho foi solicitado se atentar
-                // Na sobrecarga apenas de parametros
-
-                // Quantidade de retornos
-                /*
-                 * if(funcaoDeclaracao.getReturnTypes().size() ==
-                 * funcaoBaseTipo.getReturnTypes().length){
-                 * boolean verificaRetDif = false;
-                 * for(int j = 0; j < funcaoDeclaracao.getReturnTypes().size(); j++){
-                 * String tipo = funcaoDeclaracao.getReturnTypes().get(j).toString();
-                 * // Compara os nomes de tipos, se for diferente nao eh a funcao
-                 * if(!(tipo.equals(funcaoBaseTipo.getReturnTypes()[j].toString()))){
-                 * verificaRetDif = true;
-                 * }
-                 * }
-                 * if(verificaRetDif){
-                 * continue;
-                 * }
-                 * 
-                 * 
-                 * }
-                 */
             }
         }
 
@@ -819,14 +799,14 @@ public class TypeCheckVisitor extends Visitor {
 
             // Passa do operand para o params
             // monta o parametro da função
-            if (f.getFCallParams() != null) {
+            if (f.getFFuncArgss() != null) {
 
-                STyFun tipoFuncao = (STyFun) function.getFuncType();
+                STyFun tipoFuncao = (STyFun) f.getLValues(); // f.getFuncType();
 
                 int indiceParamPassado = 0;
 
                 // Verifica os tipos dos parametros passado
-                for (Expression exp : f.getFCallParams().getExps()) {
+                for (Expr exp : f.getFFuncArgss().getExps()) {
                     // Empilha a expressao do parametro
                     exp.accept(this);
                     // Verifica se o tamanho dos parametros é o mesmo informado pelo usuario
@@ -847,7 +827,7 @@ public class TypeCheckVisitor extends Visitor {
                     }
                     indiceParamPassado++;
                 }
-                Integer qtdParametrosInformados = ((List) f.getFCallParams().getExps()).size();
+                Integer qtdParametrosInformados = ((List) f.getFFuncArgss().getExps()).size();
                 if (qtdParametrosInformados > tipoFuncao.getTypes().length
                         || qtdParametrosInformados < tipoFuncao.getTypes().length) {
                     logError.add(
@@ -863,8 +843,8 @@ public class TypeCheckVisitor extends Visitor {
             if (f.getLValues() != null) {
                 // Garante que a função tem retorno e seja a mesma quantidade solicitada pelo
                 // usuario
-                if (((STyFun) function.getFuncType()).getReturnTypes() != null &&
-                        f.getLValues().size() == ((STyFun) function.getFuncType()).getReturnTypes().length) {
+                if (((STyFun) f.getLValues()).getReturnTypes() != null &&
+                        f.getLValues().size() == ((STyFun) f.getLValues()).getReturnTypes().length) {
                     List<LValue> ret = f.getLValues();
                     int it = ret.size() - 1;
 
@@ -873,22 +853,22 @@ public class TypeCheckVisitor extends Visitor {
                     for (LValue l : ret) {
                         if (temp.get(ret.get(it).getId()) != null) { // Variavel existe, entao tem um tipo
                             if (temp.get(ret.get(it).getId())
-                                    .match(((STyFun) function.getFuncType()).getReturnTypes()[it])) { // Verifica se o
-                                                                                                      // tipo bate com o
-                                                                                                      // retorno da
-                                                                                                      // função
-                                temp.set(ret.get(it).getId(), ((STyFun) function.getFuncType()).getReturnTypes()[it]);
+                                    .match(((STyFun) f.getLValues()).getReturnTypes()[it])) { // Verifica se o
+                                                                                              // tipo bate com o
+                                                                                              // retorno da
+                                                                                              // função
+                                temp.set(ret.get(it).getId(), ((STyFun) f.getLValues()).getReturnTypes()[it]);
                             } else {
                                 logError.add("(" + getLineNumber() + ") Erro em (linha: " + f.getLine() + ", coluna: "
                                         + f.getColumn() + "): A variavel \'" + ret.get(it).getId()
                                         + "\' ja existe e seu tipo eh \'" + temp.get(ret.get(it).getId())
                                         + "\' e portanto, nao pode receber o valor do tipo \'"
-                                        + ((STyFun) function.getFuncType()).getReturnTypes()[it]
+                                        + ((STyFun) f.getLValues()).getReturnTypes()[it]
                                         + "\' retornado pela funcao \'" + f.getId() + "\'");
                                 stk.push(tyErr);
                             }
                         } else {
-                            temp.set(ret.get(it).getId(), ((STyFun) function.getFuncType()).getReturnTypes()[it]);
+                            temp.set(ret.get(it).getId(), ((STyFun) f.getLValues()).getReturnTypes()[it]);
                         }
                         it--;
                     }
@@ -899,7 +879,7 @@ public class TypeCheckVisitor extends Visitor {
                             "(" + getLineNumber() + ") Erro em (linha: " + f.getLine() + ", coluna: " + f.getColumn()
                                     + "): Na chamada da funcao foram solicitados \'" + f.getLValues().size()
                                     + "\' retorno(s) mas a funcao original apresenta "
-                                    + ((STyFun) function.getFuncType()).getReturnTypes().length + " retorno(s) !");
+                                    + ((STyFun) f.getLValues()).getReturnTypes().length + " retorno(s) !");
                     stk.push(tyErr);
                 }
             }
@@ -971,7 +951,7 @@ public class TypeCheckVisitor extends Visitor {
     }
 
     @Override
-    public void visit(Equality e) {
+    public void visit(Equals e) {
         e.getLeft().accept(this);
         e.getRight().accept(this);
         SType tyr = stk.pop();
@@ -989,7 +969,7 @@ public class TypeCheckVisitor extends Visitor {
     }
 
     @Override
-    public void visit(Difference n) {
+    public void visit(NotEquals n) {
         n.getLeft().accept(this);
         n.getRight().accept(this);
         SType tyr = stk.pop();
@@ -1008,14 +988,14 @@ public class TypeCheckVisitor extends Visitor {
 
     // Partem do aexp
     @Override
-    public void visit(Addition a) {
+    public void visit(Add a) {
         a.getLeft().accept(this);
         a.getRight().accept(this);
         typeArithmeticBinOp(a, "+");
     }
 
     @Override
-    public void visit(Subtraction s) {
+    public void visit(Sub s) {
         s.getLeft().accept(this);
         s.getRight().accept(this);
         typeArithmeticBinOp(s, "-");
@@ -1023,21 +1003,21 @@ public class TypeCheckVisitor extends Visitor {
 
     // Partem do mexp
     @Override
-    public void visit(Multiplication m) {
+    public void visit(Mul m) {
         m.getLeft().accept(this);
         m.getRight().accept(this);
         typeArithmeticBinOp(m, "*");
     }
 
     @Override
-    public void visit(Division d) {
+    public void visit(Div d) {
         d.getLeft().accept(this);
         d.getRight().accept(this);
         typeArithmeticBinOp(d, "/");
     }
 
     @Override
-    public void visit(Modular m) {
+    public void visit(Mod m) {
         m.getLeft().accept(this);
         m.getRight().accept(this);
         SType tyr = stk.pop();
@@ -1055,7 +1035,7 @@ public class TypeCheckVisitor extends Visitor {
     // Partem do sexp
     @Override
     public void visit(Not n) {
-        n.getExpression().accept(this);
+        n.getExpr().accept(this);
         SType tyr = stk.pop();
         if (tyr.match(tyBool)) {
             stk.push(tyBool);
@@ -1068,8 +1048,8 @@ public class TypeCheckVisitor extends Visitor {
     }
 
     @Override
-    public void visit(Minus n) {
-        n.getExpression().accept(this);
+    public void visit(Neg n) {
+        n.getExpr().accept(this);
         SType tyr = stk.pop();
         if (tyr.match(tyInt)) {
             stk.push(tyInt);
@@ -1095,7 +1075,7 @@ public class TypeCheckVisitor extends Visitor {
 
     @Override
     public void visit(IntegerNumber i) {
-        positionReturnFunc = i;
+        positionReturnFunction = i;
         stk.push(tyInt);
     }
 
@@ -1107,17 +1087,6 @@ public class TypeCheckVisitor extends Visitor {
     @Override
     public void visit(CharLitteral c) {
         stk.push(tyChar);
-    }
-
-    // Partem do pexp
-    @Override
-    public void visit(PexpIdentifier i) {
-        // Nao faz nada
-    }
-
-    @Override
-    public void visit(ExpParenthesis e) {
-        // Nao faz nada
     }
 
     @Override
@@ -1191,7 +1160,7 @@ public class TypeCheckVisitor extends Visitor {
     }
 
     @Override
-    public void visit(FunctionReturn f) {
+    public void visit(FuncCall f) {
         /********************************************************************************
          * MESMO QUE TENHA SOMENTE 1 RETORNO, ELA DEVE SER CHAMADA ASSIM: fat(num−1)[0]
          * *
@@ -1204,8 +1173,8 @@ public class TypeCheckVisitor extends Visitor {
 
         // Informacoes da funcao que sera retomada no functionReturn
         Integer qtdParamPassados = 0; // A funcao nao foi passado parametros
-        if (f.getFCallParams() != null) {
-            qtdParamPassados = f.getFCallParams().getExps().size(); // A funcao foi passada parametros
+        if (f.getFFuncArgss() != null) {
+            qtdParamPassados = f.getFFuncArgss().getExps().size(); // A funcao foi passada parametros
         }
         String nomeFuncao = f.getId();
 
@@ -1213,9 +1182,9 @@ public class TypeCheckVisitor extends Visitor {
         ArrayList<LocalAmbiente> funcFinded = (ArrayList) env.getFuncoes(nomeFuncao);
 
         // Pega a função correspondente
-        LocalAmbiente<SType> Func= (LocalAmbiente<SType>) funcFinded.get(0); // Só uma funcao
+        LocalAmbiente<SType> Func = (LocalAmbiente<SType>) funcFinded.get(0); // Só uma funcao
         if (funcFinded.size() > 1) { // Tem sobrecarga
-            ArrayList<Func> funcoesAST = getFunctionAST(nomeFuncao);
+            ArrayList<Func> funcoesAST = getFuncAST(nomeFuncao);
             for (int i = 0; i < funcFinded.size(); i++) {
                 LocalAmbiente<SType> funcaoBase = funcFinded.get(i);
 
@@ -1228,7 +1197,7 @@ public class TypeCheckVisitor extends Visitor {
                     // Empilha os tipos das expressões passadas como parametro na chamada da
                     // FunctionReturn
                     // Compara com os tipos da função Find e verifica se coincide
-                    for (Expression exp : f.getFCallParams().getExps()) {
+                    for (Expr exp : f.getFFuncArgss().getExps()) {
                         // Empilha a expressao do parametro
                         exp.accept(this);
                         SType tipoParametro = funcaoBaseTipo.getTypes()[indiceExp]; // Tipo do parametro do campo da
@@ -1244,49 +1213,26 @@ public class TypeCheckVisitor extends Visitor {
                         indiceExp++;
                     }
                     if (contTiposIguais == funcaoBaseTipo.getTypes().length) {
-                        Func= (LocalAmbiente<SType>) funcFinded.get(i);
+                        Func = (LocalAmbiente<SType>) funcFinded.get(i);
                         break;
                     }
                 }
 
-                // Nao compara retornos pois na descricao do trabalho foi solicitado se atentar
-                // Na sobrecarga apenas de parametros
-
-                // Quantidade de retornos
-                /*
-                 * if(funcaoDeclaracao.getReturnTypes().size() ==
-                 * funcaoBaseTipo.getReturnTypes().length){
-                 * boolean verificaRetDif = false;
-                 * for(int j = 0; j < funcaoDeclaracao.getReturnTypes().size(); j++){
-                 * String tipo = funcaoDeclaracao.getReturnTypes().get(j).toString();
-                 * // Compara os nomes de tipos, se for diferente nao eh a funcao
-                 * if(!(tipo.equals(funcaoBaseTipo.getReturnTypes()[j].toString()))){
-                 * verificaRetDif = true;
-                 * }
-                 * }
-                 * if(verificaRetDif){
-                 * continue;
-                 * }
-                 * 
-                 * 
-                 * }
-                 */
             }
         }
 
-        // Garante a existencia da função
-        if (Func!= null) {
+        if (Func != null) {
 
-            if (f.getFCallParams() != null) {
+            if (f.getFFuncArgss() != null) {
 
-                STyFun tipoFuncao = (STyFun) function.getFuncType();
+                STyFun tipoFuncao = (STyFun) f.getFuncType(); // f.getFuncType
 
                 int tempID = 0;
 
                 // Verifica se a quantidade de parametros informados é o mesmo da função
-                if (f.getFCallParams().getExps().size() == tipoFuncao.getTypes().length) {
+                if (f.getFFuncArgss().getExps().size() == tipoFuncao.getTypes().length) {
                     // Verifica os tipos dos parametros passado
-                    for (Expression exp : f.getFCallParams().getExps()) {
+                    for (Expr exp : f.getFFuncArgss().getExps()) {
                         // Empilha o tipo da expressao passada como parametro na chamada da funcao
                         // FunctionReturn
                         exp.accept(this);
@@ -1307,15 +1253,14 @@ public class TypeCheckVisitor extends Visitor {
 
                         tempID++;
                     }
-                    // // Empilha o ultimo tipo da função
-                    // stk.push(tipoFuncao.getTypes()[tipoFuncao.getTypes().length - 1]);
+
                 } else {
-                    if (f.getFCallParams().getExps().size() > tipoFuncao.getTypes().length) {
+                    if (f.getFFuncArgss().getExps().size() > tipoFuncao.getTypes().length) {
                         logError.add("(" + getLineNumber() + ") Erro em (linha: " + f.getLine() + ", coluna: "
                                 + f.getColumn()
                                 + "): Foi passado mais argumentos que a quantidade de parametros que a funcao \'"
                                 + f.getId() + "\'"
-                                + " apresenta, sendo: " + f.getFCallParams().getExps().size()
+                                + " apresenta, sendo: " + f.getFFuncArgss().getExps().size()
                                 + " argumento(s) no parametro na chamada da funcao e " + tipoFuncao.getTypes().length
                                 + " argumento(s) no parametro na declaracao da funcao  !!!");
                         stk.push(tyErr);
@@ -1324,14 +1269,14 @@ public class TypeCheckVisitor extends Visitor {
                                 + f.getColumn()
                                 + "): Foi passado menos argumentos que a quantidade de parametros que a funcao \'"
                                 + f.getId() + "\'"
-                                + " apresenta, sendo: " + f.getFCallParams().getExps().size()
+                                + " apresenta, sendo: " + f.getFFuncArgss().getExps().size()
                                 + " argumento(s) no parametro na chamada da funcao e " + tipoFuncao.getTypes().length
                                 + " argumento(s) no parametro na declaracao da funcao  !!!");
                         stk.push(tyErr);
                     }
                 }
             } else {
-                STyFun tipoFuncao = (STyFun) function.getFuncType();
+                STyFun tipoFuncao = (STyFun) f.getFuncType(); // f.getFuncType
 
                 if (tipoFuncao.getTypes().length > 0) { // Tem parametros na declaracao da funcao mas nao tem na chamada
                                                         // dela
@@ -1359,9 +1304,9 @@ public class TypeCheckVisitor extends Visitor {
         // Certifica que o valor da posicao de retorno existe e é um inteiro
         // Se uma variavel for passada como posicao, simplesmente essa checagem de
         // retorno não é feita
-        if (!(f.getExpIndex() instanceof Identifier)) { // Se nao for variavel
-            if (positionReturnFunc!= null && positionReturnFuncinstanceof IntegerNumber) {
-                STyFun tipoFuncao = (STyFun) function.getFuncType();
+        if (!(f.getExpIndex() instanceof LValue)) { // Se nao for variavel
+            if (positionReturnFunction != null && positionReturnFunction instanceof IntegerNumber) {
+                STyFun tipoFuncao = (STyFun) f.getFuncType();
                 IntegerNumber posicao = (IntegerNumber) positionReturnFunction;
                 stk.push(tipoFuncao.getReturnTypes()[posicao.getValue()]);
             }
@@ -1370,7 +1315,7 @@ public class TypeCheckVisitor extends Visitor {
             // Ficaria complicado afirmar se o retorno está com o tipo certo caso fosse uma
             // variavel
             // Sendo que empilhamos somente o tipo e não o valor inteiro
-            STyFun tipoFuncao = (STyFun) function.getFuncType();
+            STyFun tipoFuncao = (STyFun) f.getFuncType();
             IntegerNumber posicao = (IntegerNumber) positionReturnFunction;
             for (int i = 0; i < tipoFuncao.getReturnTypes().length; i++) {
                 stk.push(tipoFuncao.getReturnTypes()[i]);
@@ -1390,7 +1335,7 @@ public class TypeCheckVisitor extends Visitor {
     }
 
     @Override
-    public void visit(Identifier i) {
+    public void visit(IdLValue i) {
         if (temp.get(i.getId()) == null) {
             logError.add("(" + getLineNumber() + ") Erro em (linha: " + i.getLine() + ", coluna: " + i.getColumn()
                     + "): A variavel \'" + i.getId() + "\' nao existe!!!");
@@ -1401,7 +1346,7 @@ public class TypeCheckVisitor extends Visitor {
     }
 
     @Override
-    public void visit(DataAccess d) {
+    public void visit(Dot d) {
 
         // Certifica a existencia do tipo data passado no escopo atual
         if (temp.get(d.getDataId()) instanceof STyData) {
@@ -1469,10 +1414,10 @@ public class TypeCheckVisitor extends Visitor {
                 stk.push(tyErr);
             }
 
-        } else if (temp.get(d.getLValue().getId()) instanceof STyArr) { // Verifica se é array de data
+        } else if (temp.get(d.getlValue().getId()) instanceof STyArr) { // Verifica se é array de data
 
             // Empilha o tipo do array/matriz
-            d.getLValue().accept(this);
+            d.getlValue().accept(this);
 
             STyData dataType = (STyData) stk.pop();
             // STyArr arrayType = (STyArr) temp.get(d.getLValue().getId());
@@ -1513,22 +1458,25 @@ public class TypeCheckVisitor extends Visitor {
     }
 
     @Override
-    public void visit(ArrayAccess a) {
-        if (a.getLValue() instanceof Identifier) { // Já for a variavel entao é um array
-            if (temp.get(a.getLValue().getId()) != null) {
-                SType tipoAux = temp.get(a.getLValue().getId());
+    public void visit(ArrayLValue a) {
+        if (a.getlValue() instanceof IdLValue) { // antes: if(a.getLValue() instanceof Identifier){ // Já for a variavel
+                                                 // entao é um array
+            if (temp.get(a.getlValue().getId()) != null) {
+                SType tipoAux = temp.get(a.getlValue().getId());
                 if (tipoAux instanceof STyArr) {
                     SType argumento = ((STyArr) tipoAux).getArg();
                     stk.push(argumento); // Empilha o tipo do array
                 }
             } else {
                 logError.add("(" + getLineNumber() + ") Erro em (linha: " + a.getLine() + ", coluna: " + a.getColumn()
-                        + "): a variavel  \'" + a.getLValue().getId() + "\' nao existe !!");
+                        + "): a variavel  \'" + a.getlValue().getId() + "\' nao existe !!");
                 stk.push(tyErr);
             }
-        } else if (a.getLValue() instanceof ArrayAccess) { // é matriz
-            if (temp.get(a.getLValue().getId()) != null) {
-                SType tipoAux = temp.get(a.getLValue().getId());
+        } else if (a.getlValue() instanceof ArrayLValue) { // é matriz
+            if (temp.get(a.getlValue().getId()) != null) {
+
+                SType tipoAux = temp.get(a.getlValue().getId());
+
                 if (tipoAux instanceof STyArr) {
                     SType argumento = ((STyArr) tipoAux).getArg();
                     if (argumento instanceof STyArr) {
@@ -1539,7 +1487,7 @@ public class TypeCheckVisitor extends Visitor {
                             stk.push(tyErr);
                         } else {
                             // Verifica o indice da linha da matriz
-                            ((ArrayAccess) a.getLValue()).getExp().accept(this);
+                            ((ArrayLValue) a.getlValue()).getExpr().accept(this);
                             SType tipoLinha = stk.pop();
                             if (!tipoLinha.match(tyInt)) { // Verifica se o tipo da posicao da linha na matriz é um
                                                            // valor inteiro
@@ -1558,12 +1506,12 @@ public class TypeCheckVisitor extends Visitor {
                 }
             } else {
                 logError.add("(" + getLineNumber() + ") Erro em (linha: " + a.getLine() + ", coluna: " + a.getColumn()
-                        + "): a variavel  \'" + a.getLValue().getId() + "\' nao existe !!");
+                        + "): a variavel  \'" + a.getlValue().getId() + "\' nao existe !!");
                 stk.push(tyErr);
             }
         }
 
-        a.getExp().accept(this); // Verifica se a posicao foi passada
+        a.getExpr().accept(this); // Verifica se a posicao foi passada
         SType tipo = stk.pop();
         if (!tipo.match(tyInt)) { // Verifica se o tipo da posicao do array é um valor inteiro
             logError.add("(" + getLineNumber() + ") Erro em (linha: " + a.getLine() + ", coluna: " + a.getColumn()

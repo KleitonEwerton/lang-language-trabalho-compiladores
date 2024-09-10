@@ -6,6 +6,7 @@ package lang;
 
 import lang.ast.*;
 import lang.parser.*;
+import lang.semantic.*;
 import lang.visitors.*;
 
 public class LangCompiler {
@@ -16,8 +17,8 @@ public class LangCompiler {
             System.out.println("Ação (uma das seguintes possibilidades): ");
 
             System.out.println(" -bs : Executa uma bateria de testes sintáticos");
-            System.out.println(" -bty : Executa uma bateria de testes no sistemas de tipos");
             System.out.println(" -bsm : Executa uma bateria de testes no interpretador");
+            System.out.println(" -byt : Executa uma bateria de testes no sistemas de tipos na analise semantica");
 
             System.out.println(" -pp: Pretty print program.");
             System.out.println(" -tp: Verficar tipos e imprimir o ambiente de tipos");
@@ -32,6 +33,7 @@ public class LangCompiler {
         try {
             ParseAdaptor langParser = new ParserSyntactic();
             InterpreterAdaptor interpreterAdaptor = new InterpreterSyntactic();
+            SemanticAdaptorImplementation semanticImplementation = new SemanticAdaptorImplementation();
 
             if (args[0].equals("-bs")) {
                 System.out.println("Executando bateria de testes sintáticos:");
@@ -39,14 +41,14 @@ public class LangCompiler {
                 return;
             }
 
-            if (args[0].equals("-byt")) {
-                //System.out.println("Executando bateria de testes interpretador:");
-                // TestParser tp = new TestParser(langParser);
-                return;
-            }
             if (args[0].equals("-bsm")) {
                 System.out.println("Executando bateria de testes no interpretador:");
                 TestVisitor tv = new TestVisitor(interpreterAdaptor);
+                return;
+            }
+            if (args[0].equals("-byt")) {
+                System.out.println("Executando bateria de testes no interpretador:");
+                TestSemantic tp = new TestSemantic(semanticImplementation);
                 return;
             }
             if (args.length != 2) {
