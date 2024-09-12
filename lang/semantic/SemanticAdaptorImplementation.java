@@ -8,9 +8,9 @@ package lang.semantic;
 
 import lang.ast.SuperNode;
 import lang.ast.Node;
-import lang.interpreter.*;
 import lang.parser.*;
 import lang.semantic.SemanticAdaptor;
+import lang.visitors.MyVisitor;
 
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
@@ -66,7 +66,7 @@ public class SemanticAdaptorImplementation implements SemanticAdaptor {
             // Metodo do visitor --- apenas será utilizado onde houver visitor
             // Cria um adaptador da ParseTree do ANTLR para receber o padrão Node
             // criado para a AST do trabalho
-            VisitorAdapter ast = new VisitorAdapter();
+            MyVisitor ast = new MyVisitor();
 
             // Passa um objeto do tipo parseTree e retorna do tipo Node
             // Visita a árvore

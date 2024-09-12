@@ -1440,4 +1440,23 @@ public class InterpretVisitor extends Visitor {
         System.out.println("================================");
     }
 
+    @Override
+    public void visit(IntegerNumber i) {
+
+    }
+
+    @Override
+    public void visit(BooleanValue b) {
+
+    }
+
+    @Override
+    public void visit(FloatNumber f) {
+
+    }
+
+    @Override
+    public void visit(CharLitteral c) {
+    }
+
 }

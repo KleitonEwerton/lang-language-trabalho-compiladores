@@ -14,6 +14,9 @@ testsInterpretador:
 testInterpretador:
 	java -cp antlr-4.8-complete.jar:. lang/LangCompiler -i
 
+testSemantic:
+	java -cp antlr-4.8-complete.jar:. lang/LangCompiler -byt
+
 clean:
 	rm -f lang/parser/*.class \
 	rm -f lang/visitors/*.class \
