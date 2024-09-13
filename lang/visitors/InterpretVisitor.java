@@ -1441,11 +1441,6 @@ public class InterpretVisitor extends Visitor {
     }
 
     @Override
-    public void visit(IntegerNumber i) {
-
-    }
-
-    @Override
     public void visit(BooleanValue b) {
 
     }

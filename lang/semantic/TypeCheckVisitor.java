@@ -567,186 +567,170 @@ public class TypeCheckVisitor extends Visitor {
         retChk = true;
     }
 
-    // @Override
-    // public void visit(Attribution a) {
-    // // a = 2 + b + ponto.x + array[1];
+    @Override
+    public void visit(LvalueCmd a) {
+        // a = 2 + b + ponto.x + array[1];
 
-    // // Variavel que vai ter os dados atribuidos nela
-    // LValue lvalue = a.getLValue();
+        // Variavel que vai ter os dados atribuidos nela
+        LValue lvalue = a.getlValue();
 
-    // if (lvalue instanceof LValue) {
-    // // Empilha o tipo da expressao que sera atribuida
-    // a.getExp().accept(this);
+        if (lvalue instanceof LValue) {
+            // Empilha o tipo da expressao que sera atribuida
+            a.getExpr().accept(this);
 
-    // SType tipoExpressao = stk.pop();
+            SType tipoExpressao = stk.pop();
 
-    // if (tipoExpressao instanceof STyData) {
-    // if ((temp.get(lvalue.getId()) == null)) { // Variavel de data nao existe
-    // String name = ((STyData) tipoExpressao).getName();
-    // STyData newData = new STyData(name);
+            if (tipoExpressao instanceof STyData) {
+                if ((temp.get(lvalue.getId()) == null)) { // Variavel de data nao existe
+                    String name = ((STyData) tipoExpressao).getName();
+                    STyData newData = new STyData(name);
 
-    // if (datas.get(name) == null) {
-    // logError.add("(" + getLineNumber() + ") Erro em (linha: " + a.getLine() + ",
-    // coluna: "
-    // + a.getColumn() + "): O tipo de Data " + name + " ainda nao foi declarado.");
-    // } else {
-    // temp.set(lvalue.getId(), newData); // empilha a nova variavel de data
-    // }
-    // } else {
-    // SType tipoVariavel = temp.get(lvalue.getId());
+                    if (datas.get(name) == null) {
+                        logError.add("(" + getLineNumber() + ") Erro em (linha: " + a.getLine() + ",coluna: "
+                                + a.getColumn() + "): O tipo de Data " + name + " ainda nao foi declarado.");
+                    } else {
+                        temp.set(lvalue.getId(), newData); // empilha a nova variavel de data
+                    }
+                } else {
+                    SType tipoVariavel = temp.get(lvalue.getId());
 
-    // if (!tipoExpressao.match(tipoVariavel)) {
-    // logError.add("(" + getLineNumber() + ") Erro em (linha: " + a.getLine() + ",
-    // coluna: "
-    // + a.getColumn()
-    // + "): Reatribuicao de variavel => Problema na atribuicao de variável. Os
-    // tipos nao casam: "
-    // + tipoExpressao + " <-> " + "Data");
-    // stk.push(tyErr);
-    // }
-    // }
-    // } else { // Nao é tipo data
+                    if (!tipoExpressao.match(tipoVariavel)) {
+                        logError.add("(" + getLineNumber() + ") Erro em (linha: " + a.getLine() + ",coluna: "
+                                + a.getColumn()
+                                + "): Reatribuicao de variavel => Problema na atribuicao de variável. Os tipos nao casam: "
+                                + tipoExpressao + " <-> " + "Data");
+                        stk.push(tyErr);
+                    }
+                }
+            } else { // Nao é tipo data
 
-    // // ver a parte de indices - por enquanto so ve se n foi declarada ainda
-    // // se a var n foi declarada, atribui o novo tipo pra ela
-    // if ((temp.get(lvalue.getId()) == null)) {
-    // temp.set(lvalue.getId(), tipoExpressao);
-    // } else { // se ja foi declarada, verifica se o tipo casa com o tipo dela
-    // SType tipoVariavel = temp.get(lvalue.getId());
+                // ver a parte de indices - por enquanto so ve se n foi declarada ainda
+                // se a var n foi declarada, atribui o novo tipo pra ela
+                if ((temp.get(lvalue.getId()) == null)) {
+                    temp.set(lvalue.getId(), tipoExpressao);
+                } else { // se ja foi declarada, verifica se o tipo casa com o tipo dela
+                    SType tipoVariavel = temp.get(lvalue.getId());
 
-    // if (!tipoExpressao.match(tipoVariavel)) {
-    // logError.add("(" + getLineNumber() + ") Erro em (linha: " + a.getLine() + ",
-    // coluna: "
-    // + a.getColumn()
-    // + "): Reatribuicao de variavel => Problema na atribuicao de variavel. Os
-    // tipos nao casam: "
-    // + tipoExpressao + " <-> "
-    // + tipoVariavel);
-    // stk.push(tyErr);
-    // }
+                    if (!tipoExpressao.match(tipoVariavel)) {
+                        logError.add("(" + getLineNumber() + ") Erro em (linha: " + a.getLine() + ",coluna: "
+                                + a.getColumn()
+                                + "): Reatribuicao de variavel => Problema na atribuicao de variavel. Os tipos nao casam: "
+                                + tipoExpressao + " <-> "
+                                + tipoVariavel);
+                        stk.push(tyErr);
+                    }
 
-    // }
-    // }
+                }
+            }
 
-    // } else if (lvalue instanceof ArrayLValue) {
-    // if (((ArrayLValue) lvalue).getClass() != null
-    // && ((ArrayLValue) lvalue).getlValue() instanceof ArrayLValue) { // Trata o
-    // caso de matriz
-    // ArrayLValue matriz = (ArrayLValue) ((ArrayLValue) lvalue).getlValue();
+        } else if (lvalue instanceof ArrayLValue) {
+            if (((ArrayLValue) lvalue).getClass() != null
+                    && ((ArrayLValue) lvalue).getlValue() instanceof ArrayLValue) {
+                ArrayLValue matriz = (ArrayLValue) ((ArrayLValue) lvalue).getlValue();
 
-    // lvalue.accept(this); // Empilha o tipo da matriz e verifica os indices
+                lvalue.accept(this); // Empilha o tipo da matriz e verifica os indices
 
-    // // ver a parte de indices - por enquanto so ve se n foi declarada ainda
-    // // se a var n foi declarada, atribui o novo tipo, equivalente à expressao
-    // if ((temp.get(matriz.getId()) == null)) {
+                // ver a parte de indices - por enquanto so ve se n foi declarada ainda
+                // se a var n foi declarada, atribui o novo tipo, equivalente à expressao
+                if ((temp.get(matriz.getId()) == null)) {
 
-    // a.getExp().accept(this);
+                    a.getExpr().accept(this);
 
-    // SType st = stk.pop();
-    // STyArr arr = new STyArr(st);
+                    SType st = stk.pop();
+                    STyArr arr = new STyArr(st);
 
-    // // adiciona o array no contexto, com o tipo dado pela expressão
-    // temp.set(matriz.getId(), arr);
-    // }
-    // // caso ja exista o array, verifica se o tipo casa com o esperado da
-    // atribuiçao
-    // else {
-    // a.getExp().accept(this); // Empilha o objeto da expressao => new int, new
-    // Ponto ou somente uma
-    // // variavel
+                    // adiciona o array no contexto, com o tipo dado pela expressão
+                    temp.set(matriz.getId(), arr);
+                }
 
-    // // se nao for variavel, confere o valor
-    // if (!(a.getExp() instanceof LValue)) {
-    // SType tipoExpAtribuicao = stk.pop();
-    // SType tipoMatriz = stk.pop();
+                else {
+                    a.getExpr().accept(this); // Empilha o objeto da expressao => new int, new
+                    // variavel
 
-    // // Compara o tipo o objeto a ser adiciona com o tipo do array
-    // if (!tipoMatriz.match(tipoExpAtribuicao)) {
-    // logError.add("(" + getLineNumber() + ") Erro em (linha: " + a.getLine() + ",
-    // coluna: "
-    // + a.getColumn()
-    // + "): Problema na atribuicao de variavel. Os tipos nao casam: " +
-    // tipoExpAtribuicao
-    // + " <-> "
-    // + tipoMatriz);
-    // stk.push(tyErr);
-    // }
-    // }
+                    // se nao for variavel, confere o valor
+                    if (!(a.getExpr() instanceof LValue)) {
+                        SType tipoExpAtribuicao = stk.pop();
+                        SType tipoMatriz = stk.pop();
 
-    // }
-    // } else { // Array
-    // // aceita a expressao e joga pro topo da pilha. vai verificar posteriormente
-    // // dentro do ArrayLValue se casa
+                        // Compara o tipo o objeto a ser adiciona com o tipo do array
+                        if (!tipoMatriz.match(tipoExpAtribuicao)) {
+                            logError.add("(" + getLineNumber() + ") Erro em (linha: " + a.getLine() + ",coluna: "
+                                    + a.getColumn()
+                                    + "): Problema na atribuicao de variavel. Os tipos nao casam: " + tipoExpAtribuicao
+                                    + " <-> "
+                                    + tipoMatriz);
+                            stk.push(tyErr);
+                        }
+                    }
 
-    // lvalue.accept(this); // Empilha o tipo do array
+                }
+            } else { // Array
+                // aceita a expressao e joga pro topo da pilha. vai verificar posteriormente
+                // dentro do ArrayLValue se casa
 
-    // // ver a parte de indices - por enquanto so ve se n foi declarada ainda
-    // // se a var n foi declarada, atribui o novo tipo, equivalente à expressao
-    // if ((temp.get(lvalue.getId()) == null)) {
+                lvalue.accept(this); // Empilha o tipo do array
 
-    // a.getExp().accept(this);
+                // ver a parte de indices - por enquanto so ve se n foi declarada ainda
+                // se a var n foi declarada, atribui o novo tipo, equivalente à expressao
+                if ((temp.get(lvalue.getId()) == null)) {
 
-    // SType st = stk.pop();
-    // STyArr arr = new STyArr(st);
+                    a.getExpr().accept(this);
 
-    // // adiciona o array no contexto, com o tipo dado pela expressão
-    // temp.set(lvalue.getId(), arr);
-    // }
-    // // caso ja exista o array, verifica se o tipo casa com o esperado da
-    // atribuiçao
-    // else {
-    // a.getExp().accept(this); // Empilha o tipo da expressao que será atribuida
+                    SType st = stk.pop();
+                    STyArr arr = new STyArr(st);
 
-    // SType tipoExpAtribuicao = stk.pop();
-    // SType tipoArray = stk.pop();
+                    // adiciona o array no contexto, com o tipo dado pela expressão
+                    temp.set(lvalue.getId(), arr);
+                }
+                // caso ja exista o array, verifica se o tipo casa com o esperado da
+                else {
+                    a.getExpr().accept(this); // Empilha o tipo da expressao que será atribuida
 
-    // if (!tipoArray.match(tipoExpAtribuicao)) {
-    // logError.add("(" + getLineNumber() + ") Erro em (linha: " + a.getLine() + ",
-    // coluna: "
-    // + a.getColumn()
-    // + "): Problema na atribuicao de variavel. Os tipos nao casam: " +
-    // tipoExpAtribuicao
-    // + " <-> "
-    // + tipoArray);
-    // stk.push(tyErr);
-    // }
-    // }
-    // }
-    // } else if (lvalue instanceof Dot) {
-    // // aceita a expresso e joga pro topo da pilha. vai verificar posteriormente
-    // // dentro do dataAccess se casa
+                    SType tipoExpAtribuicao = stk.pop();
+                    SType tipoArray = stk.pop();
 
-    // if (((Dot) lvalue).getClass() != null && ((Dot) lvalue).getlValue()
-    // instanceof ArrayLValue) { // Matriz
-    // // de
-    // // data
+                    if (!tipoArray.match(tipoExpAtribuicao)) {
+                        logError.add("(" + getLineNumber() + ") Erro em (linha: " + a.getLine() + ", coluna: "
+                                + a.getColumn()
+                                + "): Problema na atribuicao de variavel. Os tipos nao casam: " +
+                                tipoExpAtribuicao
+                                + " <-> "
+                                + tipoArray);
+                        stk.push(tyErr);
+                    }
+                }
+            }
+        } else if (lvalue instanceof Dot) {
+            // aceita a expresso e joga pro topo da pilha. vai verificar posteriormente
+            // dentro do dataAccess se casa
 
-    // a.getExp().accept(this); // Empilha o tipo da expressao que será atribuida
+            if (((Dot) lvalue).getClass() != null && ((Dot) lvalue).getlValue() instanceof ArrayLValue) { // Matriz
+                // de
+                // data
 
-    // lvalue.accept(this); // Empilha o tipo da matriz;
-    // } else {
-    // a.getExp().accept(this); // Empilha o tipo da expressao que será atribuida
+                a.getExpr().accept(this); // Empilha o tipo da expressao que será atribuida
 
-    // lvalue.accept(this); // Empilha o Tipo do atributo do data ou o tipo data
-    // mesmo
-    // }
+                lvalue.accept(this); // Empilha o tipo da matriz;
+            } else {
+                a.getExpr().accept(this); // Empilha o tipo da expressao que será atribuida
 
-    // SType tipoVariavel = stk.pop();
-    // SType tipoExpressao = stk.pop();
-    // Dot d = (Dot) lvalue;
-    // if (!tipoExpressao.match(tipoVariavel)) { // Compara o tipo da expressao com
-    // o do atributo
-    // logError.add("(" + getLineNumber() + ") Erro em (linha: " + d.getLine() + ",
-    // coluna: " + d.getColumn()
-    // + "): Tipos incompativeis. O tipo do atributo \'" + d.getId()
-    // + "\' do array de data \'" + d.getDataId() + "\' eh \'" + tipoVariavel + "\'
-    // e nao \'"
-    // + tipoExpressao + "\' !!!");
-    // stk.push(tyErr);
-    // }
+                lvalue.accept(this); // Empilha o Tipo do atributo do data ou o tipo data
 
-    // }
-    // }
+            }
+
+            SType tipoVariavel = stk.pop();
+            SType tipoExpressao = stk.pop();
+            Dot d = (Dot) lvalue;
+            if (!tipoExpressao.match(tipoVariavel)) { // Compara o tipo da expressao com o do atributo
+                logError.add("(" + getLineNumber() + ") Erro em (linha: " + d.getLine() + ",coluna: " + d.getColumn()
+                        + "): Tipos incompativeis. O tipo do atributo \'" + d.getId()
+                        + "\' do array de data \'" + d.getDataId() + "\' eh \'" + tipoVariavel + "\'e nao \'"
+                        + tipoExpressao + "\' !!!");
+                stk.push(tyErr);
+            }
+
+        }
+    }
 
     @Override
     public void visit(FuncCallCMD f) {
@@ -1090,7 +1074,7 @@ public class TypeCheckVisitor extends Visitor {
     }
 
     @Override
-    public void visit(IntegerNumber i) {
+    public void visit(IntDexp i) {
         positionReturnFunction = i;
         stk.push(tyInt);
     }
@@ -1105,80 +1089,79 @@ public class TypeCheckVisitor extends Visitor {
         stk.push(tyChar);
     }
 
-    // @Override
-    // public void visit(TypeInstanciate t) {
-    // // a = new Int, a = new Ponto, a = new Ponto[8];
+    @Override
+    public void visit(NewExp t) {
+        // a = new Int, a = new Ponto, a = new Ponto[8];
 
-    // // Garante que não é um tipo Data
-    // if (t.getType() != null) {
-    // if (t.getExp() != null) { // Array comum
-    // // Empilha o tipo do array
-    // t.getType().accept(this);
+        // Garante que não é um tipo Data
+        if (t.getType() != null) {
+            if (t.getExpr() != null) { // Array comum
+                // Empilha o tipo do array
+                t.getType().accept(this);
 
-    // // Empilha o tamanho do array
-    // t.getExp().accept(this);
-    // SType tamanhoArray = stk.pop();
-    // if (!tamanhoArray.match(tyInt)) { // Verifica tamanho int para o array
-    // logError.add("(" + getLineNumber() + ") Erro em (linha: " + t.getLine() + ",
-    // coluna: "
-    // + t.getColumn()
-    // + "): o tamanho de um array so pode ser atribuido com o tipo int e nao \'" +
-    // tamanhoArray
-    // + "\' .");
-    // stk.push(tyErr);
-    // }
-    // SType tipoArray = stk.pop();
+                // Empilha o tamanho do array
+                t.getExpr().accept(this);
+                SType tamanhoArray = stk.pop();
+                if (!tamanhoArray.match(tyInt)) { // Verifica tamanho int para o array
+                    logError.add("(" + getLineNumber() + ") Erro em (linha: " + t.getLine() + ",coluna: "
+                            + t.getColumn()
+                            + "): o tamanho de um array so pode ser atribuido com o tipo int e nao \'" +
+                            tamanhoArray
+                            + "\' .");
+                    stk.push(tyErr);
+                }
+                SType tipoArray = stk.pop();
 
-    // // Cria o tipo de array com referencia ao tipo primitivo informado
-    // STyArr array = new STyArr(tipoArray);
-    // stk.add(array);
-    // } else { // new Int;
-    // // Empilha o tipo da variavel e no attribution certifica se é valido
-    // t.getType().accept(this);
-    // }
-    // } else {
-    // if (t.getExp() == null) { // Tipo normal de data
-    // if (datas.get(t.getDataName()) != null) { // Tipo data existe
-    // STyData tyData = new STyData(t.getDataName());
-    // // Empilha o tipo da variavel e no attribution certifica se é valido
-    // stk.add(tyData);
-    // } else {
-    // logError.add(
-    // "(" + getLineNumber() + ") Erro em (linha: " + t.getLine() + ", coluna: " +
-    // t.getColumn()
-    // + "): o tipo data \'" + t.getDataName() + "\' nao existe !");
-    // stk.push(tyErr);
-    // }
-    // } else { // Array de data
-    // // Empilha o tamanho do array
-    // t.getExp().accept(this);
+                // Cria o tipo de array com referencia ao tipo primitivo informado
+                STyArr array = new STyArr(tipoArray);
+                stk.add(array);
+            } else { // new Int;
+                // Empilha o tipo da variavel e no attribution certifica se é valido
+                t.getType().accept(this);
+            }
+        } else {
+            if (t.getExpr() == null) { // Tipo normal de data
+                if (datas.get(t.getDataName()) != null) { // Tipo data existe
+                    STyData tyData = new STyData(t.getDataName());
+                    // Empilha o tipo da variavel e no attribution certifica se é valido
+                    stk.add(tyData);
+                } else {
+                    logError.add(
+                            "(" + getLineNumber() + ") Erro em (linha: " + t.getLine() + ", coluna: " +
+                                    t.getColumn()
+                                    + "): o tipo data \'" + t.getDataName() + "\' nao existe !");
+                    stk.push(tyErr);
+                }
+            } else { // Array de data
+                // Empilha o tamanho do array
+                t.getExpr().accept(this);
 
-    // SType tamanhoArray = stk.pop();
-    // if (!tamanhoArray.match(tyInt)) { // Verifica tamanho int para o array
-    // logError.add(
-    // "(" + getLineNumber() + ") Erro em (linha: " + t.getLine() + ", coluna: " +
-    // t.getColumn()
-    // + "): o tamanho de um array so pode ser atribuido com o tipo int e nao \'"
-    // + tamanhoArray + "\' .");
-    // stk.push(tyErr);
-    // }
+                SType tamanhoArray = stk.pop();
+                if (!tamanhoArray.match(tyInt)) { // Verifica tamanho int para o array
+                    logError.add(
+                            "(" + getLineNumber() + ") Erro em (linha: " + t.getLine() + ", coluna: " +
+                                    t.getColumn()
+                                    + "): o tamanho de um array so pode ser atribuido com o tipo int e nao \'"
+                                    + tamanhoArray + "\' .");
+                    stk.push(tyErr);
+                }
 
-    // if (datas.get(t.getDataName()) != null) { // Tipo data existe
-    // STyData tyData = new STyData(t.getDataName());
+                if (datas.get(t.getDataName()) != null) { // Tipo data existe
+                    STyData tyData = new STyData(t.getDataName());
 
-    // // Cria o tipo de array com referencia ao tipo primitivo informado
-    // STyArr array = new STyArr(tyData);
-    // stk.add(array);
-    // } else {
-    // logError.add(
-    // "(" + getLineNumber() + ") Erro em (linha: " + t.getLine() + ", coluna: " +
-    // t.getColumn()
-    // + "): o tipo data \'" + t.getDataName() + "\' nao existe !");
-    // stk.push(tyErr);
-    // }
-    // }
-    // }
-    // }
+                    // Cria o tipo de array com referencia ao tipo primitivo informado
+                    STyArr array = new STyArr(tyData);
+                    stk.add(array);
+                } else {
+                    logError.add(
+                            "(" + getLineNumber() + ") Erro em (linha: " + t.getLine() + ", coluna: " +
+                                    t.getColumn()
+                                    + "): o tipo data \'" + t.getDataName() + "\' nao existe !");
+                    stk.push(tyErr);
+                }
+            }
+        }
+    }
 
     @Override
     public void visit(FuncCall f) {
@@ -1326,9 +1309,9 @@ public class TypeCheckVisitor extends Visitor {
         // Se uma variavel for passada como posicao, simplesmente essa checagem de
         // retorno não é feita
         if (!(f.getExpIndex() instanceof LValue)) { // Se nao for variavel
-            if (positionReturnFunction != null && positionReturnFunction instanceof IntegerNumber) {
+            if (positionReturnFunction != null && positionReturnFunction instanceof IntDexp) {
                 STyFun tipoFuncao = (STyFun) func.getFuncType();
-                IntegerNumber posicao = (IntegerNumber) positionReturnFunction;
+                IntDexp posicao = (IntDexp) positionReturnFunction;
                 stk.push(tipoFuncao.getReturnTypes()[posicao.getValue()]);
             }
         } else { // Empilha os dois retornos ====> Problema pode ser corrigido no interpretador
@@ -1337,7 +1320,7 @@ public class TypeCheckVisitor extends Visitor {
             // variavel
             // Sendo que empilhamos somente o tipo e não o valor inteiro
             STyFun tipoFuncao = (STyFun) func.getFuncType();
-            IntegerNumber posicao = (IntegerNumber) positionReturnFunction;
+            IntDexp posicao = (IntDexp) positionReturnFunction;
             for (int i = 0; i < tipoFuncao.getReturnTypes().length; i++) {
                 stk.push(tipoFuncao.getReturnTypes()[i]);
             }
@@ -1550,14 +1533,7 @@ public class TypeCheckVisitor extends Visitor {
     }
 
     @Override
-    public void visit(LvalueCmd a) {
-        // TODO Auto-generated method stub
-        System.out.println("LvalueCmd");
-    }
-
-    @Override
     public void visit(BoolDexp b) {
-        // TODO Auto-generated method stub
 
         System.out.println("BoolDexp");
 
@@ -1565,31 +1541,17 @@ public class TypeCheckVisitor extends Visitor {
 
     @Override
     public void visit(CharDexp c) {
-        // TODO Auto-generated method stub
         System.out.println("CharDexp");
     }
 
     @Override
     public void visit(Decl d) {
-        // TODO Auto-generated method stub
         System.out.println("Decl");
     }
 
     @Override
     public void visit(FloatDexp p) {
         System.out.println("FloatDexp");
-    }
-
-    @Override
-    public void visit(IntDexp i) {
-        // TODO Auto-generated method stub
-        System.out.println("IntDexp");
-    }
-
-    @Override
-    public void visit(NewExp t) {
-
-        System.out.println("NewExp");
     }
 
 }

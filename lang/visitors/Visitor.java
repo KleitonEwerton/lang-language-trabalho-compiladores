@@ -100,8 +100,6 @@ public abstract class Visitor {
 
     public abstract void visit(TyInt t);
 
-    public abstract void visit(IntegerNumber i);
-
     public abstract void visit(BooleanValue b);
 
     public abstract void visit(FloatNumber f);
