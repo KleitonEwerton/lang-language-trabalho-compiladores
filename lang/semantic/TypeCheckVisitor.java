@@ -106,7 +106,9 @@ public class TypeCheckVisitor extends Visitor {
             for (int i = 0; i < funcoes.size(); i++) {
                 LocalAmbiente<SType> funcaoBase = funcoes.get(i);
                 STyFun funcaoBaseTipo = (STyFun) funcaoBase.getFuncType();
+                System.out.println("FIM AQUI ¨6");
                 STyFun funcaoNovaTipo = (STyFun) funcaoNova.getFuncType();
+                System.out.println("FIM AQUI 7");
                 if (funcaoBaseTipo.getTypes().length == funcaoNovaTipo.getTypes().length) {
                     boolean isDifferentType = false;
                     // testa o casamento de todos os tipos
@@ -279,7 +281,9 @@ public class TypeCheckVisitor extends Visitor {
         if (inded.size() > 1) { // Tem sobrecarga
             for (int i = 0; i < inded.size(); i++) {
                 LocalAmbiente<SType> funcaoBase = inded.get(i);
+
                 STyFun funcaoBaseTipo = (STyFun) funcaoBase.getFuncType();
+                System.out.println("FIM AQUI 8");
 
                 // Se a funcao tem o mesmo numero de parametros entao pode ser a correta
                 if (funcaoBaseTipo.getTypes().length == f.getParams().getType().size()) {
@@ -326,6 +330,7 @@ public class TypeCheckVisitor extends Visitor {
         if (temp.getFuncType() instanceof STyFun) {
             // Padrao da documentação da função
             tiposRetornoPadrao = ((STyFun) temp.getFuncType()).getReturnTypes();
+            System.out.println("FIM AQUI 9");
         }
 
         if (!retChk && tiposRetornoPadrao.length > 0) {
@@ -525,6 +530,7 @@ public class TypeCheckVisitor extends Visitor {
         if (temp.getFuncType() instanceof STyFun) {
             // Padrao da documentação da função
             SType[] tiposRetornoPadrao = ((STyFun) temp.getFuncType()).getReturnTypes();
+            System.out.println("FIM AQUI 10");
             SType[] tiposRetornados = new SType[qtdExpRetorno];
 
             // Desempilha os tipos retornados
@@ -569,9 +575,7 @@ public class TypeCheckVisitor extends Visitor {
 
     @Override
     public void visit(LvalueCmd a) {
-        // a = 2 + b + ponto.x + array[1];
 
-        // Variavel que vai ter os dados atribuidos nela
         LValue lvalue = a.getlValue();
 
         if (lvalue instanceof LValue) {
@@ -757,11 +761,12 @@ public class TypeCheckVisitor extends Visitor {
         // Pega a função correspondente
         LocalAmbiente<SType> Func = (LocalAmbiente<SType>) funcFinded.get(0); // Só uma funcao
         if (funcFinded.size() > 1) { // Tem sobrecarga
-            ArrayList<Func> funcoesAST = getFuncAST(nomeFuncao);
+
             for (int i = 0; i < funcFinded.size(); i++) {
                 LocalAmbiente<SType> funcaoBase = funcFinded.get(i);
 
                 STyFun funcaoBaseTipo = (STyFun) funcaoBase.getFuncType();
+                System.out.println("FIM AQUI 11");
 
                 // Se a funcao tem o mesmo numero de parametros
                 if (funcaoBaseTipo.getTypes().length == qtdParamPassados) {
@@ -801,7 +806,8 @@ public class TypeCheckVisitor extends Visitor {
             // monta o parametro da função
             if (f.getFFuncArgss() != null) {
 
-                STyFun tipoFuncao = (STyFun) f.getLValues(); // f.getFuncType();
+                STyFun tipoFuncao = (STyFun) Func.getFuncType(); // f.getFuncType();
+                System.out.println("FIM AQUI 12");
 
                 int indiceParamPassado = 0;
 
@@ -843,8 +849,9 @@ public class TypeCheckVisitor extends Visitor {
             if (f.getLValues() != null) {
                 // Garante que a função tem retorno e seja a mesma quantidade solicitada pelo
                 // usuario
-                if (((STyFun) f.getLValues()).getReturnTypes() != null &&
-                        f.getLValues().size() == ((STyFun) f.getLValues()).getReturnTypes().length) {
+                if (((STyFun) Func.getFuncType()).getReturnTypes() != null &&
+                        f.getLValues().size() == ((STyFun) Func.getFuncType()).getReturnTypes().length) {
+                    System.out.println("FIM AQUI 13");
                     List<LValue> ret = f.getLValues();
                     int it = ret.size() - 1;
 
@@ -858,6 +865,7 @@ public class TypeCheckVisitor extends Visitor {
                                                                                               // retorno da
                                                                                               // função
                                 temp.set(ret.get(it).getId(), ((STyFun) f.getLValues()).getReturnTypes()[it]);
+                                System.out.println("FIM AQUI 14");
                             } else {
                                 logError.add("(" + getLineNumber() + ") Erro em (linha: " + f.getLine() + ", coluna: "
                                         + f.getColumn() + "): A variavel \'" + ret.get(it).getId()
@@ -868,7 +876,9 @@ public class TypeCheckVisitor extends Visitor {
                                 stk.push(tyErr);
                             }
                         } else {
+                            System.out.println("FIM AQUI 15");
                             temp.set(ret.get(it).getId(), ((STyFun) f.getLValues()).getReturnTypes()[it]);
+                            System.out.println("FIM AQUI 15");
                         }
                         it--;
                     }
@@ -1080,12 +1090,12 @@ public class TypeCheckVisitor extends Visitor {
     }
 
     @Override
-    public void visit(FloatNumber p) {
+    public void visit(FloatDexp p) {
         stk.push(tyFloat);
     }
 
     @Override
-    public void visit(CharLitteral c) {
+    public void visit(CharDexp c) {
         stk.push(tyChar);
     }
 
@@ -1165,17 +1175,7 @@ public class TypeCheckVisitor extends Visitor {
 
     @Override
     public void visit(FuncCall f) {
-        /********************************************************************************
-         * MESMO QUE TENHA SOMENTE 1 RETORNO, ELA DEVE SER CHAMADA ASSIM: fat(num−1)[0]
-         * *
-         * AGORA SEM RETORNO PODE SER SÓ: fat(num−1) *
-         ********************************************************************************/
-        // pexp: ID OPEN_PARENT exps? CLOSE_PARENT OPEN_BRACKET exp CLOSE_BRACKET #
-        // 'FunctionReturn' // Como retorna 2 valores, logo precisa do
-        // funcao(parametros)[indice] Exemplo: fat(num−1)[0]
-        // TEM RETORNO A FUNCAO ===> Obrigatorio
 
-        // Informacoes da funcao que sera retomada no functionReturn
         Integer qtdParamPassados = 0; // A funcao nao foi passado parametros
         if (f.getFFuncArgss() != null) {
             qtdParamPassados = f.getFFuncArgss().getExps().size(); // A funcao foi passada parametros
@@ -1193,6 +1193,7 @@ public class TypeCheckVisitor extends Visitor {
                 LocalAmbiente<SType> funcaoBase = funcFinded.get(i);
 
                 STyFun funcaoBaseTipo = (STyFun) funcaoBase.getFuncType();
+                System.out.println("FIM INIT AQUI 1");
 
                 // Se a funcao tem o mesmo numero de parametros
                 if (funcaoBaseTipo.getTypes().length == qtdParamPassados) {
@@ -1230,6 +1231,7 @@ public class TypeCheckVisitor extends Visitor {
             if (f.getFFuncArgss() != null) {
 
                 STyFun tipoFuncao = (STyFun) func.getFuncType(); // f.getFuncType
+                System.out.println("FIM INIT AQUI 2");
 
                 int tempID = 0;
 
@@ -1281,6 +1283,7 @@ public class TypeCheckVisitor extends Visitor {
                 }
             } else {
                 STyFun tipoFuncao = (STyFun) func.getFuncType(); // f.getFuncType
+                System.out.println("FIM INIT AQUI 3");
 
                 if (tipoFuncao.getTypes().length > 0) { // Tem parametros na declaracao da funcao mas nao tem na chamada
                                                         // dela
@@ -1311,6 +1314,7 @@ public class TypeCheckVisitor extends Visitor {
         if (!(f.getExpIndex() instanceof LValue)) { // Se nao for variavel
             if (positionReturnFunction != null && positionReturnFunction instanceof IntDexp) {
                 STyFun tipoFuncao = (STyFun) func.getFuncType();
+                System.out.println("FIM INIT AQUI 4");
                 IntDexp posicao = (IntDexp) positionReturnFunction;
                 stk.push(tipoFuncao.getReturnTypes()[posicao.getValue()]);
             }
@@ -1320,7 +1324,8 @@ public class TypeCheckVisitor extends Visitor {
             // variavel
             // Sendo que empilhamos somente o tipo e não o valor inteiro
             STyFun tipoFuncao = (STyFun) func.getFuncType();
-            IntDexp posicao = (IntDexp) positionReturnFunction;
+            System.out.println("FIM INIT AQUI 5");
+
             for (int i = 0; i < tipoFuncao.getReturnTypes().length; i++) {
                 stk.push(tipoFuncao.getReturnTypes()[i]);
             }
@@ -1540,18 +1545,8 @@ public class TypeCheckVisitor extends Visitor {
     }
 
     @Override
-    public void visit(CharDexp c) {
-        System.out.println("CharDexp");
-    }
-
-    @Override
     public void visit(Decl d) {
         System.out.println("Decl");
-    }
-
-    @Override
-    public void visit(FloatDexp p) {
-        System.out.println("FloatDexp");
     }
 
 }

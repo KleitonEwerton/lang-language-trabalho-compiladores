@@ -1445,13 +1445,4 @@ public class InterpretVisitor extends Visitor {
 
     }
 
-    @Override
-    public void visit(FloatNumber f) {
-
-    }
-
-    @Override
-    public void visit(CharLitteral c) {
-    }
-
 }
