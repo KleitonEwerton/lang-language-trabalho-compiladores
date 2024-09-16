@@ -576,9 +576,12 @@ public class TypeCheckVisitor extends Visitor {
     @Override
     public void visit(LvalueCmd a) {
 
+        // a = 2 + b + ponto.x + array[1];
+
+        // Variavel que vai ter os dados atribuidos nela
         LValue lvalue = a.getlValue();
 
-        if (lvalue instanceof LValue) {
+        if (lvalue instanceof IdLValue) {
             // Empilha o tipo da expressao que sera atribuida
             a.getExpr().accept(this);
 
@@ -590,7 +593,7 @@ public class TypeCheckVisitor extends Visitor {
                     STyData newData = new STyData(name);
 
                     if (datas.get(name) == null) {
-                        logError.add("(" + getLineNumber() + ") Erro em (linha: " + a.getLine() + ",coluna: "
+                        logError.add("(" + getLineNumber() + ") Erro em (linha: " + a.getLine() + ", coluna: "
                                 + a.getColumn() + "): O tipo de Data " + name + " ainda nao foi declarado.");
                     } else {
                         temp.set(lvalue.getId(), newData); // empilha a nova variavel de data
@@ -599,7 +602,7 @@ public class TypeCheckVisitor extends Visitor {
                     SType tipoVariavel = temp.get(lvalue.getId());
 
                     if (!tipoExpressao.match(tipoVariavel)) {
-                        logError.add("(" + getLineNumber() + ") Erro em (linha: " + a.getLine() + ",coluna: "
+                        logError.add("(" + getLineNumber() + ") Erro em (linha: " + a.getLine() + ", coluna: "
                                 + a.getColumn()
                                 + "): Reatribuicao de variavel => Problema na atribuicao de variável. Os tipos nao casam: "
                                 + tipoExpressao + " <-> " + "Data");
@@ -616,7 +619,7 @@ public class TypeCheckVisitor extends Visitor {
                     SType tipoVariavel = temp.get(lvalue.getId());
 
                     if (!tipoExpressao.match(tipoVariavel)) {
-                        logError.add("(" + getLineNumber() + ") Erro em (linha: " + a.getLine() + ",coluna: "
+                        logError.add("(" + getLineNumber() + ") Erro em (linha: " + a.getLine() + ", coluna: "
                                 + a.getColumn()
                                 + "): Reatribuicao de variavel => Problema na atribuicao de variavel. Os tipos nao casam: "
                                 + tipoExpressao + " <-> "
@@ -628,8 +631,8 @@ public class TypeCheckVisitor extends Visitor {
             }
 
         } else if (lvalue instanceof ArrayLValue) {
-            if (((ArrayLValue) lvalue).getClass() != null
-                    && ((ArrayLValue) lvalue).getlValue() instanceof ArrayLValue) {
+            if (((ArrayLValue) lvalue).getlValue() != null
+                    && ((ArrayLValue) lvalue).getlValue() instanceof ArrayLValue) { // Trata o caso de matriz
                 ArrayLValue matriz = (ArrayLValue) ((ArrayLValue) lvalue).getlValue();
 
                 lvalue.accept(this); // Empilha o tipo da matriz e verifica os indices
@@ -646,19 +649,19 @@ public class TypeCheckVisitor extends Visitor {
                     // adiciona o array no contexto, com o tipo dado pela expressão
                     temp.set(matriz.getId(), arr);
                 }
-
+                // caso ja exista o array, verifica se o tipo casa com o esperado da atribuiçao
                 else {
-                    a.getExpr().accept(this); // Empilha o objeto da expressao => new int, new
-                    // variavel
+                    a.getExpr().accept(this); // Empilha o objeto da expressao => new int, new Ponto ou somente uma
+                                              // variavel
 
                     // se nao for variavel, confere o valor
-                    if (!(a.getExpr() instanceof LValue)) {
+                    if (!(a.getExpr() instanceof IdLValue)) {
                         SType tipoExpAtribuicao = stk.pop();
                         SType tipoMatriz = stk.pop();
 
                         // Compara o tipo o objeto a ser adiciona com o tipo do array
                         if (!tipoMatriz.match(tipoExpAtribuicao)) {
-                            logError.add("(" + getLineNumber() + ") Erro em (linha: " + a.getLine() + ",coluna: "
+                            logError.add("(" + getLineNumber() + ") Erro em (linha: " + a.getLine() + ", coluna: "
                                     + a.getColumn()
                                     + "): Problema na atribuicao de variavel. Os tipos nao casam: " + tipoExpAtribuicao
                                     + " <-> "
@@ -670,7 +673,7 @@ public class TypeCheckVisitor extends Visitor {
                 }
             } else { // Array
                 // aceita a expressao e joga pro topo da pilha. vai verificar posteriormente
-                // dentro do ArrayLValue se casa
+                // dentro do ArrayAccess se casa
 
                 lvalue.accept(this); // Empilha o tipo do array
 
@@ -686,7 +689,7 @@ public class TypeCheckVisitor extends Visitor {
                     // adiciona o array no contexto, com o tipo dado pela expressão
                     temp.set(lvalue.getId(), arr);
                 }
-                // caso ja exista o array, verifica se o tipo casa com o esperado da
+                // caso ja exista o array, verifica se o tipo casa com o esperado da atribuiçao
                 else {
                     a.getExpr().accept(this); // Empilha o tipo da expressao que será atribuida
 
@@ -696,8 +699,7 @@ public class TypeCheckVisitor extends Visitor {
                     if (!tipoArray.match(tipoExpAtribuicao)) {
                         logError.add("(" + getLineNumber() + ") Erro em (linha: " + a.getLine() + ", coluna: "
                                 + a.getColumn()
-                                + "): Problema na atribuicao de variavel. Os tipos nao casam: " +
-                                tipoExpAtribuicao
+                                + "): Problema na atribuicao de variavel. Os tipos nao casam: " + tipoExpAtribuicao
                                 + " <-> "
                                 + tipoArray);
                         stk.push(tyErr);
@@ -708,9 +710,9 @@ public class TypeCheckVisitor extends Visitor {
             // aceita a expresso e joga pro topo da pilha. vai verificar posteriormente
             // dentro do dataAccess se casa
 
-            if (((Dot) lvalue).getClass() != null && ((Dot) lvalue).getlValue() instanceof ArrayLValue) { // Matriz
-                // de
-                // data
+            if (((Dot) lvalue).getlValue() != null && ((Dot) lvalue).getlValue() instanceof ArrayLValue) { // Matriz
+                                                                                                           // de
+                                                                                                           // data
 
                 a.getExpr().accept(this); // Empilha o tipo da expressao que será atribuida
 
@@ -718,17 +720,16 @@ public class TypeCheckVisitor extends Visitor {
             } else {
                 a.getExpr().accept(this); // Empilha o tipo da expressao que será atribuida
 
-                lvalue.accept(this); // Empilha o Tipo do atributo do data ou o tipo data
-
+                lvalue.accept(this); // Empilha o Tipo do atributo do data ou o tipo data mesmo
             }
 
             SType tipoVariavel = stk.pop();
             SType tipoExpressao = stk.pop();
             Dot d = (Dot) lvalue;
             if (!tipoExpressao.match(tipoVariavel)) { // Compara o tipo da expressao com o do atributo
-                logError.add("(" + getLineNumber() + ") Erro em (linha: " + d.getLine() + ",coluna: " + d.getColumn()
+                logError.add("(" + getLineNumber() + ") Erro em (linha: " + d.getLine() + ", coluna: " + d.getColumn()
                         + "): Tipos incompativeis. O tipo do atributo \'" + d.getId()
-                        + "\' do array de data \'" + d.getDataId() + "\' eh \'" + tipoVariavel + "\'e nao \'"
+                        + "\' do array de data \'" + d.getDataId() + "\' eh \'" + tipoVariavel + "\' e nao \'"
                         + tipoExpressao + "\' !!!");
                 stk.push(tyErr);
             }
