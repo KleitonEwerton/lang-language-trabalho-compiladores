@@ -531,13 +531,14 @@ public class TypeCheckVisitor extends Visitor {
             // Padrao da documentação da função
             SType[] tiposRetornoPadrao = ((STyFun) temp.getFuncType()).getReturnTypes();
             System.out.println("FIM AQUI 10");
+            System.out.println("ai ai0");
             SType[] tiposRetornados = new SType[qtdExpRetorno];
-
+            System.out.println("ai ai1");
             // Desempilha os tipos retornados
             for (int i = 0; i < qtdExpRetorno; i++) {
                 tiposRetornados[i] = stk.pop();
             }
-
+            System.out.println("ai ai2");
             // Quantidades de retorno para diferente em relação a quantidade descrita na
             // função
             if (qtdExpRetorno != tiposRetornoPadrao.length) {
@@ -877,8 +878,10 @@ public class TypeCheckVisitor extends Visitor {
                                 stk.push(tyErr);
                             }
                         } else {
-                            System.out.println("FIM AQUI 15");
-                            temp.set(ret.get(it).getId(), ((STyFun) f.getLValues()).getReturnTypes()[it]);
+                            System.out.println("INICIO AQUI 15");
+
+                            temp.set(ret.get(it).getId(), ((STyFun) Func.getFuncType()).getReturnTypes()[it]);
+
                             System.out.println("FIM AQUI 15");
                         }
                         it--;
