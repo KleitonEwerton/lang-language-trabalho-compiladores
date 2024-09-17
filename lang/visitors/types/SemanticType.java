@@ -4,10 +4,8 @@
  *  Nikolas Oliver Sales Genesio - MAT 202065072C
  */
 
-package lang.semantic;
+package lang.visitors.types;
 
-import lang.ast.SuperNode;
-
-public interface SemanticAdaptor {
-    public abstract SuperNode parseFile(String path);
+public abstract class SemanticType {
+    public abstract boolean match(SemanticType v);
 }

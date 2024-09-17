@@ -6,7 +6,6 @@ package lang;
 
 import lang.ast.*;
 import lang.parser.*;
-import lang.semantic.*;
 import lang.visitors.*;
 
 public class LangCompiler {
@@ -43,7 +42,7 @@ public class LangCompiler {
 
             if (args[0].equals("-bsm")) {
                 System.out.println("Executando bateria de testes no interpretador:");
-                TestVisitor tv = new TestVisitor(interpreterAdaptor);
+                TestInterpreter tv = new TestInterpreter(interpreterAdaptor);
                 return;
             }
             if (args[0].equals("-byt")) {

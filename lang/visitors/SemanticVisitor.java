@@ -4,7 +4,7 @@
  *  Nikolas Oliver Sales Genesio - MAT 202065072C
  */
 
-package lang.semantic;
+package lang.visitors;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,23 +12,22 @@ import java.util.List;
 import java.util.Stack;
 
 import lang.ast.*;
-import lang.semantic.types.DataAttr;
-import lang.semantic.types.LocalEnv;
-import lang.semantic.types.SemanticArrayType;
-import lang.semantic.types.SemanticType;
-import lang.semantic.types.SemanticTypeBool;
-import lang.semantic.types.SemanticTypeChar;
-import lang.semantic.types.SemanticTypeData;
-import lang.semantic.types.SemanticTypeEnv;
-import lang.semantic.types.SemanticTypeError;
-import lang.semantic.types.SemanticTypeFloat;
-import lang.semantic.types.SemanticTypeFunc;
-import lang.semantic.types.SemanticTypeInt;
-import lang.semantic.types.SemanticTypeNull;
-import lang.visitors.*;
+import lang.visitors.types.DataAttr;
+import lang.visitors.types.LocalEnv;
+import lang.visitors.types.SemanticArrayType;
+import lang.visitors.types.SemanticType;
+import lang.visitors.types.SemanticTypeBool;
+import lang.visitors.types.SemanticTypeChar;
+import lang.visitors.types.SemanticTypeData;
+import lang.visitors.types.SemanticTypeEnv;
+import lang.visitors.types.SemanticTypeError;
+import lang.visitors.types.SemanticTypeFloat;
+import lang.visitors.types.SemanticTypeFunc;
+import lang.visitors.types.SemanticTypeInt;
+import lang.visitors.types.SemanticTypeNull;
 
 // Define o visitor que fará a analise semantica 
-public class TypeCheckVisitor extends Visitor {
+public class SemanticVisitor extends Visitor {
     private SemanticTypeInt tyInt = SemanticTypeInt.newSTyInt();
     private SemanticTypeFloat tyFloat = SemanticTypeFloat.newSTyFloat();
     private SemanticTypeChar tyChar = SemanticTypeChar.newSTyCharacter();
@@ -63,7 +62,7 @@ public class TypeCheckVisitor extends Visitor {
     // Armzanena as Funcoes para poder compara os tipos na sobrecarga
     private ArrayList<Func> funcs;
 
-    public TypeCheckVisitor() {
+    public SemanticVisitor() {
         stk = new Stack<SemanticType>();
         env = new SemanticTypeEnv<LocalEnv<SemanticType>>();
         logError = new ArrayList<String>();

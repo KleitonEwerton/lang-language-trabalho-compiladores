@@ -4,7 +4,7 @@
  *  Nikolas Oliver Sales Genesio - MAT 202065072C
  */
 
-package lang.semantic.types;
+package lang.visitors.types;
 
 // Define o tipo array para a analise semantica no TypeCheck
 public class SemanticArrayType extends SemanticType {

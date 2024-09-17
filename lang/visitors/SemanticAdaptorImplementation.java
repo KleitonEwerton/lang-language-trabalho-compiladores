@@ -4,13 +4,12 @@
  *  Nikolas Oliver Sales Genesio - MAT 202065072C
  */
 
-package lang.semantic;
+package lang.visitors;
 
 import lang.ast.SuperNode;
 import lang.ast.Node;
 import lang.parser.*;
-import lang.semantic.SemanticAdaptor;
-import lang.visitors.MyVisitor;
+import lang.visitors.SemanticAdaptor;
 
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
@@ -73,7 +72,7 @@ public class SemanticAdaptorImplementation implements SemanticAdaptor {
             Node node = ast.visit(tree);
 
             // Interpreta o Visitor e elabora o ambiente de desenvolvimento
-            TypeCheckVisitor semanticCheck = new TypeCheckVisitor();
+            SemanticVisitor semanticCheck = new SemanticVisitor();
 
             // Aceita o nó e caminha na árvore
             node.accept(semanticCheck); // Passa o node criado e testa o interpretador

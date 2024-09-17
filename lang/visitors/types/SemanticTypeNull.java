@@ -4,7 +4,7 @@
  *  Nikolas Oliver Sales Genesio - MAT 202065072C
  */
 
-package lang.semantic.types;
+package lang.visitors.types;
 
 public class SemanticTypeNull extends SemanticType {
     private static SemanticTypeNull st = new SemanticTypeNull();

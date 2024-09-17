@@ -1,18 +1,18 @@
-/*  Trabalho da disciplina DCC045 - Teoria dos Compiladores
- *  Kleiton Ewerton de Oliveira - MAT 202065050C
- *  Nikolas Oliver Sales Genesio - MAT 202065072C
- */
+/**
+
+*/
 package lang.visitors;
 
-import java.io.*;
+import java.io.File;
+import lang.ast.*;
 
-public class TestVisitor {
-    private InterpreterAdaptor adp;
-    private String okSrcs = "testes/sintaxe/certo/";
+public class TestSemantic {
+    private SemanticAdaptor sdp;
+    private String okSrcs = "testes/semantica/certo/";
     private File f;
 
-    public TestVisitor(InterpreterAdaptor adp) {
-        this.adp = adp;
+    public TestSemantic(SemanticAdaptor sdp) {
+        this.sdp = sdp;
         f = new File(okSrcs);
         runOkTests();
     }
@@ -35,18 +35,24 @@ public class TestVisitor {
                 String pth;
                 inst = f.listFiles();
                 for (File s : inst) {
+
                     pth = s.getPath();
+
                     System.out.print("Testando " + pth + filler(50 - pth.length()) + "[");
-                    if (adp.interpretFile(s.getPath()) != null) {
+
+                    Node no = (Node) sdp.parseFile(s.getPath());
+
+                    if (no != null) {
                         System.out.println("  OK  ]");
                         flips++;
                     } else {
-                        System.out.println(" FALHOU ]");
+                        System.out.println("\nTeste " + pth + filler(50 - pth.length()) + " FALHOU ]\n");
                         flops++;
                     }
                 }
                 System.out.println("Total de acertos: " + flips);
                 System.out.println("Total de erros: " + flops);
+
             } else {
                 System.out.println("O caminho " + f.getPath() + " não é um diretório ou não existe.");
             }

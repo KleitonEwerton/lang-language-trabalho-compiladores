@@ -1,18 +1,18 @@
-/**
+/*  Trabalho da disciplina DCC045 - Teoria dos Compiladores
+ *  Kleiton Ewerton de Oliveira - MAT 202065050C
+ *  Nikolas Oliver Sales Genesio - MAT 202065072C
+ */
+package lang.visitors;
 
-*/
-package lang.semantic;
+import java.io.*;
 
-import java.io.File;
-import lang.ast.*;
-
-public class TestSemantic {
-    private SemanticAdaptor sdp;
-    private String okSrcs = "testes/semantica/certo/";
+public class TestInterpreter {
+    private InterpreterAdaptor adp;
+    private String okSrcs = "testes/sintaxe/certo/";
     private File f;
 
-    public TestSemantic(SemanticAdaptor sdp) {
-        this.sdp = sdp;
+    public TestInterpreter(InterpreterAdaptor adp) {
+        this.adp = adp;
         f = new File(okSrcs);
         runOkTests();
     }
@@ -35,24 +35,18 @@ public class TestSemantic {
                 String pth;
                 inst = f.listFiles();
                 for (File s : inst) {
-
                     pth = s.getPath();
-
                     System.out.print("Testando " + pth + filler(50 - pth.length()) + "[");
-
-                    Node no = (Node) sdp.parseFile(s.getPath());
-
-                    if (no != null) {
+                    if (adp.interpretFile(s.getPath()) != null) {
                         System.out.println("  OK  ]");
                         flips++;
                     } else {
-                        System.out.println("\nTeste " + pth + filler(50 - pth.length()) + " FALHOU ]\n");
+                        System.out.println(" FALHOU ]");
                         flops++;
                     }
                 }
                 System.out.println("Total de acertos: " + flips);
                 System.out.println("Total de erros: " + flops);
-
             } else {
                 System.out.println("O caminho " + f.getPath() + " não é um diretório ou não existe.");
             }
