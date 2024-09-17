@@ -9,5 +9,4 @@ fibonacci(n :: Int) : Int {
 main() {
   v = fibonacci(5)[0];
   print v;
-  print '\n';
 }

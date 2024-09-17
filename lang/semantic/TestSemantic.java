@@ -35,19 +35,24 @@ public class TestSemantic {
                 String pth;
                 inst = f.listFiles();
                 for (File s : inst) {
+
                     pth = s.getPath();
-                    System.out.println("\nTestando " + pth + filler(50 - pth.length()) + ": ");
+
+                    System.out.print("Testando " + pth + filler(50 - pth.length()) + "[");
+
                     Node no = (Node) sdp.parseFile(s.getPath());
+
                     if (no != null) {
-                        System.out.println("\nTeste " + pth + filler(50 - pth.length()) + "[  OK  ]\n");
+                        System.out.println("  OK  ]");
                         flips++;
                     } else {
-                        System.out.println("\nTeste " + pth + filler(50 - pth.length()) + "[ FALHOU ]\n");
+                        System.out.println("\nTeste " + pth + filler(50 - pth.length()) + " FALHOU ]\n");
                         flops++;
                     }
                 }
                 System.out.println("Total de acertos: " + flips);
                 System.out.println("Total de erros: " + flops);
+
             } else {
                 System.out.println("O caminho " + f.getPath() + " não é um diretório ou não existe.");
             }

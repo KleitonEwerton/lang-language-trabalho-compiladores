@@ -4,8 +4,8 @@
  *  Nikolas Oliver Sales Genesio - MAT 202065072C
  */
 
-package lang.semantic;
+package lang.semantic.types;
 
-public abstract class SType {
-    public abstract boolean match(SType v);
+public abstract class SemanticType {
+    public abstract boolean match(SemanticType v);
 }

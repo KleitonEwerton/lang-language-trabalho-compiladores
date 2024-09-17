@@ -4,17 +4,17 @@
  *  Nikolas Oliver Sales Genesio - MAT 202065072C
  */
 
-package lang.semantic;
+package lang.semantic.types;
 
 import java.util.ArrayList;
 import java.util.TreeMap;
 
-public class TyEnv<A> {
+public class SemanticTypeEnv<A> {
 
     private TreeMap<String, A> typeEnv;
     private ArrayList<A> typeEnvFuncoes;
 
-    public TyEnv() {
+    public SemanticTypeEnv() {
         typeEnv = new TreeMap<String, A>();
         typeEnvFuncoes = new ArrayList<A>();
     }
@@ -34,7 +34,7 @@ public class TyEnv<A> {
     public ArrayList<A> getFuncoes(String id) {
         ArrayList<A> sobrecargaFuncoes = new ArrayList<A>();
         for (int i = 0; i < typeEnvFuncoes.size(); i++) {
-            LocalAmbiente funcao = (LocalAmbiente) typeEnvFuncoes.get(i);
+            LocalEnv funcao = (LocalEnv) typeEnvFuncoes.get(i);
             if (funcao.getFuncID().equals(id)) { // Se o nome da função for igual, coloca na lista
                 sobrecargaFuncoes.add(typeEnvFuncoes.get(i));
             }

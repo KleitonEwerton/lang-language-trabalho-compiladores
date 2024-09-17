@@ -4,17 +4,17 @@
  *  Nikolas Oliver Sales Genesio - MAT 202065072C
  */
 
-package lang.semantic;
+package lang.semantic.types;
 
 import java.util.ArrayList;
 
-public class DataAttributes {
+public class DataAttr {
 
     private String nomeData;
     private ArrayList<String> nomeVariaveis = new ArrayList<String>();
-    private ArrayList<SType> tipos = new ArrayList<SType>();
+    private ArrayList<SemanticType> tipos = new ArrayList<SemanticType>();
 
-    public DataAttributes(String nomeData, ArrayList<String> nomeVariaveis, ArrayList<SType> tipos) {
+    public DataAttr(String nomeData, ArrayList<String> nomeVariaveis, ArrayList<SemanticType> tipos) {
         this.nomeData = nomeData;
         this.nomeVariaveis = nomeVariaveis;
         this.tipos = tipos;
@@ -28,11 +28,11 @@ public class DataAttributes {
         return this.nomeVariaveis;
     }
 
-    public ArrayList<SType> getTipos() {
+    public ArrayList<SemanticType> getTipos() {
         return this.tipos;
     }
 
-    public void addAttribute(String nome, SType tipo) {
+    public void addAttribute(String nome, SemanticType tipo) {
         nomeVariaveis.add(nome);
         tipos.add(tipo);
     }

@@ -30,6 +30,7 @@ clean:
 	lang/parser/langLexer.interp \
 	lang/parser/langVisitor.java \
 	lang/semantic/*.class \
+	lang/semantic/types/*.class \
 	lang/ast/*.class \
 	lang/*.class \
 	lang/visitors/*.class

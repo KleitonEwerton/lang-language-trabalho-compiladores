@@ -4,23 +4,24 @@
  *  Nikolas Oliver Sales Genesio - MAT 202065072C
  */
 
-package lang.semantic;
+package lang.semantic.types;
 
 // Define o tipo array para a analise semantica no TypeCheck
-public class STyArr extends SType {
-    private SType a;
+public class SemanticArrayType extends SemanticType {
+    private SemanticType a;
 
-    public STyArr(SType t) {
+    public SemanticArrayType(SemanticType t) {
         a = t;
     }
 
-    public SType getArg() {
+    public SemanticType getArg() {
         return a;
     }
 
     @Override
-    public boolean match(SType v) {
-        return (v instanceof STyErr) || (v instanceof STyArr) && (a.match(((STyArr) v).getArg()));
+    public boolean match(SemanticType v) {
+        return (v instanceof SemanticTypeError)
+                || (v instanceof SemanticArrayType) && (a.match(((SemanticArrayType) v).getArg()));
     }
 
     @Override

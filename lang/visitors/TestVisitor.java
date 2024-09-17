@@ -41,7 +41,7 @@ public class TestVisitor {
                         System.out.println("  OK  ]");
                         flips++;
                     } else {
-                        System.out.println("FALHOU]");
+                        System.out.println(" FALHOU ]");
                         flops++;
                     }
                 }
