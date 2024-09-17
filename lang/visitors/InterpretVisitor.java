@@ -1388,9 +1388,9 @@ public class InterpretVisitor extends Visitor {
             System.out.println("Interpreter BoolDexp in InterpretVisitor: " + boolDexp.toString());
         }
         try {
-            Object boolValue = boolDexp.getValue(); // Extrai o valor booleano
+            Object boolValue = boolDexp.getValue();
             if (boolValue != null) {
-                operands.push(boolValue); // Empurra para a pilha
+                operands.push(boolValue);
             } else {
                 throw new NullPointerException("Boolean expression value is null");
             }

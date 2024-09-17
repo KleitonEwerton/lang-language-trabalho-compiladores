@@ -327,9 +327,11 @@ public class TypeCheckVisitor extends Visitor {
         }
 
         SType[] tiposRetornoPadrao = new SType[0];
+
         if (temp.getFuncType() instanceof STyFun) {
-            // Padrao da documentação da função
+
             tiposRetornoPadrao = ((STyFun) temp.getFuncType()).getReturnTypes();
+
             System.out.println("FIM AQUI 9");
         }
 
@@ -740,17 +742,9 @@ public class TypeCheckVisitor extends Visitor {
 
     @Override
     public void visit(FuncCallCMD f) {
-        // Trata chamadas de função do tipo: fat(10)<q>
-        /**
-         * ---- Regra cmd: ID OPEN_PARENT exps? CLOSE_PARENT (LESS_THAN lvalue (COMMA
-         * lvalue)* GREATER_THAN)? SEMI # FunctionCall
-         * 
-         * Exemplo: divmod(5, 2)<q, r>; // Será retornada 2 valores e armazenados na
-         * variavel q e r
-         * pode ser tbm
-         * divmod(5,2); SEM RETORNO
-         */
-        // Informacoes da funcao que sera retomada no functionReturn
+
+        System.out.println("ENTRANDO NO FuncCallCMD");
+
         Integer qtdParamPassados = 0; // A funcao nao foi passado parametros
         if (f.getFFuncArgss() != null) {
             qtdParamPassados = f.getFFuncArgss().getExps().size(); // A funcao foi passada parametros
@@ -762,29 +756,33 @@ public class TypeCheckVisitor extends Visitor {
 
         // Pega a função correspondente
         LocalAmbiente<SType> Func = (LocalAmbiente<SType>) funcFinded.get(0); // Só uma funcao
+
+        System.out.println("QNT DE FUNCOES FuncCallCMD -> " + funcFinded.size());
+
         if (funcFinded.size() > 1) { // Tem sobrecarga
+            System.out.println("Tem sobre carga FuncCallCMD -> " + funcFinded.size());
 
             for (int i = 0; i < funcFinded.size(); i++) {
                 LocalAmbiente<SType> funcaoBase = funcFinded.get(i);
 
                 STyFun funcaoBaseTipo = (STyFun) funcaoBase.getFuncType();
-                System.out.println("FIM AQUI 11");
 
-                // Se a funcao tem o mesmo numero de parametros
                 if (funcaoBaseTipo.getTypes().length == qtdParamPassados) {
+                    System.out.println(funcaoBaseTipo.getTypes().length + " == " + qtdParamPassados);
                     int contTiposIguais = 0;
                     int indiceExp = 0;
-                    // Empilha os tipos das expressões passadas como parametro na chamada da
-                    // FunctionReturn
-                    // Compara com os tipos da função Find e verifica se coincide
+
                     for (Expr exp : f.getFFuncArgss().getExps()) {
                         // Empilha a expressao do parametro
                         exp.accept(this);
+
                         SType tipoParametro = funcaoBaseTipo.getTypes()[indiceExp]; // Tipo do parametro do campo da
                                                                                     // função
-                        SType parametroPassado = stk.pop(); // parametro passado na chamada da funcao
-                        // Compara pelo nome pois se comparar só com o equals, são regioes de
-                        // memoria diferente, então nao funciona
+                        SType parametroPassado = stk.pop();
+
+                        System.out.println("tipoParametro -> " + tipoParametro.toString());
+                        System.out.println("parametroPassado -> " + parametroPassado.toString());
+
                         if (tipoParametro.toString().equals(parametroPassado.toString())) {
                             contTiposIguais++;
                         } else {
@@ -836,6 +834,7 @@ public class TypeCheckVisitor extends Visitor {
                     indiceParamPassado++;
                 }
                 Integer qtdParametrosInformados = ((List) f.getFFuncArgss().getExps()).size();
+
                 if (qtdParametrosInformados > tipoFuncao.getTypes().length
                         || qtdParametrosInformados < tipoFuncao.getTypes().length) {
                     logError.add(
@@ -1191,8 +1190,13 @@ public class TypeCheckVisitor extends Visitor {
 
         // Pega a função correspondente
         LocalAmbiente<SType> func = (LocalAmbiente<SType>) funcFinded.get(0); // Só uma funcao
+
+        System.out.println("QNT DE FUNCOES FuncCall -> " + funcFinded.size());
+
         if (funcFinded.size() > 1) { // Tem sobrecarga
-            ArrayList<Func> funcoesAST = getFuncAST(nomeFuncao);
+
+            System.out.println("Tem sobre carga FuncCall -> " + funcFinded.size());
+
             for (int i = 0; i < funcFinded.size(); i++) {
                 LocalAmbiente<SType> funcaoBase = funcFinded.get(i);
 
@@ -1544,13 +1548,12 @@ public class TypeCheckVisitor extends Visitor {
     @Override
     public void visit(BoolDexp b) {
 
-        System.out.println("BoolDexp");
+        stk.push(tyBool);
 
     }
 
     @Override
     public void visit(Decl d) {
-        System.out.println("Decl");
     }
 
 }
