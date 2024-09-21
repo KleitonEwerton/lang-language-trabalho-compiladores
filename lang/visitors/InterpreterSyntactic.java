@@ -26,11 +26,22 @@ public class InterpreterSyntactic implements InterpreterAdaptor {
 
         // Criação do lexer e parser
         LangLexer lexer = new LangLexer(input);
+        lexer.removeErrorListeners(); // Remove o listener padrão de erros
+        lexer.addErrorListener(new CustomErrorListener()); // Adiciona o listener personalizado
+
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         LangParser parser = new LangParser(tokens);
+        parser.removeErrorListeners(); // Remove o listener padrão de erros sintáticos
+        parser.addErrorListener(new CustomSyntaxErrorListener()); // Adiciona o listener personalizado de erros
+                                                                  // sintáticos
 
         // Parsing
         ParseTree tree = parser.prog(); // ou o nome da regra inicial
+
+        // verifica se o analisador sintativo encontrou algum erro
+        if (parser.getNumberOfSyntaxErrors() != 0) {
+            return null;
+        }
 
         // Visitação
         MyVisitor visitor = new MyVisitor();
@@ -38,6 +49,25 @@ public class InterpreterSyntactic implements InterpreterAdaptor {
         InterpretVisitor interpretVisitor = new InterpretVisitor();
 
         return result; // Retorna o resultado da visitação
+    }
+
+    // Classe para captura de erros léxicos
+    class CustomErrorListener extends BaseErrorListener {
+        @Override
+        public void syntaxError(Recognizer<?, ?> recognizer, Object offendingSymbol,
+                int line, int charPositionInLine,
+                String msg, RecognitionException e) {
+            throw new RuntimeException("Erro léxico na linha " + line + ":" + charPositionInLine + " - " + msg);
+        }
+    }
+
+    class CustomSyntaxErrorListener extends BaseErrorListener {
+        @Override
+        public void syntaxError(Recognizer<?, ?> recognizer, Object offendingSymbol,
+                int line, int charPositionInLine,
+                String msg, RecognitionException e) {
+            throw new RuntimeException("Erro sintático na linha " + line + ":" + charPositionInLine + " - " + msg);
+        }
     }
 
 }

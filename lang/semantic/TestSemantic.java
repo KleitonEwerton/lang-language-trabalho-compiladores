@@ -1,11 +1,12 @@
-/**
 
-*/
-package lang.visitors;
+/*  Trabalho da disciplina DCC045 - Teoria dos Compiladores
+ *  Kleiton Ewerton de Oliveira - MAT 202065050C
+ *  Nikolas Oliver Sales Genesio - MAT 202065072C
+ */
+package lang.semantic;
 
 import java.io.File;
 import lang.ast.*;
-import lang.semantic.SemanticAdaptor;
 
 public class TestSemantic {
     private SemanticAdaptor sdp;

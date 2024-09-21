@@ -6,8 +6,7 @@ package lang;
 
 import lang.ast.*;
 import lang.parser.*;
-import lang.semantic.SemanticAdaptor;
-import lang.semantic.SemanticAnalysis;
+import lang.semantic.*;
 import lang.visitors.*;
 
 public class LangCompiler {

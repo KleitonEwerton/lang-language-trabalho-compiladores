@@ -61,6 +61,7 @@ public class SemanticAnalysis implements SemanticAdaptor {
             semanticVisitor.printErrors();
             return null;
         }
+
         return node;
     }
 
