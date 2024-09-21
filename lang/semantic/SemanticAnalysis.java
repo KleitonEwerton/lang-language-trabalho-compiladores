@@ -15,6 +15,7 @@ import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
 public class SemanticAnalysis implements SemanticAdaptor {
 
@@ -49,17 +50,18 @@ public class SemanticAnalysis implements SemanticAdaptor {
         MyVisitor myVisitor = new MyVisitor();
         Node node = myVisitor.visit(tree);
 
+        // Analisador semantico
         SemanticVisitor semanticVisitor = new SemanticVisitor();
-
         node.accept(semanticVisitor);
 
-        if (semanticVisitor.getNumErrors() > 0) {
+        // Verificação de erros
+        boolean erros = semanticVisitor.getNumErrors() > 0;
+
+        if (erros) {
             semanticVisitor.printErrors();
             return null;
-        } else {
-            // System.out.println("typing check ... [ ok ]");
-            return node;
         }
+        return node;
     }
 
     // Classe para captura de erros léxicos
@@ -81,4 +83,5 @@ public class SemanticAnalysis implements SemanticAdaptor {
             throw new RuntimeException("Erro sintático na linha " + line + ":" + charPositionInLine + " - " + msg);
         }
     }
+
 }

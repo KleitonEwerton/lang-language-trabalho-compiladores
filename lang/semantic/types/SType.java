@@ -6,6 +6,7 @@
 
 package lang.semantic.types;
 
+// Classe abstrata que define o metodo match
 public abstract class SType {
     public abstract boolean match(SType v);
 }

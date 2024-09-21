@@ -7,7 +7,11 @@
 package lang.semantic.types;
 
 public class STyData extends SType {
-    private String name;
+    private String dataName;
+
+    public STyData(String dataName) {
+        this.dataName = dataName;
+    }
 
     @Override
     public boolean match(SType v) {
@@ -16,18 +20,14 @@ public class STyData extends SType {
 
     @Override
     public String toString() {
-        return name;
+        return dataName;
     }
 
-    public String getName() {
-        return name;
+    public String getDataName() {
+        return dataName;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public STyData(String name) {
-        this.name = name;
+    public void setDataName(String dataName) {
+        this.dataName = dataName;
     }
 }

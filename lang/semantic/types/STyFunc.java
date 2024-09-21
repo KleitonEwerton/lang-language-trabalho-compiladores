@@ -6,57 +6,61 @@
 
 package lang.semantic.types;
 
+import java.util.Arrays;
+
 public class STyFunc extends SType {
 
-    private SType parameterType[]; // Tipos do parametro
-    private String nameParams[]; // Nome dos parametros
-    private SType returnType[]; // Tipos de retorno
+    private SType[] paramTypes;
+    private SType[] retTypes;
+    private String[] paramNames;
 
-    public STyFunc(SType t[], SType retornos[]) {
-        parameterType = t;
-        returnType = retornos;
+    public STyFunc(SType[] paramTypes, SType[] retTypes) {
+        this.paramTypes = paramTypes;
+        this.retTypes = retTypes;
     }
 
-    public STyFunc(SType t[], SType retornos[], String[] names, String nomeFuncao) {
-        parameterType = t;
-        returnType = retornos;
-        nameParams = names;
+    public STyFunc(SType[] paramTypes, SType[] retTypes, String[] paramNames) {
+        this(paramTypes, retTypes); // Chama o outro construtor
+        this.paramNames = paramNames;
     }
 
-    public SType[] getTypes() {
-        return parameterType;
+    public SType[] getParamTypes() {
+        return paramTypes;
     }
 
     public SType[] getReturnTypes() {
-        return returnType;
+        return retTypes;
     }
 
-    public String[] getTypesName() {
-        return nameParams;
+    public String[] getParamNames() {
+        return paramNames;
     }
 
     public boolean match(SType v) {
-        boolean r = false;
         if (v instanceof STyFunc) {
-            if (((STyFunc) v).getTypes().length == parameterType.length) {
-                r = true;
-                for (int i = 0; i < parameterType.length; i++) {
-                    r = r && parameterType[i].match(((STyFunc) v).getTypes()[i]);
+            STyFunc otherFunc = (STyFunc) v;
+            if (otherFunc.getParamTypes().length == paramTypes.length) {
+                for (int i = 0; i < paramTypes.length; i++) {
+                    if (!paramTypes[i].match(otherFunc.getParamTypes()[i])) {
+                        return false;
+                    }
                 }
+                return true;
             }
         }
-        return r;
+        return false;
     }
 
     @Override
     public String toString() {
-        String s = "";
-        if (parameterType.length > 0) {
-            s = parameterType[0].toString();
-            for (int i = 1; i < parameterType.length; i++) {
-                s += "->" + parameterType[i].toString();
+        StringBuilder sb = new StringBuilder();
+        if (paramTypes.length > 0) {
+            sb.append(paramTypes[0].toString());
+            for (int i = 1; i < paramTypes.length; i++) {
+                sb.append(" -> ").append(paramTypes[i].toString());
             }
         }
-        return s;
+        return sb.toString();
     }
+
 }

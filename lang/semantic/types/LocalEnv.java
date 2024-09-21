@@ -6,27 +6,28 @@
 
 package lang.semantic.types;
 
-public class LocalEnv<A> extends STyEnv<A> {
-    private String id;
-    private SType t;
+public class LocalEnv<A> extends TyEnv<A> {
+    private String funcID;
+    private SType funcType;
 
-    public LocalEnv(String id, SType t) {
-        this.t = t;
-        this.id = id;
+    public LocalEnv(String funcID, SType funcType) {
+        this.funcID = funcID;
+        this.funcType = funcType;
     }
 
     public String getFuncID() {
-        return id;
+        return funcID;
     }
 
     public SType getFuncType() {
-        return t;
+        return funcType;
     }
 
     @Override
     public String toString() {
-        String s = "--------------- (" + id + "," + t.toString() + ") ---------------\n";
-        s += super.toString();
-        return s;
+        StringBuilder sb = new StringBuilder();
+        sb.append("Function ID: ").append(funcID).append(", Type: ").append(funcType.toString()).append("\n");
+        sb.append(super.toString());
+        return sb.toString();
     }
 }

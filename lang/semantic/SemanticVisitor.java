@@ -1,3 +1,9 @@
+
+/*  Trabalho da disciplina DCC045 - Teoria dos Compiladores
+ *  Kleiton Ewerton de Oliveira - MAT 202065050C
+ *  Nikolas Oliver Sales Genesio - MAT 202065072C
+ */
+
 package lang.semantic;
 
 import java.util.*;
@@ -19,7 +25,7 @@ public class SemanticVisitor extends Visitor {
     private ArrayList<String> logError; // gravar todos os erros encontrados
 
     // tabelas
-    private STyEnv<LocalEnv<SType>> env; // escopo das funções
+    private TyEnv<LocalEnv<SType>> env; // escopo das funções
     private LocalEnv<SType> temp; // local env temporario
     private Stack<SType> types; // pilha de tipos
 
@@ -28,11 +34,9 @@ public class SemanticVisitor extends Visitor {
 
     private boolean ret; // verificar se houve retorno de função
 
-    // private Object positionReturnFunction;
-
     public SemanticVisitor() {
         types = new Stack<SType>();
-        env = new STyEnv<LocalEnv<SType>>();
+        env = new TyEnv<LocalEnv<SType>>();
         logError = new ArrayList<String>();
         datas = new HashMap<String, DataAttr>();
         funcs = new ArrayList<Func>();
@@ -47,9 +51,9 @@ public class SemanticVisitor extends Visitor {
             d.accept(this);
         }
 
-        // Verifica e adiciona funções, incluindo a validação direta das funções
+        // Verifica e adiciona funções, incluindo a validação das funções
         for (Func f : prog.getFunctions()) {
-            if (f.getId().equals("main") && env.getFuncoes(f.getId()).size() > 0) {
+            if (f.getId().equals("main") && env.findFunctions(f.getId()).size() > 0) {
                 logError.add(prog.getLine() + ", " + prog.getColumn()
                         + ": A função 'main' deve ser única e não pode ser sobrecarregada");
                 types.push(tyErr);
@@ -83,8 +87,8 @@ public class SemanticVisitor extends Visitor {
             }
 
             LocalEnv<SType> newFunc = new LocalEnv<>(f.getId(),
-                    new STyFunc(paramTypes, returnTypes, paramNames, f.getId()));
-            ArrayList<LocalEnv<SType>> existingFuncs = env.getFuncoes(f.getId());
+                    new STyFunc(paramTypes, returnTypes, paramNames));
+            ArrayList<LocalEnv<SType>> existingFuncs = env.findFunctions(f.getId());
 
             boolean isAmbiguous = false;
 
@@ -94,11 +98,11 @@ public class SemanticVisitor extends Visitor {
                     STyFunc newFuncType = (STyFunc) newFunc.getFuncType();
 
                     // Verifica se há conflito de tipos de parâmetros
-                    if (baseFuncType.getTypes().length == newFuncType.getTypes().length) {
+                    if (baseFuncType.getParamTypes().length == newFuncType.getParamTypes().length) {
                         boolean typesMatch = true;
 
-                        for (int i = 0; i < baseFuncType.getTypes().length; i++) {
-                            if (!baseFuncType.getTypes()[i].match(newFuncType.getTypes()[i])) {
+                        for (int i = 0; i < baseFuncType.getParamTypes().length; i++) {
+                            if (!baseFuncType.getParamTypes()[i].match(newFuncType.getParamTypes()[i])) {
                                 typesMatch = false;
                                 break;
                             }
@@ -124,7 +128,7 @@ public class SemanticVisitor extends Visitor {
             }
         }
 
-        // Validação de presença e conformidade da função main
+        // Validação e conformidade da função main
         for (Func f : prog.getFunctions()) {
             f.accept(this);
             if (f.getId().equals("main")) {
@@ -210,15 +214,15 @@ public class SemanticVisitor extends Visitor {
     public void visit(Func func) {
         ret = false;
         // Recupera o ambiente da função
-        List<LocalEnv<SType>> funcoesDisponiveis = env.getFuncoes(func.getId());
+        List<LocalEnv<SType>> funcoesDisponiveis = env.findFunctions(func.getId());
 
         // Procura a função correta, levando em conta a sobrecarga
         for (LocalEnv<SType> funcaoCandidata : funcoesDisponiveis) {
             STyFunc tipoFuncao = (STyFunc) funcaoCandidata.getFuncType();
-            if (tipoFuncao.getTypes().length == func.getParams().getType().size()) {
+            if (tipoFuncao.getParamTypes().length == func.getParams().getType().size()) {
                 boolean todosTiposCorrespondem = true;
-                for (int i = 0; i < tipoFuncao.getTypes().length; i++) {
-                    if (!tipoFuncao.getTypes()[i].toString().equals(
+                for (int i = 0; i < tipoFuncao.getParamTypes().length; i++) {
+                    if (!tipoFuncao.getParamTypes()[i].toString().equals(
                             func.getParams().getSingleType(i).toString())) {
                         todosTiposCorrespondem = false;
                         break;
@@ -231,7 +235,7 @@ public class SemanticVisitor extends Visitor {
             }
         }
 
-        // Processa os parâmetros da função, adicionando-os ao ambiente local
+        // Processa os parâmetros da função, adicionando ao ambiente local
         if (func.getParams() != null) {
             Param parametros = func.getParams();
             for (int i = 0; i < parametros.size(); i++) {
@@ -299,7 +303,7 @@ public class SemanticVisitor extends Visitor {
         SType tipoBase;
 
         // Verifica se o tipo base é um NameType e se o tipo correspondente existe no
-        // contexto 'datas'
+        // contexto
         if (arrayType.getBaseType() instanceof NameType) {
             String tipoNome = ((NameType) arrayType.getBaseType()).getID();
 
@@ -308,7 +312,7 @@ public class SemanticVisitor extends Visitor {
                 logError.add(arrayType.getLine() + ", " + arrayType.getColumn() + ": O tipo Data " + tipoNome
                         + " não existe para a criação de um array");
                 types.push(tyErr);
-                return; // Sai da função após registrar o erro
+                return;
             }
         }
 
@@ -319,7 +323,7 @@ public class SemanticVisitor extends Visitor {
         // Verifica o tipo resultante do processamento
         if (tipoBase instanceof STyData) {
             // Verifica se o tipo STyData existe no contexto
-            String nomeTipoData = ((STyData) tipoBase).getName();
+            String nomeTipoData = ((STyData) tipoBase).getDataName();
 
             if (datas.get(nomeTipoData) != null) {
                 // O tipo Data foi encontrado, cria o tipo array
@@ -394,20 +398,20 @@ public class SemanticVisitor extends Visitor {
         List<Expr> argumentosPassados = (funcCallCMD.getFFuncArgss() != null) ? funcCallCMD.getFFuncArgss().getExps()
                 : new ArrayList<>();
 
-        // Obtenção do ambiente da função correspondente
+        // Ambiente da função
         LocalEnv<SType> funcaoSelecionada = null;
-        ArrayList<LocalEnv> funcaoAmbiente = (ArrayList) env.getFuncoes(nomeFuncao);
+        ArrayList<LocalEnv> funcaoAmbiente = (ArrayList) env.findFunctions(nomeFuncao);
 
         if (funcaoAmbiente.size() == 1) {
             // Sem sobrecarga, uma função encontrada
             funcaoSelecionada = (LocalEnv<SType>) funcaoAmbiente.get(0);
         } else {
-            // Tratamento para múltiplas funções com sobrecarga (diferentes assinaturas)
+            // Tratamento para múltiplas funções com sobrecarga
             for (LocalEnv<SType> funcaoCandidata : funcaoAmbiente) {
                 STyFunc tipoFuncao = (STyFunc) funcaoCandidata.getFuncType();
 
-                // Verifica se o número de parâmetros passados coincide com o número esperado
-                if (tipoFuncao.getTypes().length == argumentosPassados.size()) {
+                // Verifica se o número de parâmetros passados = número esperado
+                if (tipoFuncao.getParamTypes().length == argumentosPassados.size()) {
                     boolean parametrosCorretos = true;
 
                     // Comparação dos tipos dos parâmetros
@@ -415,7 +419,7 @@ public class SemanticVisitor extends Visitor {
                         Expr parametro = argumentosPassados.get(i);
                         parametro.accept(this);
 
-                        SType tipoEsperado = tipoFuncao.getTypes()[i];
+                        SType tipoEsperado = tipoFuncao.getParamTypes()[i];
                         SType tipoPassado = types.pop();
 
                         // Verifica compatibilidade entre tipos
@@ -445,7 +449,7 @@ public class SemanticVisitor extends Visitor {
         for (int i = 0; i < argumentosPassados.size(); i++) {
             Expr parametro = argumentosPassados.get(i);
             parametro.accept(this);
-            SType tipoParametroEsperado = tipoFuncaoSelecionada.getTypes()[i];
+            SType tipoParametroEsperado = tipoFuncaoSelecionada.getParamTypes()[i];
             SType tipoParametroPassado = types.pop();
 
             if (!tipoParametroEsperado.match(tipoParametroPassado)) {
@@ -546,9 +550,8 @@ public class SemanticVisitor extends Visitor {
 
     @Override
     public void visit(IntDexp i) {
-        // Usa uma verificação condicional direta para determinar o tipo
         if (i != null) {
-            types.push(tyInt); // Sem uso de variáveis temporárias
+            types.push(tyInt);
         }
     }
 
@@ -610,7 +613,7 @@ public class SemanticVisitor extends Visitor {
 
             // Verifica se o tipo da expressão é um tipo de dado
             if (tipoExpressao instanceof STyData) {
-                String nomeData = ((STyData) tipoExpressao).getName();
+                String nomeData = ((STyData) tipoExpressao).getDataName();
 
                 // Se a variável não foi declarada, verifica se o tipo Data existe
                 if (temp.get(lvalue.getId()) == null) {
@@ -620,7 +623,7 @@ public class SemanticVisitor extends Visitor {
                     } else {
                         temp.set(lvalue.getId(), tipoExpressao); // Declara a nova variável
                     }
-                } else { // Se a variável já foi declarada, verifica a compatibilidade de tipos
+                } else { // Se a variável já foi declarada, verifica os tipos
                     SType tipoVar = temp.get(lvalue.getId());
                     if (!tipoExpressao.match(tipoVar)) {
                         logError.add(lvalueCmd.getLine() + ", " + lvalueCmd.getColumn()
@@ -643,9 +646,9 @@ public class SemanticVisitor extends Visitor {
                 }
             }
         }
-        // Caso o LValue seja um ArrayLValue (array ou matriz)
+        // Caso seja array ou matriz
         else if (lvalue instanceof ArrayLValue) {
-            lvalue.accept(this); // Processa o LValue do array para empilhar o tipo
+            lvalue.accept(this); // Processa o valor do array para empilhar o tipo
 
             // Se a variável não foi declarada
             if (temp.get(lvalue.getId()) == null) {
@@ -666,10 +669,10 @@ public class SemanticVisitor extends Visitor {
                 }
             }
         }
-        // Caso o LValue seja um Dot (acesso a atributo de uma estrutura)
+        // Caso o LValue seja um Dot
         else if (lvalue instanceof Dot) {
             lvalueCmd.getExpr().accept(this); // Processa a expressão a ser atribuída
-            lvalue.accept(this); // Processa o LValue (atributo ou dado)
+            lvalue.accept(this); // Processa o atributo
 
             SType tipoAtributo = types.pop();
             SType tipoExpressao = types.pop();
@@ -686,7 +689,6 @@ public class SemanticVisitor extends Visitor {
 
     @Override
     public void visit(NameType nameType) {
-
         // Verifica se o tipo Data existe
         if (datas.get(nameType.getID()) != null) {
             // Empilha o tipo Data
@@ -713,7 +715,7 @@ public class SemanticVisitor extends Visitor {
             types.push(tyFloat);
         } else {
             // Registra um erro se o operador '-' não puder ser aplicado ao tipo
-            logError.add(neg.getLine() + ", " + neg.getColumn() + "): O operador - não pode ser aplicado ao tipo "
+            logError.add(neg.getLine() + ", " + neg.getColumn() + ": O operador - não pode ser aplicado ao tipo "
                     + exprType.toString());
             types.push(tyErr);
         }
@@ -760,7 +762,7 @@ public class SemanticVisitor extends Visitor {
         } else {
             // Erro se os tipos não forem compatíveis com '!='
             logError.add(notEquals.getLine() + ", " + notEquals.getColumn()
-                    + "): O operador != não pode ser aplicado aos tipos "
+                    + ": O operador != não pode ser aplicado aos tipos "
                     + leftType.toString() + " e " + rightType.toString());
             types.push(tyErr);
         }
@@ -796,7 +798,7 @@ public class SemanticVisitor extends Visitor {
 
         // Processa cada expressão de retorno
         for (Expr exp : return1.getExps()) {
-            exp.accept(this); // Avalia a expressão e empilha seu tipo em 'types'
+            exp.accept(this); // Avalia a expressão e empilha seu tipo
             tiposRetornados.add(types.pop()); // Remove o tipo da pilha e o armazena
         }
 
@@ -810,7 +812,7 @@ public class SemanticVisitor extends Visitor {
                 logError.add(
                         return1.getLine() + ", " + return1.getColumn() + ": A função espera " + tiposEsperados.length +
                                 " retorno(s), mas recebeu " + tiposRetornados.size());
-                types.push(tyErr); // Empilha um erro se houver divergência
+                types.push(tyErr);
                 return;
             }
 
@@ -823,7 +825,7 @@ public class SemanticVisitor extends Visitor {
 
                     logError.add(return1.getLine() + ", " + return1.getColumn() + ": Tipo de retorno " + tipoRetornado
                             + "não corresponde ao tipo esperado" + tipoEsperado);
-                    types.push(tyErr); // Empilha um erro se houver incompatibilidade
+                    types.push(tyErr);
                     return;
                 }
             }
@@ -835,7 +837,7 @@ public class SemanticVisitor extends Visitor {
                 types.push(tyErr);
             }
         }
-        ret = true; // Marca que a função retornou
+        ret = true; // Função retornou
     }
 
     @Override
@@ -864,10 +866,10 @@ public class SemanticVisitor extends Visitor {
 
     @Override
     public void visit(ArrayLValue arrayLValue) {
-        // Processa a LValue que pode ser uma variável ou uma matriz
+        // Processamento = variável ou uma matriz
         LValue lval = arrayLValue.getlValue();
 
-        // Verifica se a LValue é uma variável simples (IdLValue)
+        // Verifica se é uma variável simples
         if (lval instanceof IdLValue) {
             String varId = ((IdLValue) lval).getId();
             SType tipoVar = temp.get(varId); // Busca o tipo da variável no contexto
@@ -882,12 +884,12 @@ public class SemanticVisitor extends Visitor {
                 types.push(tyErr); // Empilha um erro
             }
         }
-        // Verifica se a LValue é uma matriz (ArrayLValue)
+        // Verifica se é uma matriz
         else if (lval instanceof ArrayLValue) {
             processaMatriz((ArrayLValue) lval, arrayLValue); // Chama método auxiliar para tratar matrizes
         }
 
-        // Verifica se o índice do array/matriz foi passado corretamente
+        // Verifica se o índice do array foi passado corretamente
         arrayLValue.getExpr().accept(this);
         SType tipoIndice = types.pop();
 
@@ -902,43 +904,42 @@ public class SemanticVisitor extends Visitor {
 
     @Override
     public void visit(Dot dot) {
-
-        // Obtém o objeto do tipo de dado associado ao identificador do Dot
+        // Obtém o objeto
         Object dataObj = temp.get(dot.getDataId());
 
         // Verifica se o objeto é do tipo STyData
         if (dataObj instanceof STyData) {
-            STyData dataType = (STyData) dataObj; // Faz o cast para STyData
-            DataAttr dataAttr = datas.get(dataType.getName()); // Obtém os atributos do tipo de dado
+            STyData dataType = (STyData) dataObj;
+            DataAttr dataAttr = datas.get(dataType.getDataName()); // Obtém os atributos
 
-            // Se não houver tipo de dado correspondente, adiciona um erro
+            // Se não houver tipo correspondente, adiciona um erro
             if (dataAttr == null) {
 
                 logError.add(dot.getLine() + ", " + dot.getColumn() + ": Acesso a um tipo de data inexistente "
-                        + dataType.getName());
-                types.push(tyErr); // Empilha o tipo de erro na pilha de tipos
+                        + dataType.getDataName());
+                types.push(tyErr);
             } else {
-                // Verifica se o identificador do Dot é um dos atributos do tipo de dado
-                int idx = dataAttr.getVariaveis().indexOf(dot.getId());
+                // Verifica se o identificador é um dos atributos
+                int idx = dataAttr.getVariableNames().indexOf(dot.getId());
                 if (idx != -1) {
-                    // Se encontrado, empilha o tipo correspondente na pilha de tipos
-                    types.push(dataAttr.getTipos().get(idx));
+                    // Se encontrado, empilha na pilha de tipos
+                    types.push(dataAttr.getDataTypes().get(idx));
                 } else {
                     // Caso o atributo não exista, adiciona um erro
                     logError.add(dot.getLine() + ", " + dot.getColumn() + ": Atributo "
-                            + dot.getId() + " eh inexistente em " + dataType.getName());
-                    types.push(tyErr); // Empilha o tipo de erro
+                            + dot.getId() + " eh inexistente em " + dataType.getDataName());
+                    types.push(tyErr);
                 }
             }
         }
-        // Caso o tipo de dado seja encontrado diretamente na base de dados
+        // Caso seja encontrado diretamente na base de dados
         else if (datas.get(dot.getDataId()) != null) {
-            // Obtém as variáveis e seus tipos associados ao tipo de dado
-            ArrayList<String> variaveis = datas.get(dot.getDataId()).getVariaveis();
-            ArrayList<SType> dataTypes = datas.get(dot.getDataId()).getTipos();
+            // Obtém as variáveis e seus tipos associados
+            ArrayList<String> variaveis = datas.get(dot.getDataId()).getVariableNames();
+            ArrayList<SType> dataTypes = datas.get(dot.getDataId()).getDataTypes();
             int idx = variaveis.indexOf(dot.getId()); // Encontra o índice do atributo
 
-            // Verifica se a variável existe dentro do tipo de dado
+            // Verifica se a variável existe
             if (idx != -1) {
                 // Verifica se o tipo da variável é compatível com o tipo da expressão no topo
                 // da pilha
@@ -947,13 +948,13 @@ public class SemanticVisitor extends Visitor {
                     logError.add(dot.getLine() + ", " + dot.getColumn()
                             + ": Erro de tipo no acesso a um data. Verifique o tipo do atributo "
                             + dot.getId() + " do data " + dot.getDataId());
-                    types.push(tyErr); // Empilha o tipo de erro
+                    types.push(tyErr);
                 }
             } else {
-                // Caso a variável não exista no tipo de dado, adiciona um erro
+                // Caso a variável não exista, adiciona um erro
                 logError.add(dot.getLine() + ", " + dot.getColumn() + ": Atributo inexistente no objeto "
                         + dot.getDataId());
-                types.push(tyErr); // Empilha o tipo de erro
+                types.push(tyErr);
             }
 
         }
@@ -961,41 +962,39 @@ public class SemanticVisitor extends Visitor {
         else if (temp.get(dot.getlValue().getId()) instanceof STyArray) {
             dot.getlValue().accept(this); // Aceita o visitante para verificar o array
             STyData arrayDataType = (STyData) types.pop(); // Retira o tipo de dado do array
-            DataAttr dataAttr = datas.get(arrayDataType.getName()); // Obtém os atributos associados ao tipo de dado do
-                                                                    // array
+            DataAttr dataAttr = datas.get(arrayDataType.getDataName()); // Obtém os atributos associados
 
-            // Verifica se o identificador do Dot está entre os atributos do tipo de dado
-            int idx = dataAttr.getVariaveis().indexOf(dot.getId());
+            // Verifica se o identificador está entre os atributos
+            int idx = dataAttr.getVariableNames().indexOf(dot.getId());
 
             if (idx != -1) {
                 // Se encontrado, empilha o tipo do atributo
-                types.push(dataAttr.getTipos().get(idx));
+                types.push(dataAttr.getDataTypes().get(idx));
             } else {
                 // Caso o atributo não exista no objeto, adiciona um erro
                 logError.add(dot.getLine() + ", " + dot.getColumn() + ": Atributo inexistente no objeto "
                         + dot.getDataId());
-                types.push(tyErr); // Empilha o tipo de erro
+                types.push(tyErr);
             }
 
         } else {
-            // Se o identificador não existir, adiciona um erro informando que não pode ter
-            // atributos
+            // Se o identificador não existir, adiciona um erro
             logError.add(dot.getLine() + ", " + dot.getColumn() + ": A variavel "
                     + dot.getDataId() + " não existe e portanto nao pode ter atributos");
-            types.push(tyErr); // Empilha o tipo de erro
+            types.push(tyErr);
         }
     }
 
     @Override
     public void visit(FuncCall funcCall) {
-        // Determina a quantidade de parâmetros passados de forma direta
+        // Determina a quantidade de parâmetros passados
         int tamanhoParametros = (funcCall.getFFuncArgss() != null) ? funcCall.getFFuncArgss().getExps().size() : 0;
 
-        // Pega o nome da função e a encontra diretamente
+        // Pega o nome da função e a encontra
         String nomeFuncao = funcCall.getId();
-        ArrayList<LocalEnv> funcFinded = (ArrayList) env.getFuncoes(nomeFuncao);
+        ArrayList<LocalEnv> funcFinded = (ArrayList) env.findFunctions(nomeFuncao);
         LocalEnv<SType> function = (LocalEnv<SType>) funcFinded.stream()
-                .filter(f -> ((STyFunc) f.getFuncType()).getTypes().length == tamanhoParametros)
+                .filter(f -> ((STyFunc) f.getFuncType()).getParamTypes().length == tamanhoParametros)
                 .findFirst().orElse(null);
 
         // Caso exista sobrecarga de funções, realiza a comparação dos parâmetros
@@ -1003,13 +1002,13 @@ public class SemanticVisitor extends Visitor {
             function = funcFinded.stream()
                     .filter(f -> {
                         STyFunc funcaoBaseTipo = (STyFunc) f.getFuncType();
-                        return funcaoBaseTipo.getTypes().length == tamanhoParametros &&
+                        return funcaoBaseTipo.getParamTypes().length == tamanhoParametros &&
                                 funcCall.getFFuncArgss().getExps().stream()
                                         .allMatch(exp -> {
                                             exp.accept(this);
                                             SType parametroPassado = types.pop();
                                             int index = funcCall.getFFuncArgss().getExps().indexOf(exp);
-                                            return funcaoBaseTipo.getTypes()[index].toString()
+                                            return funcaoBaseTipo.getParamTypes()[index].toString()
                                                     .equals(parametroPassado.toString());
                                         });
                     }).findFirst().orElse(null);
@@ -1018,15 +1017,16 @@ public class SemanticVisitor extends Visitor {
         if (function != null) {
             STyFunc tipoFuncao = (STyFunc) function.getFuncType();
             if (funcCall.getFFuncArgss() != null) {
-                if (tamanhoParametros == tipoFuncao.getTypes().length) {
+                if (tamanhoParametros == tipoFuncao.getParamTypes().length) {
                     // Valida os tipos dos parâmetros diretamente
                     for (Expr exp : funcCall.getFFuncArgss().getExps()) {
                         exp.accept(this);
-                        SType tipoParametro = tipoFuncao.getTypes()[funcCall.getFFuncArgss().getExps().indexOf(exp)];
+                        SType tipoParametro = tipoFuncao.getParamTypes()[funcCall.getFFuncArgss().getExps()
+                                .indexOf(exp)];
                         SType parametroPassado = types.pop();
                         if (!tipoParametro.match(parametroPassado)) {
                             logError.add(funcCall.getLine() + ", " + funcCall.getColumn() +
-                                    ": Argumentos com tipos incompatíveis. O parâmetro " + tipoFuncao.getTypesName()[0]
+                                    ": Argumentos com tipos incompatíveis. O parâmetro " + tipoFuncao.getParamNames()[0]
                                     +
                                     " deve ser do tipo " + tipoParametro + ", mas foi passado " + parametroPassado);
                             types.push(tyErr);
@@ -1034,14 +1034,14 @@ public class SemanticVisitor extends Visitor {
                     }
                 } else {
                     logError.add(funcCall.getLine() + ", " + funcCall.getColumn() +
-                            ": Quantidade incorreta de argumentos. Esperado " + tipoFuncao.getTypes().length +
+                            ": Quantidade incorreta de argumentos. Esperado " + tipoFuncao.getParamTypes().length +
                             ", mas recebido " + funcCall.getFFuncArgss().getExps().size());
                     types.push(tyErr);
                 }
-            } else if (tipoFuncao.getTypes().length > 0) {
+            } else if (tipoFuncao.getParamTypes().length > 0) {
                 logError.add(funcCall.getLine() + ", " + funcCall.getColumn() +
                         ": A função " + funcCall.getId() +
-                        " espera " + tipoFuncao.getTypes().length + " argumentos, mas nenhum foi passado");
+                        " espera " + tipoFuncao.getParamTypes().length + " argumentos, mas nenhum foi passado");
                 types.push(tyErr);
             }
 
@@ -1062,7 +1062,7 @@ public class SemanticVisitor extends Visitor {
                     types.push(tipoFuncao.getReturnTypes()[posicao.getValue()]);
                 }
             } else {
-                // Empilha os dois retornos (ou múltiplos) caso seja uma variável
+                // Empilha múltiplos retornos caso seja uma variável
                 for (SType returnType : tipoFuncao.getReturnTypes()) {
                     types.push(returnType);
                 }
@@ -1076,7 +1076,7 @@ public class SemanticVisitor extends Visitor {
         if (temp.get(idLValue.getId()) == null) {
             // Registra um erro se a variável não foi declarada
             logError.add(idLValue.getLine() + ", " + idLValue.getColumn() + ": A variável \'" + idLValue.getId()
-                    + "\' não existe!");
+                    + "\' não existe");
             types.push(tyErr);
         } else {
             // Empilha o tipo da variável encontrada
@@ -1086,7 +1086,6 @@ public class SemanticVisitor extends Visitor {
 
     @Override
     public void visit(NewExp newExp) {
-        // Inicialização de variáveis auxiliares
         boolean isDataArray = newExp.getExpr() != null && newExp.getType() == null;
         boolean isSimpleArray = newExp.getExpr() != null && newExp.getType() != null;
 
@@ -1159,11 +1158,11 @@ public class SemanticVisitor extends Visitor {
 
     @Override
     public void visit(Data data) {
-        // Verifica se o tipo 'data' já está registrado
+        // Verifica se o tipo data já está registrado
         if (datas.containsKey(data.getId())) {
             logError.add(data.getLine() + ", " + data.getColumn() + ": O tipo data " + data.getId() + " já existe");
             types.push(tyErr);
-            return; // Saída imediata para evitar mais processamento
+            return;
         }
 
         // Variáveis para armazenar os campos e tipos de variáveis do tipo data
@@ -1171,14 +1170,14 @@ public class SemanticVisitor extends Visitor {
         ArrayList<String> campos = new ArrayList<>();
         ArrayList<SType> tiposCampos = new ArrayList<>();
 
-        // Processa cada declaração dentro do 'data'
+        // Processa cada declaração dentro do data
         for (Decl decl : data.getDecls()) {
             // Verifica se o campo já foi declarado
             if (!camposExistentes.add(decl.getId())) {
                 logError.add(data.getLine() + ", " + data.getColumn() + ":O campo " + decl.getId() + " no tipo de data "
                         + data.getId() + " já foi definido");
                 types.push(tyErr);
-                return; // Saída imediata ao encontrar erro
+                return;
             }
 
             // Aceita o tipo da declaração
@@ -1190,7 +1189,7 @@ public class SemanticVisitor extends Visitor {
             tiposCampos.add(tipoDecl);
         }
 
-        // Registra o tipo data no mapa 'datas'
+        // Registra o tipo data no mapa datas
         DataAttr novoData = new DataAttr(data.getId(), campos, tiposCampos);
         datas.put(data.getId(), novoData);
     }

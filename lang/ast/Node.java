@@ -4,6 +4,9 @@
  */
 package lang.ast;
 
+import java.util.Collections;
+import java.util.List;
+
 import lang.visitors.Visitable;
 import lang.visitors.Visitor;
 
@@ -35,5 +38,4 @@ public class Node extends SuperNode implements Visitable {
 	@Override
 	public void accept(Visitor v) {
 	}
-
 }
