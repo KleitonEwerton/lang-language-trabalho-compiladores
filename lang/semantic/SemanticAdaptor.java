@@ -4,7 +4,7 @@
  *  Nikolas Oliver Sales Genesio - MAT 202065072C
  */
 
-package lang.visitors;
+package lang.semantic;
 
 import lang.ast.SuperNode;
 

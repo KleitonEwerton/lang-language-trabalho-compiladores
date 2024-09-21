@@ -6,6 +6,8 @@ package lang;
 
 import lang.ast.*;
 import lang.parser.*;
+import lang.semantic.SemanticAdaptor;
+import lang.semantic.SemanticAnalysis;
 import lang.visitors.*;
 
 public class LangCompiler {
@@ -32,7 +34,7 @@ public class LangCompiler {
         try {
             ParseAdaptor langParser = new ParserSyntactic();
             InterpreterAdaptor interpreterAdaptor = new InterpreterSyntactic();
-            SemanticAdaptorImplementation semanticImplementation = new SemanticAdaptorImplementation();
+            SemanticAdaptor semanticAdaptor = new SemanticAnalysis();
 
             if (args[0].equals("-bs")) {
                 System.out.println("Executando bateria de testes sintáticos:");
@@ -46,8 +48,8 @@ public class LangCompiler {
                 return;
             }
             if (args[0].equals("-byt")) {
-                System.out.println("Executando bateria de testes no interpretador:");
-                TestSemantic tp = new TestSemantic(semanticImplementation);
+                System.out.println("Executando bateria de testes no semântico:");
+                TestSemantic tp = new TestSemantic(semanticAdaptor);
                 return;
             }
             if (args.length != 2) {

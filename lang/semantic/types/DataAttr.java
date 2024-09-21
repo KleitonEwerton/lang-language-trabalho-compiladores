@@ -4,7 +4,7 @@
  *  Nikolas Oliver Sales Genesio - MAT 202065072C
  */
 
-package lang.visitors.types;
+package lang.semantic.types;
 
 import java.util.ArrayList;
 
@@ -12,9 +12,9 @@ public class DataAttr {
 
     private String nomeData;
     private ArrayList<String> nomeVariaveis = new ArrayList<String>();
-    private ArrayList<SemanticType> tipos = new ArrayList<SemanticType>();
+    private ArrayList<SType> tipos = new ArrayList<SType>();
 
-    public DataAttr(String nomeData, ArrayList<String> nomeVariaveis, ArrayList<SemanticType> tipos) {
+    public DataAttr(String nomeData, ArrayList<String> nomeVariaveis, ArrayList<SType> tipos) {
         this.nomeData = nomeData;
         this.nomeVariaveis = nomeVariaveis;
         this.tipos = tipos;
@@ -28,11 +28,11 @@ public class DataAttr {
         return this.nomeVariaveis;
     }
 
-    public ArrayList<SemanticType> getTipos() {
+    public ArrayList<SType> getTipos() {
         return this.tipos;
     }
 
-    public void addAttribute(String nome, SemanticType tipo) {
+    public void addAttribute(String nome, SType tipo) {
         nomeVariaveis.add(nome);
         tipos.add(tipo);
     }

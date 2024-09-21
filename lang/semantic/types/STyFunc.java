@@ -4,30 +4,30 @@
  *  Nikolas Oliver Sales Genesio - MAT 202065072C
  */
 
-package lang.visitors.types;
+package lang.semantic.types;
 
-public class SemanticTypeFunc extends SemanticType {
+public class STyFunc extends SType {
 
-    private SemanticType parameterType[]; // Tipos do parametro
+    private SType parameterType[]; // Tipos do parametro
     private String nameParams[]; // Nome dos parametros
-    private SemanticType returnType[]; // Tipos de retorno
+    private SType returnType[]; // Tipos de retorno
 
-    public SemanticTypeFunc(SemanticType t[], SemanticType retornos[]) {
+    public STyFunc(SType t[], SType retornos[]) {
         parameterType = t;
         returnType = retornos;
     }
 
-    public SemanticTypeFunc(SemanticType t[], SemanticType retornos[], String[] names, String nomeFuncao) {
+    public STyFunc(SType t[], SType retornos[], String[] names, String nomeFuncao) {
         parameterType = t;
         returnType = retornos;
         nameParams = names;
     }
 
-    public SemanticType[] getTypes() {
+    public SType[] getTypes() {
         return parameterType;
     }
 
-    public SemanticType[] getReturnTypes() {
+    public SType[] getReturnTypes() {
         return returnType;
     }
 
@@ -35,13 +35,13 @@ public class SemanticTypeFunc extends SemanticType {
         return nameParams;
     }
 
-    public boolean match(SemanticType v) {
+    public boolean match(SType v) {
         boolean r = false;
-        if (v instanceof SemanticTypeFunc) {
-            if (((SemanticTypeFunc) v).getTypes().length == parameterType.length) {
+        if (v instanceof STyFunc) {
+            if (((STyFunc) v).getTypes().length == parameterType.length) {
                 r = true;
                 for (int i = 0; i < parameterType.length; i++) {
-                    r = r && parameterType[i].match(((SemanticTypeFunc) v).getTypes()[i]);
+                    r = r && parameterType[i].match(((STyFunc) v).getTypes()[i]);
                 }
             }
         }

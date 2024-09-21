@@ -9,5 +9,7 @@ f(x :: Int) : Int, Float{
 
 main(){
   z = f(10)[1];
-  h = 2*f(10)[0];
+  x = f(10)[0];
+  print(x);
+  h = 2+f(10)[0];
 }

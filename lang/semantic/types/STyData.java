@@ -4,14 +4,14 @@
  *  Nikolas Oliver Sales Genesio - MAT 202065072C
  */
 
-package lang.visitors.types;
+package lang.semantic.types;
 
-public class SemanticTypeData extends SemanticType {
+public class STyData extends SType {
     private String name;
 
     @Override
-    public boolean match(SemanticType v) {
-        return (v instanceof SemanticTypeError) || (v instanceof SemanticTypeData);
+    public boolean match(SType v) {
+        return (v instanceof STyErr) || (v instanceof STyData);
     }
 
     @Override
@@ -27,7 +27,7 @@ public class SemanticTypeData extends SemanticType {
         this.name = name;
     }
 
-    public SemanticTypeData(String name) {
+    public STyData(String name) {
         this.name = name;
     }
 }

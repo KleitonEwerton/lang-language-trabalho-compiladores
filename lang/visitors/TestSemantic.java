@@ -5,6 +5,7 @@ package lang.visitors;
 
 import java.io.File;
 import lang.ast.*;
+import lang.semantic.SemanticAdaptor;
 
 public class TestSemantic {
     private SemanticAdaptor sdp;

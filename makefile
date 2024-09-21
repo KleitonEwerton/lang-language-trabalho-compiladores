@@ -32,7 +32,9 @@ clean:
 	lang/visitors/types/*.class \
 	lang/ast/*.class \
 	lang/*.class \
-	lang/visitors/*.class
+	lang/visitors/*.class \
+	lang/semantic/*.class \
+	lang/semantic/types/*.class
 
 ex1:
 	java -cp antlr-4.8-complete.jar:. lang/LangCompiler -i ./testes/semantica/certo/teste1.lan

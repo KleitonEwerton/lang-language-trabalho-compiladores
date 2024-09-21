@@ -4,13 +4,13 @@
  *  Nikolas Oliver Sales Genesio - MAT 202065072C
  */
 
-package lang.visitors.types;
+package lang.semantic.types;
 
-public class LocalEnv<A> extends SemanticTypeEnv<A> {
+public class LocalEnv<A> extends STyEnv<A> {
     private String id;
-    private SemanticType t;
+    private SType t;
 
-    public LocalEnv(String id, SemanticType t) {
+    public LocalEnv(String id, SType t) {
         this.t = t;
         this.id = id;
     }
@@ -19,7 +19,7 @@ public class LocalEnv<A> extends SemanticTypeEnv<A> {
         return id;
     }
 
-    public SemanticType getFuncType() {
+    public SType getFuncType() {
         return t;
     }
 

@@ -4,17 +4,17 @@
  *  Nikolas Oliver Sales Genesio - MAT 202065072C
  */
 
-package lang.visitors.types;
+package lang.semantic.types;
 
 import java.util.ArrayList;
 import java.util.TreeMap;
 
-public class SemanticTypeEnv<A> {
+public class STyEnv<A> {
 
     private TreeMap<String, A> typeEnv;
     private ArrayList<A> typeEnvFuncoes;
 
-    public SemanticTypeEnv() {
+    public STyEnv() {
         typeEnv = new TreeMap<String, A>();
         typeEnvFuncoes = new ArrayList<A>();
     }

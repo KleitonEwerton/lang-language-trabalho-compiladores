@@ -1,18 +1,22 @@
+
 /*  Trabalho da disciplina DCC045 - Teoria dos Compiladores
  *  Kleiton Ewerton de Oliveira - MAT 202065050C
  *  Nikolas Oliver Sales Genesio - MAT 202065072C
  */
-package lang.parser;
+
+package lang.semantic;
+
+import lang.ast.*;
+import lang.parser.*;
+import lang.semantic.*;
+import lang.visitors.*;
+
+import org.antlr.v4.runtime.*;
+import org.antlr.v4.runtime.tree.*;
 
 import java.io.IOException;
 
-import org.antlr.v4.runtime.*;
-import org.antlr.v4.runtime.tree.ParseTree;
-
-import lang.ast.*;
-import lang.visitors.MyVisitor;
-
-public class ParserSyntactic implements ParseAdaptor {
+public class SemanticAnalysis implements SemanticAdaptor {
 
     @Override
     public SuperNode parseFile(String path) {
@@ -33,18 +37,29 @@ public class ParserSyntactic implements ParseAdaptor {
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         LangParser parser = new LangParser(tokens);
         parser.removeErrorListeners(); // Remove o listener padrão de erros sintáticos
-        parser.addErrorListener(new CustomSyntaxErrorListener()); // Adiciona o listener personalizado de erros sintáticos
-
-
-        // Parsing
-        ParseTree tree = parser.prog(); // ou o nome da regra inicial
+        parser.addErrorListener(new CustomSyntaxErrorListener()); // Adiciona o listener personalizado de erros
+                                                                  // sintáticos
+        ParseTree tree = parser.prog();
 
         // verifica se o analisador sintativo encontrou algum erro
         if (parser.getNumberOfSyntaxErrors() != 0) {
             return null;
         }
 
-        return (SuperNode) new MyVisitor().visit(tree);
+        MyVisitor myVisitor = new MyVisitor();
+        Node node = myVisitor.visit(tree);
+
+        SemanticVisitor semanticVisitor = new SemanticVisitor();
+
+        node.accept(semanticVisitor);
+
+        if (semanticVisitor.getNumErrors() > 0) {
+            semanticVisitor.printErrors();
+            return null;
+        } else {
+            // System.out.println("typing check ... [ ok ]");
+            return node;
+        }
     }
 
     // Classe para captura de erros léxicos
@@ -56,11 +71,13 @@ public class ParserSyntactic implements ParseAdaptor {
             throw new RuntimeException("Erro léxico na linha " + line + ":" + charPositionInLine + " - " + msg);
         }
     }
+
+    // Classe para captura de erros sintáticos
     class CustomSyntaxErrorListener extends BaseErrorListener {
         @Override
-        public void syntaxError(Recognizer<?, ?> recognizer, Object offendingSymbol, 
-                                int line, int charPositionInLine, 
-                                String msg, RecognitionException e) {
+        public void syntaxError(Recognizer<?, ?> recognizer, Object offendingSymbol,
+                int line, int charPositionInLine,
+                String msg, RecognitionException e) {
             throw new RuntimeException("Erro sintático na linha " + line + ":" + charPositionInLine + " - " + msg);
         }
     }
