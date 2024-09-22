@@ -6,20 +6,20 @@
 
 package lang.semantic.types;
 
-public class STyInt extends SType {
+public class SemanticTypeInt extends SemanticType {
 
-    private static STyInt st = new STyInt();
+    private static SemanticTypeInt st = new SemanticTypeInt();
 
-    private STyInt() {
+    private SemanticTypeInt() {
     }
 
-    public static STyInt newSTyInt() {
+    public static SemanticTypeInt newSTyInt() {
         return st;
     }
 
     @Override
-    public boolean match(SType v) {
-        return (v instanceof STyErr) || (v instanceof STyInt);
+    public boolean match(SemanticType v) {
+        return (v instanceof SemanticTypeError) || (v instanceof SemanticTypeInt);
     }
 
     @Override

@@ -6,16 +6,16 @@
 
 package lang.semantic.types;
 
-public class STyData extends SType {
+public class SemanticTypeData extends SemanticType {
     private String dataName;
 
-    public STyData(String dataName) {
+    public SemanticTypeData(String dataName) {
         this.dataName = dataName;
     }
 
     @Override
-    public boolean match(SType v) {
-        return (v instanceof STyErr) || (v instanceof STyData);
+    public boolean match(SemanticType v) {
+        return (v instanceof SemanticTypeError) || (v instanceof SemanticTypeData);
     }
 
     @Override

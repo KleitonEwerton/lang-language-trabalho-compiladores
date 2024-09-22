@@ -6,24 +6,25 @@
 
 package lang.semantic.types;
 
-public class STyNull extends SType {
+public class SemanticTypeError extends SemanticType {
 
-    private static STyNull st = new STyNull();
+    private static SemanticTypeError st = new SemanticTypeError();
 
-    private STyNull() {
+    private SemanticTypeError() {
     }
 
-    public static STyNull newSTyNull() {
+    public static SemanticTypeError newSTyErr() {
         return st;
     }
 
     @Override
-    public boolean match(SType v) {
-        return (v instanceof STyErr) || (v instanceof STyNull);
+    public boolean match(SemanticType v) {
+        return true;
     }
 
     @Override
     public String toString() {
-        return "Null";
+        return "TyError";
     }
+
 }

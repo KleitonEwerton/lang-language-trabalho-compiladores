@@ -12,9 +12,9 @@ public class DataAttr {
 
     private String dataName;
     private ArrayList<String> variableNames;
-    private ArrayList<SType> dataTypes;
+    private ArrayList<SemanticType> dataTypes;
 
-    public DataAttr(String dataName, ArrayList<String> variableNames, ArrayList<SType> dataTypes) {
+    public DataAttr(String dataName, ArrayList<String> variableNames, ArrayList<SemanticType> dataTypes) {
         this.dataName = dataName;
         this.variableNames = new ArrayList<>(variableNames);
         this.dataTypes = new ArrayList<>(dataTypes);
@@ -28,11 +28,11 @@ public class DataAttr {
         return new ArrayList<>(variableNames);
     }
 
-    public ArrayList<SType> getDataTypes() {
+    public ArrayList<SemanticType> getDataTypes() {
         return new ArrayList<>(dataTypes);
     }
 
-    public void appendAttribute(String variableName, SType type) {
+    public void appendAttribute(String variableName, SemanticType type) {
         if (variableName != null && type != null) {
             this.variableNames.add(variableName);
             this.dataTypes.add(type);

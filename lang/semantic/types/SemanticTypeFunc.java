@@ -8,27 +8,27 @@ package lang.semantic.types;
 
 import java.util.Arrays;
 
-public class STyFunc extends SType {
+public class SemanticTypeFunc extends SemanticType {
 
-    private SType[] paramTypes;
-    private SType[] retTypes;
+    private SemanticType[] paramTypes;
+    private SemanticType[] retTypes;
     private String[] paramNames;
 
-    public STyFunc(SType[] paramTypes, SType[] retTypes) {
+    public SemanticTypeFunc(SemanticType[] paramTypes, SemanticType[] retTypes) {
         this.paramTypes = paramTypes;
         this.retTypes = retTypes;
     }
 
-    public STyFunc(SType[] paramTypes, SType[] retTypes, String[] paramNames) {
+    public SemanticTypeFunc(SemanticType[] paramTypes, SemanticType[] retTypes, String[] paramNames) {
         this(paramTypes, retTypes); // Chama o outro construtor
         this.paramNames = paramNames;
     }
 
-    public SType[] getParamTypes() {
+    public SemanticType[] getParamTypes() {
         return paramTypes;
     }
 
-    public SType[] getReturnTypes() {
+    public SemanticType[] getReturnTypes() {
         return retTypes;
     }
 
@@ -36,9 +36,9 @@ public class STyFunc extends SType {
         return paramNames;
     }
 
-    public boolean match(SType v) {
-        if (v instanceof STyFunc) {
-            STyFunc otherFunc = (STyFunc) v;
+    public boolean match(SemanticType v) {
+        if (v instanceof SemanticTypeFunc) {
+            SemanticTypeFunc otherFunc = (SemanticTypeFunc) v;
             if (otherFunc.getParamTypes().length == paramTypes.length) {
                 for (int i = 0; i < paramTypes.length; i++) {
                     if (!paramTypes[i].match(otherFunc.getParamTypes()[i])) {

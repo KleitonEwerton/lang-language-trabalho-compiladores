@@ -8,12 +8,12 @@ package lang.semantic.types;
 
 import java.util.*;
 
-public class TyEnv<A> {
+public class SemanticTypeEnv<A> {
 
     private HashMap<String, A> envTypes;
     private ArrayList<A> funcTypeList;
 
-    public TyEnv() {
+    public SemanticTypeEnv() {
         envTypes = new HashMap<>();
         funcTypeList = new ArrayList<>();
     }

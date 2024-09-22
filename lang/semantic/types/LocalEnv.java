@@ -6,11 +6,11 @@
 
 package lang.semantic.types;
 
-public class LocalEnv<A> extends TyEnv<A> {
+public class LocalEnv<A> extends SemanticTypeEnv<A> {
     private String funcID;
-    private SType funcType;
+    private SemanticType funcType;
 
-    public LocalEnv(String funcID, SType funcType) {
+    public LocalEnv(String funcID, SemanticType funcType) {
         this.funcID = funcID;
         this.funcType = funcType;
     }
@@ -19,7 +19,7 @@ public class LocalEnv<A> extends TyEnv<A> {
         return funcID;
     }
 
-    public SType getFuncType() {
+    public SemanticType getFuncType() {
         return funcType;
     }
 
