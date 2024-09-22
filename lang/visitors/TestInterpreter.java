@@ -8,11 +8,11 @@ import java.io.*;
 
 public class TestInterpreter {
     private InterpreterAdaptor adp;
-    private String okSrcs = "testes/sintaxe/certo/";
+    private String okSrcs = "testes/semantica/certo";
     private File f;
 
-    public TestInterpreter(InterpreterAdaptor adp) {
-        this.adp = adp;
+    public TestInterpreter(InterpreterAdaptor idp) {
+        this.adp = idp;
         f = new File(okSrcs);
         runOkTests();
     }
@@ -37,6 +37,7 @@ public class TestInterpreter {
                 for (File s : inst) {
                     pth = s.getPath();
                     System.out.print("Testando " + pth + filler(50 - pth.length()) + "[");
+
                     if (adp.interpretFile(s.getPath()) != null) {
                         System.out.println("  OK  ]");
                         flips++;

@@ -6,11 +6,10 @@
 package lang.semantic;
 
 import java.io.File;
-import lang.ast.*;
 
 public class TestSemantic {
     private SemanticAdaptor sdp;
-    private String okSrcs = "testes/semantica/certo/";
+    private String okSrcs = "testes/semantica/certo";
     private File f;
 
     public TestSemantic(SemanticAdaptor sdp) {
@@ -42,10 +41,10 @@ public class TestSemantic {
 
                     System.out.print("Testando " + pth + filler(50 - pth.length()) + "[");
 
-                    Node no = (Node) sdp.parseFile(s.getPath());
+                    if (sdp.parseFile(s.getPath()) != null) {
 
-                    if (no != null) {
                         System.out.println("  OK  ]");
+
                         flips++;
                     } else {
                         System.out.println("\nTeste " + pth + filler(50 - pth.length()) + " FALHOU ]\n");
