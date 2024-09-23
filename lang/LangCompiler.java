@@ -5,9 +5,16 @@
 package lang;
 
 import lang.ast.*;
+import lang.codeGenerator.JavaVisitor;
 import lang.parser.*;
 import lang.semantic.*;
+import lang.semantic.types.LocalEnv;
+import lang.semantic.types.SemanticType;
+import lang.semantic.types.SemanticTypeEnv;
 import lang.visitors.*;
+
+import java.io.*;
+import java.util.Scanner;
 
 public class LangCompiler {
     public static void main(String[] args) {
@@ -29,6 +36,7 @@ public class LangCompiler {
             System.out.println(
                     " -gvz: Create a dot file. (Feed it to graphviz dot tool to generate graphical representation of the AST)");
 
+            System.out.println(" -Java : Executa a geraçao de codigo para Java");
         }
         try {
             ParseAdaptor langParser = new ParserSyntactic();
@@ -51,17 +59,48 @@ public class LangCompiler {
                 TestSemantic tp = new TestSemantic(semanticAdaptor);
                 return;
             }
-            if (args.length != 2) {
-                System.out.println("Para usar essa opção, especifique um nome de arquivo");
-                return;
-            }
 
             SuperNode result = langParser.parseFile(args[1]);
 
             if (result == null) {
                 System.err.println("Aborting due to syntax error(s)");
                 System.exit(1);
-            } else if (args[0].equals("-i")) {
+
+            } else if (args[0].equals("-Java")) {
+
+                System.out.println("Analisando o Arquivo: \"" + args[1] + "\"\n");
+
+                SemanticVisitor v = new SemanticVisitor();
+                ((Node) result).accept(v);
+
+                if (v.getNumErrors() != 0) {
+                    System.out.println(" Erros ocorreram durante a Analise Semantica.\nAbortando");
+                    v.printErrors();
+                    System.exit(1);
+                }
+
+                System.out.println("Traduzindo o Arquivo: \"" + args[1] + " para Java\"\n");
+                SemanticTypeEnv<LocalEnv<SemanticType>> env = v.getEnv();
+                String nomeArquivo = getFileName(args[1]);
+                JavaVisitor jv;
+                if (args.length > 2) {
+                    if (args.length == 3) { // Gera o arquivo com o mesmo nome do arquivo de entrada
+                        if (args[2].equals("-genFile")) {
+                            jv = new JavaVisitor(nomeArquivo, env, v.getDatas());
+                            ((Node) result).accept(jv);
+                            String caminhoEArquivo = getPathFile(args[1]) + nomeArquivo + ".java";
+                            System.out.println("Arquivo de codigo em java gerado: \"" + caminhoEArquivo + "\"\n");
+                            writeFile(caminhoEArquivo, jv.getTemplate());
+                        } else {
+                            System.out.println("Parametro \'" + args[2]
+                                    + "\' eh incorreto, o certo eh \'-genFile\' !!!\n");
+                            System.exit(1);
+                        }
+                    }
+                }
+            }
+
+            else if (args[0].equals("-i")) {
                 InterpretVisitor interpretVisitor = new InterpretVisitor();
                 Node nodeResult = (Node) result;
                 nodeResult.accept(interpretVisitor);
@@ -78,6 +117,29 @@ public class LangCompiler {
             }
 
         } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public static String getPathFile(String path) {
+        String caminhoArquivo = path.substring(0, path.lastIndexOf('/') != -1 ? path.lastIndexOf('/') + 1 : 0);
+        return caminhoArquivo;
+    }
+
+    public static String getFileName(String path) {
+        String nomeArquivo = path.substring(path.lastIndexOf('/') != -1 ? path.lastIndexOf('/') + 1 : 0,
+                path.lastIndexOf('.') != -1 ? path.lastIndexOf('.') : path.length());
+        return nomeArquivo;
+    }
+
+    public static void writeFile(String pathFile, String information) {
+        try {
+            FileWriter myWriter = new FileWriter(pathFile);
+            myWriter.write(information);
+            myWriter.close();
+        } catch (IOException e) {
+            System.out.println("Ocorreu um erro no metodo \'writeFile()\'");
             e.printStackTrace();
         }
     }

@@ -1308,4 +1308,13 @@ public class SemanticVisitor extends Visitor {
             System.out.println(s);
         }
     }
+
+    public SemanticTypeEnv<LocalEnv<SemanticType>> getEnv() {
+        return this.env;
+    }
+    // getdatas
+
+    public HashMap<String, DataAttr> getDatas() {
+        return datas;
+    }
 }

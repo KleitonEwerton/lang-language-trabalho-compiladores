@@ -10,6 +10,7 @@ import lang.visitors.*;
 public class CharDexp extends LValue {
 
     private char value;
+    private String originalValue;
 
     public CharDexp(int line, int column, String value) {
         super(line, column);
@@ -31,6 +32,7 @@ public class CharDexp extends LValue {
     }
 
     private void interpretChar(String valueString) {
+        this.originalValue = valueString;
         if (valueString.length() > 2 && valueString.charAt(1) == '\\') {
             char escapeChar = valueString.charAt(2);
             switch (escapeChar) {
@@ -55,13 +57,24 @@ public class CharDexp extends LValue {
                 default:
                     throw new IllegalArgumentException("Invalid escape sequence: \\" + escapeChar);
             }
+
         } else {
             this.value = valueString.charAt(1);
+
         }
+
     }
 
     @Override
     public String getId() {
         return null; // CharDexp does not have an identifier, so return null
+    }
+
+    public String getOriginalValue() {
+        return originalValue;
+    }
+
+    public void setOriginalValue(String originalValue) {
+        this.originalValue = originalValue;
     }
 }

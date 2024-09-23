@@ -1,0 +1,103 @@
+group java;
+
+program(name, funcs, datas) ::= <<
+import java.util.Scanner;
+
+public class <name> {
+    public Scanner __Scanner = new Scanner(System.in); // Scanner para fazer a leitura de entrada pelo teclado
+
+    <datas; separator="\n\n">
+
+    <funcs; separator="\n\n">
+
+    public static void main(String args[]) {
+        <name> m = new <name>();
+        m.main();
+    }
+}
+>>
+
+data(name, decl) ::= <<
+public class <name> {
+    <if(decl)><decl; separator="\n"><endif>
+};
+>>
+
+func(type, name, params, decl, stmt) ::= <<
+<type> <name>(<params; separator=", ">) {
+    <if(decl)><decl; separator=";\n">;<endif>
+    <stmt; separator="\n">
+}
+>>
+param(type, name) ::= "<type> <name>"
+declaration(type, name) ::= "<type> <name>;"    
+
+array_type(type) ::= "<type>[]"
+int_type() ::= "Integer"
+float_type() ::= "Float"
+boolean_type() ::= "Boolean"
+char_type() ::= "Character"
+data_type(data) ::= "<data>"
+null_type() ::= "null"
+
+print(expr) ::= "System.out.print(<expr>);"
+read(expr, converteTipo) ::=<<
+<expr> = <if(converteTipo)><converteTipo><else>__Scanner.nextLine()<endif>;
+>>
+return(expr) ::= "return <expr>;"
+
+iterate(expr, cmd, loopAtual) ::= <<
+for (int _Indice_Loop_<loopAtual> = 0, _Indice_Loop_<loopAtual>_EndLoop = <expr>; _Indice_Loop_<loopAtual> \< _Indice_Loop_<loopAtual>_EndLoop; _Indice_Loop_<loopAtual>++) {
+    <cmd; separator="\n">
+}
+>>
+
+if(expr, cmd) ::= <<
+if(<expr>) {
+    <cmd; separator="\n">
+}
+>>
+
+if_else(expr, cmd, els) ::= <<
+if(<expr>) {
+    <cmd; separator="\n">
+} <if(els)>else {
+    <els; separator="\n">
+}
+<endif>
+>>
+
+attribution(var, expr) ::= "<var> = <expr>;"
+typeInstanciate(type, expr) ::= <<
+new <type><if(expr)>[<expr>]<else>()<endif>
+>>
+lvalue(name, array) ::= <<
+<name><if(array)><array><endif>
+>>
+array_access(expr) ::= "[<expr>]"
+
+boolean_expr(value) ::= "<value>"
+float_expr(value) ::= "<value>f"
+char_expr(value) ::= "<value>"
+int_expr(value) ::= "<value>"
+functionReturn(name, args, expr) ::= <<
+<name><if(expr)>_retorno_0<expr><else><endif>(<args; separator=", ">)
+>>
+functionCall(name, args, var1, var2) ::= <<
+<var1> = <name>_retorno_00(<args; separator=", ">);
+<if(var2)><var2> = <name>_retorno_01(<args; separator=", ">);<else><endif>
+>>
+call(name, args) ::= <<<name>(<args; separator=", ">);>>
+
+mult_expr(left_expr, right_expr) ::= "(<left_expr> * <right_expr>)"
+div_expr(left_expr, right_expr) ::= "(<left_expr> / <right_expr>)"
+mod_expr(left_expr, right_expr) ::= "(<left_expr> % <right_expr>)"
+add_expr(left_expr, right_expr) ::= "(<left_expr> + <right_expr>)"
+sub_expr(left_expr, right_expr) ::= "(<left_expr> - <right_expr>)"
+
+lessThan_expr(left_expr, right_expr) ::= "(<left_expr> \< <right_expr>)"
+equallity_expr(left_expr, right_expr) ::= "(<left_expr> == <right_expr>)"
+diff_expr(left_expr, right_expr) ::= "(<left_expr> != <right_expr>)"
+and_expr(left_expr, right_expr) ::= "(<left_expr> && <right_expr>)"
+not_expr(expr) ::= "!<expr>"
+minus_expr(expr) ::= "-<expr>"

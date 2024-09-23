@@ -5,6 +5,9 @@ generate:
 compile:
 	javac -cp .:antlr-4.8-complete.jar lang/parser/*.java lang/ast/*.java lang/*.java lang/visitors/*.java
 
+compile1:
+	javac -cp .:ST-4.3.1.jar lang/codeGenerator/*.java
+
 testSintatico:
 	java -cp antlr-4.8-complete.jar:. lang/LangCompiler -bs
 
@@ -34,7 +37,11 @@ clean:
 	lang/*.class \
 	lang/visitors/*.class \
 	lang/semantic/*.class \
-	lang/semantic/types/*.class
+	lang/semantic/types/*.class \
+	lang/codeGenerator/*.class
+
+code1:
+	java -cp antlr-4.8-complete.jar:ST-4.3.1.jar:. lang/LangCompiler -Java ./testes/semantica/certo/teste1.lan -genFile ./codeJava/teste1.lan
 
 ex1:
 	java -cp antlr-4.8-complete.jar:. lang/LangCompiler -i ./testes/semantica/certo/teste1.lan

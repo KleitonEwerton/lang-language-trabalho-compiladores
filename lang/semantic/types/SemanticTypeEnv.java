@@ -39,4 +39,8 @@ public class SemanticTypeEnv<A> {
         }
         return matchingFunctions;
     }
+
+    public Set<String> getKeys() {
+        return envTypes.keySet();
+    }
 }
