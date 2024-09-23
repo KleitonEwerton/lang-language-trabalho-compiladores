@@ -1,4 +1,3 @@
-
 /*  Trabalho da disciplina DCC045 - Teoria dos Compiladores
  *  Kleiton Ewerton de Oliveira - MAT 202065050C
  *  Nikolas Oliver Sales Genesio - MAT 202065072C
@@ -289,13 +288,12 @@ public class SemanticVisitor extends Visitor {
 
         // Verifica se ambos os tipos são booleanos
         if (rightType.match(tyBool) && leftType.match(tyBool)) {
-            // Se forem, empurra o tipo booleano para a pilha
+            // Se forem, empilha o tipo booleano
             types.push(tyBool);
         } else {
-            // Caso contrário, registra o erro com detalhes da linha e coluna
+            // Caso contrário, registra o erro
             logError.add(and.getLine() + ", " + and.getColumn() + ": Operador & não se aplica aos tipos "
                     + leftType.toString() + " e " + rightType.toString());
-            // Empurra um tipo de erro na pilha
             types.push(tyErr);
         }
     }
@@ -324,7 +322,7 @@ public class SemanticVisitor extends Visitor {
 
         // Verifica o tipo resultante do processamento
         if (tipoBase instanceof SemanticTypeData) {
-            // Verifica se o tipo STyData existe no contexto
+            // Verifica se o tipo SemanticTypeData existe no contexto
             String nomeTipoData = ((SemanticTypeData) tipoBase).getDataName();
 
             if (datas.get(nomeTipoData) != null) {
@@ -370,7 +368,7 @@ public class SemanticVisitor extends Visitor {
         SemanticType rightType = types.pop();
         SemanticType leftType = types.pop();
 
-        // Verifica se ambos os tipos são compatíveis (inteiro ou flutuante)
+        // Verifica se ambos os tipos são compatíveis
         if ((rightType.match(tyInt) || rightType.match(tyFloat))
                 && (leftType.match(tyInt) || leftType.match(tyFloat))) {
             // Empilha tipo booleano para operações válidas
@@ -517,7 +515,6 @@ public class SemanticVisitor extends Visitor {
 
     @Override
     public void visit(IfElse ifElse) {
-        // Variáveis para controlar o retorno de funções no If e Else
         boolean ifReturnStatus;
         boolean elseReturnStatus = true;
 
@@ -535,7 +532,7 @@ public class SemanticVisitor extends Visitor {
             // Se existir bloco Else, avalia os comandos desse bloco
             if (ifElse.getElseCmd() != null) {
                 ret = false;
-                ifElse.getElseCmd().accept(this); // Avalia os comandos do bloco Else
+                ifElse.getElseCmd().accept(this);
                 elseReturnStatus = ret; // Armazena o resultado do bloco Else em relação ao retorno
             }
 
@@ -559,7 +556,7 @@ public class SemanticVisitor extends Visitor {
 
     @Override
     public void visit(Iterate iterate) {
-        // Avalia a expressão de teste do laço Iterate
+        // Avalia a expressão de teste do Iterate
         iterate.getExpr().accept(this);
         SemanticType exprType = types.pop();
 
@@ -589,13 +586,12 @@ public class SemanticVisitor extends Visitor {
         // Verifica se ambos os tipos são inteiros ou float
         if ((rightType.match(tyInt) || rightType.match(tyFloat)) &&
                 (leftType.match(tyInt) || leftType.match(tyFloat))) {
-            // Empurra o tipo booleano se forem compatíveis
+            // Empilha o tipo booleano
             types.push(tyBool);
         } else {
-            // Caso contrário, registra o erro detalhando a linha e coluna
+            // Caso contrário, registra o erro
             logError.add(lessThan.getLine() + ", " + lessThan.getColumn() + ": Operador < não se aplica aos tipos "
                     + leftType.toString() + " e " + rightType.toString());
-            // Empurra um tipo de erro na pilha
             types.push(tyErr);
         }
     }
@@ -707,7 +703,7 @@ public class SemanticVisitor extends Visitor {
 
     @Override
     public void visit(Neg neg) {
-        // Avalia a expressão associada ao operador de negação
+        // Avalia a expressão
         neg.getExpr().accept(this);
         SemanticType exprType = types.pop();
 
@@ -717,7 +713,7 @@ public class SemanticVisitor extends Visitor {
         } else if (exprType.match(tyFloat)) {
             types.push(tyFloat);
         } else {
-            // Registra um erro se o operador '-' não puder ser aplicado ao tipo
+            // Registra um erro se o operador não puder ser aplicado ao tipo
             logError.add(neg.getLine() + ", " + neg.getColumn() + ": O operador - não pode ser aplicado ao tipo "
                     + exprType.toString());
             types.push(tyErr);
@@ -726,7 +722,7 @@ public class SemanticVisitor extends Visitor {
 
     @Override
     public void visit(Not not) {
-        // Avalia a expressão associada ao operador '!'
+        // Avalia a expressão
         not.getExpr().accept(this);
 
         // Recupera o tipo da expressão avaliada
@@ -757,13 +753,12 @@ public class SemanticVisitor extends Visitor {
         // Verifica se ambos os tipos são compatíveis para a comparação
         if ((leftType.match(tyInt) && rightType.match(tyInt)) ||
                 (leftType.match(tyFloat) && rightType.match(tyFloat))) {
-            // Inteiros ou floats podem ser comparados
             types.push(tyBool);
         } else if (leftType.match(tyChar) && rightType.match(tyChar)) {
             // Comparação entre caracteres
             types.push(tyBool);
         } else {
-            // Erro se os tipos não forem compatíveis com '!='
+            // Erro se os tipos não forem compatíveis
             logError.add(notEquals.getLine() + ", " + notEquals.getColumn()
                     + ": O operador != não pode ser aplicado aos tipos "
                     + leftType.toString() + " e " + rightType.toString());
@@ -790,7 +785,7 @@ public class SemanticVisitor extends Visitor {
 
     @Override
     public void visit(Read read) {
-        // Avalia o valor associado à operação de leitura
+        // Avalia o valor associado à leitura
         read.getlValue().accept(this);
     }
 
@@ -833,7 +828,7 @@ public class SemanticVisitor extends Visitor {
                 }
             }
         } else {
-            // Se o tipo de retorno não for uma função, faz a correspondência diretamente
+            // Se o tipo de retorno não for uma função, faz a correspondência
             if (!types.pop().match(temp.getFuncType())) {
                 logError.add(return1.getLine() + ", " + return1.getColumn()
                         + ": O tipo de retorno não corresponde ao tipo da função");
@@ -884,7 +879,7 @@ public class SemanticVisitor extends Visitor {
                 logError.add(
                         arrayLValue.getLine() + ", " + arrayLValue.getColumn() + "A variável " + varId
                                 + " não existe ou não é um array");
-                types.push(tyErr); // Empilha um erro
+                types.push(tyErr);
             }
         }
         // Verifica se é uma matriz
@@ -910,7 +905,7 @@ public class SemanticVisitor extends Visitor {
         // Obtém o objeto
         Object dataObj = temp.get(dot.getDataId());
 
-        // Verifica se o objeto é do tipo STyData
+        // Verifica se o objeto é do tipo SemanticTypeData
         if (dataObj instanceof SemanticTypeData) {
             SemanticTypeData dataType = (SemanticTypeData) dataObj;
             DataAttr dataAttr = datas.get(dataType.getDataName()); // Obtém os atributos
@@ -963,7 +958,7 @@ public class SemanticVisitor extends Visitor {
         }
         // Caso o valor associado ao identificador seja um array de tipos de dados
         else if (temp.get(dot.getlValue().getId()) instanceof SemanticArrayType) {
-            dot.getlValue().accept(this); // Aceita o visitante para verificar o array
+            dot.getlValue().accept(this); // Aceita o visit para verificar o array
             SemanticTypeData arrayDataType = (SemanticTypeData) types.pop(); // Retira o tipo de dado do array
             DataAttr dataAttr = datas.get(arrayDataType.getDataName()); // Obtém os atributos associados
 
@@ -1061,7 +1056,7 @@ public class SemanticVisitor extends Visitor {
             // Certifica que o valor da posição de retorno existe e é um inteiro
             if (!(funcCall.getExpIndex() instanceof IdLValue)) {
                 if (funcCall.getExpIndex() instanceof IntDexp) {
-                    IntDexp posicao = (IntDexp) funcCall.getExpIndex(); // Usa diretamente o ExpIndex
+                    IntDexp posicao = (IntDexp) funcCall.getExpIndex();
                     types.push(tipoFuncao.getReturnTypes()[posicao.getValue()]);
                 }
             } else {
@@ -1153,8 +1148,8 @@ public class SemanticVisitor extends Visitor {
 
     @Override
     public void visit(FuncArgs funcArgs) {
+        // Processa cada expressão
         for (Expr expr : funcArgs.getExps()) {
-            // Processa cada expressão chamando o método accept
             expr.accept(this);
         }
     }
@@ -1177,7 +1172,7 @@ public class SemanticVisitor extends Visitor {
         for (Decl decl : data.getDecls()) {
             // Verifica se o campo já foi declarado
             if (!camposExistentes.add(decl.getId())) {
-                logError.add(data.getLine() + ", " + data.getColumn() + ":O campo " + decl.getId() + " no tipo de data "
+                logError.add(data.getLine() + ", " + data.getColumn() + ": O campo " + decl.getId() + " no tipo de data "
                         + data.getId() + " já foi definido");
                 types.push(tyErr);
                 return;
@@ -1192,7 +1187,7 @@ public class SemanticVisitor extends Visitor {
             tiposCampos.add(tipoDecl);
         }
 
-        // Registra o tipo data no mapa datas
+        // Registra o tipo data no hashmapa datas
         DataAttr novoData = new DataAttr(data.getId(), campos, tiposCampos);
         datas.put(data.getId(), novoData);
     }

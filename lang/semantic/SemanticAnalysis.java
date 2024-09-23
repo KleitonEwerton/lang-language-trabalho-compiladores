@@ -1,4 +1,3 @@
-
 /*  Trabalho da disciplina DCC045 - Teoria dos Compiladores
  *  Kleiton Ewerton de Oliveira - MAT 202065050C
  *  Nikolas Oliver Sales Genesio - MAT 202065072C
@@ -10,13 +9,10 @@ import lang.ast.*;
 import lang.parser.*;
 import lang.semantic.*;
 import lang.visitors.*;
+import java.io.*;
 
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
-
-import java.io.IOException;
-import java.io.PrintWriter;
-
 public class SemanticAnalysis implements SemanticAdaptor {
 
     @Override
