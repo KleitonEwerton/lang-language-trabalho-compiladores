@@ -71,6 +71,7 @@ public class LangCompiler {
                 System.out.println("Analisando o Arquivo: \"" + args[1] + "\"\n");
 
                 SemanticVisitor v = new SemanticVisitor();
+
                 ((Node) result).accept(v);
 
                 if (v.getNumErrors() != 0) {
@@ -80,11 +81,15 @@ public class LangCompiler {
                 }
 
                 System.out.println("Traduzindo o Arquivo: \"" + args[1] + " para Java\"\n");
+
                 SemanticTypeEnv<LocalEnv<SemanticType>> env = v.getEnv();
+
                 String nomeArquivo = getFileName(args[1]);
+
                 JavaVisitor jv;
+
                 if (args.length > 2) {
-                    if (args.length == 3) { // Gera o arquivo com o mesmo nome do arquivo de entrada
+                    if (args.length == 3) {
                         if (args[2].equals("-genFile")) {
                             jv = new JavaVisitor(nomeArquivo, env, v.getDatas());
                             ((Node) result).accept(jv);
@@ -96,7 +101,23 @@ public class LangCompiler {
                                     + "\' eh incorreto, o certo eh \'-genFile\' !!!\n");
                             System.exit(1);
                         }
+                    } else {
+                        if (args[2].equals("-genFile")) {
+                            jv = new JavaVisitor(nomeArquivo, env, v.getDatas());
+                            ((Node) result).accept(jv);
+                            String caminhoEArquivo = getPathFile(args[3]) + nomeArquivo + ".java";
+                            System.out.println("Arquivo de codigo em java gerado: \"" + caminhoEArquivo + "\"\n");
+                            writeFile(caminhoEArquivo, jv.getTemplate());
+                        } else {
+                            System.out.println("Parametro \'" + args[2]
+                                    + "\' eh incorreto, o certo eh \'-genFile\' !!!\n");
+                            System.exit(1);
+                        }
                     }
+
+                } else {
+                    System.out.println("Parametro \'-genFile\' nao foi passado, o arquivo nao sera gerado !!!\n");
+                    System.exit(1);
                 }
             }
 
