@@ -25,17 +25,31 @@ public class NewExp extends Expr {
         this.dataName = dataName;
     }
 
+    public NewExp(int line, int column, Expr exp, String dataName, Type type) {
+        super(line, column);
+        this.exp = exp;
+        this.type = type;
+        this.dataName = dataName;
+    }
+
     public NewExp(int line, int column, Type type) {
         super(line, column);
         this.exp = null;
         this.type = type;
     }
 
+    public NewExp(int line, int column, String dataName, Type type) {
+        super(line, column);
+        this.type = type;
+        this.dataName = dataName;
+        this.exp = null;
+    }
+
     public NewExp(int line, int column, String dataName) {
         super(line, column);
-        this.exp = null;
-        this.type = null;
         this.dataName = dataName;
+        this.type = null;
+        this.exp = null;
     }
 
     @Override

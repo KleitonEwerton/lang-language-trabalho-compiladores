@@ -597,17 +597,21 @@ public class MyVisitor extends LangBaseVisitor<Node> {
 
     @Override
     public Node visitNewRexp(NewRexpContext ctx) {
+        System.out.println("aqui");
 
         if (ctx.type().accept(this) instanceof NameType) {
 
+            Type type = (Type) ctx.type().accept(this);
+
             if (ctx.exp() != null) {
+
                 Expr exp = (Expr) ctx.exp().accept(this);
 
                 return new NewExp(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine(), exp,
-                        ctx.type().getText());
+                        ctx.type().getText(), type);
             } else {
                 return new NewExp(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine(),
-                        ctx.type().getText());
+                        ctx.type().getText(), type);
             }
         }
 
