@@ -132,6 +132,7 @@ public class JavaVisitor extends Visitor {
     // Partem do func
     @Override
     public void visit(Func f) {
+
         ST fun = groupTemplate.getInstanceOf("func");
         fun.add("name", f.getId());
         // Pega todas as funções que tem o mesmo nome
@@ -140,10 +141,13 @@ public class JavaVisitor extends Visitor {
         // Só uma funcao
         LocalEnv<SemanticType> local = (LocalEnv<SemanticType>) funcFinded.get(0);
         if (funcFinded.size() > 1) { // Tem sobrecarga
+            System.out.println("Tem sobre carga");
+
             for (int i = 0; i < funcFinded.size(); i++) {
                 LocalEnv<SemanticType> funcaoBase = funcFinded.get(i);
                 SemanticTypeFunc funcaoBaseTipo = (SemanticTypeFunc) funcaoBase.getFuncType();
-
+                System.out.println("funcaoBaseTipo.getReturnTypes().length " + funcaoBaseTipo.getReturnTypes().length);
+                System.out.println("f.getParams().getType().size() " + f.getParams().getType().size());
                 // Se a funcao tem o mesmo numero de parametros entao pode ser a correta
                 if (funcaoBaseTipo.getReturnTypes().length == f.getParams().getType().size()) {
                     int counterTypes = 0; // Conta os tipos iguais para achar a funcao certa
@@ -157,7 +161,9 @@ public class JavaVisitor extends Visitor {
                             counterTypes++;
                         }
                     }
+                    System.out.println("ESPERO ENTRAR");
                     if (counterTypes == funcaoBaseTipo.getParamTypes().length) {
+                        System.out.println("AQUI DEVE ENTRAR");
                         local = (LocalEnv<SemanticType>) funcFinded.get(i);
                         break;
                     }
@@ -192,12 +198,14 @@ public class JavaVisitor extends Visitor {
             params = new ArrayList<ST>();
 
             if (f.getParams() != null) {
+
                 Param paramsList = f.getParams();
 
                 // Adiciona as variaveis do parametro no escopo local
                 for (int i = 0; i < paramsList.size(); i++) {
+                    System.out.println("aqui");
                     SemanticType t = ((SemanticTypeFunc) local.getFuncType()).getParamTypes()[i]; // Pega o tipo do
-                                                                                                  // parametro
+                    System.out.println("aqui 2"); // parametro
                     ST p = groupTemplate.getInstanceOf("param");
                     String nomeParametro = paramsList.getSingleId(i);
                     p.add("name", nomeParametro);

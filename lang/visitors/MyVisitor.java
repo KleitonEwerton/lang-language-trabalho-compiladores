@@ -114,9 +114,11 @@ public class MyVisitor extends LangBaseVisitor<Node> {
             func.setParams(params);
         }
 
+        System.out.println("funreturn type visitor " + ctx.type().size());
         for (int i = 0; i < (ctx.type().size()) && this.shouldVisitNextChild(ctx, this.defaultResult()); i++) {
             ParseTree childTree = ctx.type(i);
             func.addReturnTypes((Type) this.aggregateResult(this.defaultResult(), childTree.accept(this)));
+            System.out.println("func.addReturnTypes " + func.getReturnTypes());
         }
 
         for (int i = 0; i < (ctx.cmd().size()) && this.shouldVisitNextChild(ctx, this.defaultResult()); i++) {
@@ -629,6 +631,7 @@ public class MyVisitor extends LangBaseVisitor<Node> {
     @Override
     public Node visitFuncCallRexp(FuncCallRexpContext ctx) {
         // Obtendo o nome da função
+
         String id = ctx.ID().getText();
 
         FuncArgs funcArgs = (FuncArgs) ctx.exps().accept(this);

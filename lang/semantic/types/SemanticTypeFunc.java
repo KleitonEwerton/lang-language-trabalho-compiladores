@@ -21,14 +21,6 @@ public class SemanticTypeFunc extends SemanticType {
         this.paramNames = paramNames;
     }
 
-    public SemanticType[] getParamTypes() {
-        return paramTypes;
-    }
-
-    public SemanticType[] getReturnTypes() {
-        return retTypes;
-    }
-
     public String[] getParamNames() {
         return paramNames;
     }
@@ -58,6 +50,14 @@ public class SemanticTypeFunc extends SemanticType {
             }
         }
         return sb.toString();
+    }
+
+    public SemanticType[] getParamTypes() {
+        return paramTypes;
+    }
+
+    public SemanticType[] getReturnTypes() {
+        return retTypes;
     }
 
 }
