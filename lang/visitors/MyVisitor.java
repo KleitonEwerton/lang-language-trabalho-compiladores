@@ -613,7 +613,7 @@ public class MyVisitor extends LangBaseVisitor<Node> {
                         ctx.type().getText(), type);
             } else {
                 return new NewExp(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine(),
-                        ctx.type().getText(), type);
+                        ctx.type().getText());
             }
         }
 

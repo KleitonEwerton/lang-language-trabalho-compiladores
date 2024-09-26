@@ -810,6 +810,11 @@ public class JavaVisitor extends Visitor {
             }
         }
 
+        if (t.getType() == null && (t.getDataName() != null)) {
+            System.out.println("t -> " + t);
+            aux.add("type", t.getDataName());
+        }
+
         expr = aux;
     }
 
