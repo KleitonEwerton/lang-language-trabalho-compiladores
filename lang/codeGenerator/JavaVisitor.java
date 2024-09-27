@@ -202,9 +202,7 @@ public class JavaVisitor extends Visitor {
 
                 // Adiciona as variaveis do parametro no escopo local
                 for (int i = 0; i < paramsList.size(); i++) {
-                    System.out.println("aqui");
                     SemanticType t = ((SemanticTypeFunc) local.getFuncType()).getParamTypes()[i]; // Pega o tipo do
-                    System.out.println("aqui 2"); // parametro
                     ST p = groupTemplate.getInstanceOf("param");
                     String nomeParametro = paramsList.getSingleId(i);
                     p.add("name", nomeParametro);
@@ -744,11 +742,6 @@ public class JavaVisitor extends Visitor {
     public void visit(NewExp t) {
         // a = new Int, a = new Ponto, a = new Ponto[8];
         ST aux = groupTemplate.getInstanceOf("typeInstanciate");
-        System.out.println("----------------------------------------------------------------");
-        System.out.println("Entrando no NewExp getDataName " + t.getDataName());
-        System.out.println("Entrando no NewExp getExpr " + t.getExpr());
-        System.out.println("Entrando no NewExp getType" + t.getType());
-        System.out.println("----------------------------------------------------------------");
 
         if (t.getType() != null) {
             if (t.getExpr() != null) { // Array comum e Array de data
@@ -756,7 +749,6 @@ public class JavaVisitor extends Visitor {
                     // Troca o modo de criação da matriz
                     // Na Lang: ... new Char[][5]
                     // Outras linguagens: ... new Char[5][]
-                    System.out.println("entrou no arrya");
                     ArrayType tArray = (ArrayType) t.getType();
                     ST lvalue = groupTemplate.getInstanceOf("lvalue");
                     tArray.getBaseType().accept(this); // Converte o tipo do array pro padrao java: Ex: Char -> char
@@ -776,7 +768,6 @@ public class JavaVisitor extends Visitor {
                     // t.getType().accept(this);
                     // aux.add("type", type);
                 } else { // Array
-                    System.out.println("entrou no tip arrya");
                     // Empilha o tipo do array
                     t.getType().accept(this);
                     aux.add("type", type);
@@ -787,23 +778,18 @@ public class JavaVisitor extends Visitor {
                 }
             } else { // new Int; -- new Float; -- new Char; -- new data;
 
-                System.out.println("\n\nEntrando AQUI");
-
                 if (t.getType() instanceof NameType) { // Se for do tipo Data Adiciona
-                    System.out.println("Data: " + t.getType().toString());
                     t.getType().accept(this);
                     aux.add("type", type);
                 } else { // new Int; -- new Float; -- new Char
                     // Nao faz nada pois a variavel já é instanciada quando as funções são validadas
                     // em program
-                    System.out.println("Tipo Primitivo: " + t.getType().toString());
                     aux = null;
                 }
             }
         }
 
         if (t.getType() == null && (t.getDataName() != null)) {
-            System.out.println("t -> " + t);
             aux.add("type", t.getDataName());
         }
 
@@ -910,7 +896,6 @@ public class JavaVisitor extends Visitor {
 
     @Override
     public void visit(BoolDexp b) {
-        System.out.println("Booleano: " + b.getValue());
         expr = groupTemplate.getInstanceOf("boolean_expr");
         expr.add("value", b.getValue());
     }

@@ -54,12 +54,12 @@ public class InterpretVisitor extends Visitor {
 
             // Itera sobre todas as funções definidas no programa
             prog.getFunctions().forEach(func -> {
-                funcs.put(func.getId(), func); // Armazena a função no mapa
+                String funcKey = func.getId() + "_" + func.getParams().size();
+                funcs.put(funcKey, func); // Armazena a função no mapa
                 if ("main".equals(func.getId())) { // Verifica se a função atual é a função main
                     main = func; // Define a função main como o ponto de entrada
                 }
             });
-
             // Se a função main não foi encontrada, lança uma exceção
             if (main == null) {
                 throw new RuntimeException("Não há uma função chamada \'main\' ! abortando !");
@@ -453,8 +453,11 @@ public class InterpretVisitor extends Visitor {
         }
         try {
 
-            // Localiza a função correspondente
-            Func func = funcs.get(funcCallCMD.getId());
+            // Cria a chave com o nome da função e o número de argumentos
+            String funcKey = funcCallCMD.getId() + "_" + funcCallCMD.getFFuncArgss().getExps().size();
+
+            // Busca a função correspondente no HashMap
+            Func func = funcs.get(funcKey);
 
             // Verifica se a função é nula
             if (funcCallCMD != null) {
@@ -1089,7 +1092,7 @@ public class InterpretVisitor extends Visitor {
     @Override
     public void visit(TyInt tyInt) {
         if (debug) {
-            System.out.println("Interpreter True in InterpretVisitor");
+            System.out.println("Interpreter TyInt in InterpretVisitor: " + tyInt.toString());
         }
         try {
 
@@ -1212,8 +1215,11 @@ public class InterpretVisitor extends Visitor {
         }
 
         try {
-            // Recupera a função correspondente pelo nome
-            Func func = funcs.get(funcCall.getId());
+            // Cria a chave com o nome da função e o número de argumentos
+            String funcKey = funcCall.getId() + "_" + funcCall.getFFuncArgss().getExps().size();
+
+            // Busca a função correspondente no HashMap
+            Func func = funcs.get(funcKey);
 
             // Verifica se a função existe
             if (func == null) {
