@@ -73,7 +73,7 @@ public class NewExp extends Expr {
         this.exp = exp;
     }
 
-    public Type getType() {
+    public Type getTipo() {
         return type;
     }
 

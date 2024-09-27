@@ -32,7 +32,7 @@ public class Obj extends LValue {
         return this.id;
     }
 
-    public Type getType() {
+    public Type getTipo() {
         return tipo;
     }
 

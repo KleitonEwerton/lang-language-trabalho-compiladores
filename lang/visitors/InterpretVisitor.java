@@ -1305,9 +1305,9 @@ public class InterpretVisitor extends Visitor {
         }
         try {
             // Verifica se o tipo da expressão está definido
-            if (newExp.getType() != null) {
+            if (newExp.getTipo() != null) {
                 if (newExp.getExpr() != null) {
-                    newExp.getType().accept(this);
+                    newExp.getTipo().accept(this);
                     newExp.getExpr().accept(this);
 
                     Integer count = (Integer) operands.pop();
@@ -1319,7 +1319,7 @@ public class InterpretVisitor extends Visitor {
 
                 } else {
                     // Caso a expressão seja nula, empurra um valor padrão
-                    operands.push(new Obj(newExp.getLine(), newExp.getColumn(), newExp.getType()));
+                    operands.push(new Obj(newExp.getLine(), newExp.getColumn(), newExp.getTipo()));
                 }
             } else {
                 if (newExp.getExpr() == null) {

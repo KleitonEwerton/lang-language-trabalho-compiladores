@@ -194,6 +194,8 @@ public class SemanticVisitor extends Visitor {
         if (rightType.match(tyInt) && leftType.match(tyInt)) {
             // Empilha o tipo inteiro no caso de operação válida
             types.push(tyInt);
+            mod.setType(tyInt);
+
         } else {
             logError.add(mod.getLine() + ", " + mod.getColumn() + ": Operador % não se aplica aos tipos "
                     + leftType.toString() + " e " + rightType.toString());
@@ -290,6 +292,7 @@ public class SemanticVisitor extends Visitor {
         if (rightType.match(tyBool) && leftType.match(tyBool)) {
             // Se forem, empilha o tipo booleano
             types.push(tyBool);
+            and.setType(tyBool);
         } else {
             // Caso contrário, registra o erro
             logError.add(and.getLine() + ", " + and.getColumn() + ": Operador & não se aplica aos tipos "
@@ -373,7 +376,7 @@ public class SemanticVisitor extends Visitor {
                 && (leftType.match(tyInt) || leftType.match(tyFloat))) {
             // Empilha tipo booleano para operações válidas
             types.push(tyBool);
-
+            equals.setType(tyBool);
             // Verifica se ambos os tipos são caracteres
         } else if (leftType.match(tyChar) && rightType.match(tyChar)) {
             types.push(tyBool);
@@ -390,6 +393,7 @@ public class SemanticVisitor extends Visitor {
     public void visit(FloatDexp p) {
         // Empilha o tipo float na pilha de tipos
         types.push(tyFloat);
+        p.setType(tyFloat);
     }
 
     @Override
@@ -551,6 +555,7 @@ public class SemanticVisitor extends Visitor {
     public void visit(IntDexp i) {
         if (i != null) {
             types.push(tyInt);
+            i.setType(tyInt);
         }
     }
 
@@ -588,6 +593,7 @@ public class SemanticVisitor extends Visitor {
                 (leftType.match(tyInt) || leftType.match(tyFloat))) {
             // Empilha o tipo booleano
             types.push(tyBool);
+            lessThan.setType(tyBool);
         } else {
             // Caso contrário, registra o erro
             logError.add(lessThan.getLine() + ", " + lessThan.getColumn() + ": Operador < não se aplica aos tipos "
@@ -732,6 +738,7 @@ public class SemanticVisitor extends Visitor {
         if (exprType.match(tyBool)) {
             // Empilha o tipo booleano se for válido
             types.push(tyBool);
+            not.setType(tyBool);
         } else {
             // Registra um erro se o tipo não for booleano
             logError.add(not.getLine() + ", " + not.getColumn() + ": Operador ! não se aplica ao tipo "
@@ -841,6 +848,7 @@ public class SemanticVisitor extends Visitor {
     @Override
     public void visit(TyBool t) {
         types.push(tyBool);
+
     }
 
     @Override
@@ -1084,12 +1092,12 @@ public class SemanticVisitor extends Visitor {
 
     @Override
     public void visit(NewExp newExp) {
-        boolean isDataArray = newExp.getExpr() != null && newExp.getType() == null;
-        boolean isSimpleArray = newExp.getExpr() != null && newExp.getType() != null;
+        boolean isDataArray = newExp.getExpr() != null && newExp.getTipo() == null;
+        boolean isSimpleArray = newExp.getExpr() != null && newExp.getTipo() != null;
 
         if (isSimpleArray) { // Caso seja um array com tipo primitivo
             // Processa o tipo base do array
-            newExp.getType().accept(this);
+            newExp.getTipo().accept(this);
             // Avalia o tamanho do array
             newExp.getExpr().accept(this);
             SemanticType arraySize = types.pop();
@@ -1106,9 +1114,9 @@ public class SemanticVisitor extends Visitor {
             SemanticType arrayBaseType = types.pop();
             types.push(new SemanticArrayType(arrayBaseType));
 
-        } else if (newExp.getType() != null) { // Caso seja uma nova instância de tipo primitivo
+        } else if (newExp.getTipo() != null) { // Caso seja uma nova instância de tipo primitivo
             // Processa o tipo
-            newExp.getType().accept(this);
+            newExp.getTipo().accept(this);
 
         } else if (!isDataArray) { // Caso seja um tipo de dado simples
             SemanticTypeData dataType = new SemanticTypeData(newExp.getDataName());
@@ -1172,8 +1180,9 @@ public class SemanticVisitor extends Visitor {
         for (Decl decl : data.getDecls()) {
             // Verifica se o campo já foi declarado
             if (!camposExistentes.add(decl.getId())) {
-                logError.add(data.getLine() + ", " + data.getColumn() + ": O campo " + decl.getId() + " no tipo de data "
-                        + data.getId() + " já foi definido");
+                logError.add(
+                        data.getLine() + ", " + data.getColumn() + ": O campo " + decl.getId() + " no tipo de data "
+                                + data.getId() + " já foi definido");
                 types.push(tyErr);
                 return;
             }
@@ -1200,6 +1209,7 @@ public class SemanticVisitor extends Visitor {
     public void visit(BoolDexp b) {
         // Empilha o tipo booleano na pilha de tipos
         types.push(tyBool);
+        b.setType(tyBool);
     }
 
     @Override
@@ -1210,7 +1220,7 @@ public class SemanticVisitor extends Visitor {
      * Funções Auxiliares
      */
 
-    private void typeArithmeticBinOp(Node node, String operatorName) {
+    private void typeArithmeticBinOp(Expr node, String operatorName) {
         // Desempilha os tipos das duas expressões
         SemanticType rightType = types.pop();
         SemanticType leftType = types.pop();
@@ -1247,6 +1257,7 @@ public class SemanticVisitor extends Visitor {
                     + leftType.toString() + " e " + rightType.toString());
             types.push(tyErr);
         }
+        node.setType(leftType);
     }
 
     // Método auxiliar para processar matrizes

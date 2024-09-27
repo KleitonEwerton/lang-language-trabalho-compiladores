@@ -5,6 +5,8 @@
 
 package lang.ast;
 
+import lang.semantic.types.SemanticType;
+
 /*
  * Esta classe representa um comando de Impressão.
  * Expr
@@ -12,6 +14,7 @@ package lang.ast;
 public abstract class Expr extends Node {
 
     private Expr expr;
+    private SemanticType type;
 
     public Expr(int lin, int col) {
         super(lin, col);
@@ -20,6 +23,14 @@ public abstract class Expr extends Node {
     public Expr(int lin, int col, Expr expr) {
         super(lin, col);
         this.expr = expr;
+    }
+
+    public SemanticType getType() {
+        return type;
+    }
+
+    public void setType(SemanticType type) {
+        this.type = type;
     }
 
     public Expr getExpr() {

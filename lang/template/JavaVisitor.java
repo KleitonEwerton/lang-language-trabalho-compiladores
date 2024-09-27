@@ -744,12 +744,12 @@ public class JavaVisitor extends Visitor {
         ST aux = groupTemplate.getInstanceOf("typeInstanciate");
 
         // Verifica se há um tipo associado à expressão
-        if (newExp.getType() != null) {
+        if (newExp.getTipo() != null) {
             // Para arrays
             if (newExp.getExpr() != null) {
-                if (newExp.getType() instanceof ArrayType) {
+                if (newExp.getTipo() instanceof ArrayType) {
                     // Caso seja uma matriz, ajusta a criação
-                    ArrayType arrayType = (ArrayType) newExp.getType();
+                    ArrayType arrayType = (ArrayType) newExp.getTipo();
                     ST lvalue = groupTemplate.getInstanceOf("lvalue");
 
                     // Converte o tipo base do array
@@ -768,7 +768,7 @@ public class JavaVisitor extends Visitor {
                     aux.add("expr", "");
                 } else {
                     // Para arrays simples
-                    newExp.getType().accept(this);
+                    newExp.getTipo().accept(this);
                     aux.add("type", type);
 
                     // Adiciona a expressão do tamanho do array
@@ -777,8 +777,8 @@ public class JavaVisitor extends Visitor {
                 }
             } else {
                 // Para tipos simples
-                if (newExp.getType() instanceof NameType) {
-                    newExp.getType().accept(this);
+                if (newExp.getTipo() instanceof NameType) {
+                    newExp.getTipo().accept(this);
                     aux.add("type", type);
                 } else {
                     aux = null;
@@ -787,7 +787,7 @@ public class JavaVisitor extends Visitor {
         }
 
         // Caso o tipo seja nulo
-        if (newExp.getType() == null && newExp.getDataName() != null) {
+        if (newExp.getTipo() == null && newExp.getDataName() != null) {
             aux.add("type", newExp.getDataName());
         }
 
