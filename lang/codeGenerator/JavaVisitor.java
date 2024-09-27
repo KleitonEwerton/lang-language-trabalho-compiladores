@@ -135,35 +135,34 @@ public class JavaVisitor extends Visitor {
 
         ST fun = groupTemplate.getInstanceOf("func");
         fun.add("name", f.getId());
-        // Pega todas as funções que tem o mesmo nome
+
+        // Pega todas as funções que têm o mesmo nome
         ArrayList<LocalEnv> funcFinded = (ArrayList) env.findFunctions(f.getId());
 
-        // Só uma funcao
+        // Função correta encontrada (por padrão, a primeira)
         LocalEnv<SemanticType> local = (LocalEnv<SemanticType>) funcFinded.get(0);
-        if (funcFinded.size() > 1) { // Tem sobrecarga
-            System.out.println("Tem sobre carga");
 
+        // Verifica se há sobrecarga de função (mais de uma função com o mesmo nome)
+        if (funcFinded.size() > 1) {
             for (int i = 0; i < funcFinded.size(); i++) {
                 LocalEnv<SemanticType> funcaoBase = funcFinded.get(i);
                 SemanticTypeFunc funcaoBaseTipo = (SemanticTypeFunc) funcaoBase.getFuncType();
-                System.out.println("funcaoBaseTipo.getReturnTypes().length " + funcaoBaseTipo.getReturnTypes().length);
-                System.out.println("f.getParams().getType().size() " + f.getParams().getType().size());
-                // Se a funcao tem o mesmo numero de parametros entao pode ser a correta
-                if (funcaoBaseTipo.getReturnTypes().length == f.getParams().getType().size()) {
-                    int counterTypes = 0; // Conta os tipos iguais para achar a funcao certa
-                    for (int j = 0; j < funcaoBaseTipo.getReturnTypes().length; j++) {
 
-                        // Compara pelo nome dos tipos pq se for tentar usar o 'equals' entre os tipos
-                        // Da problema pois sao regioes diferentes de memoria
-                        if (funcaoBaseTipo.getReturnTypes()[j].toString().equals(
-                                ((Type) f.getParams().getSingleType(j)).toString() // Compara com o tipo da funcao
-                        )) {
-                            counterTypes++;
+                // Verifica se o número de parâmetros da função coincide com a função observada
+                if (funcaoBaseTipo.getParamTypes().length == f.getParams().size()) {
+                    boolean matchingParams = true;
+
+                    // Verifica se os tipos dos parâmetros coincidem
+                    for (int j = 0; j < funcaoBaseTipo.getParamTypes().length; j++) {
+                        if (!funcaoBaseTipo.getParamTypes()[j].toString().equals(
+                                ((Type) f.getParams().getSingleType(j)).toString())) {
+                            matchingParams = false;
+                            break;
                         }
                     }
-                    System.out.println("ESPERO ENTRAR");
-                    if (counterTypes == funcaoBaseTipo.getParamTypes().length) {
-                        System.out.println("AQUI DEVE ENTRAR");
+
+                    // Se todos os parâmetros coincidem, esta é a função correta
+                    if (matchingParams) {
                         local = (LocalEnv<SemanticType>) funcFinded.get(i);
                         break;
                     }
