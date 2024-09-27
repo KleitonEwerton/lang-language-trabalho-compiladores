@@ -6,7 +6,7 @@ compile:
 	javac -cp .:antlr-4.8-complete.jar lang/parser/*.java lang/ast/*.java lang/*.java lang/visitors/*.java
 
 compile1:
-	javac -cp .:ST-4.3.1.jar lang/codeGenerator/*.java
+	javac -cp .:ST-4.3.1.jar lang/template/*.java
 
 testSintatico:
 	java -cp antlr-4.8-complete.jar:. lang/LangCompiler -bs
@@ -38,9 +38,9 @@ clean:
 	lang/visitors/*.class \
 	lang/semantic/*.class \
 	lang/semantic/types/*.class \
-	lang/codeGenerator/*.class \
-	codeJava/*.class \
-	codeJava/*.java
+	lang/template/*.class \
+	generatedCode/*.class \
+	generatedCode/*.java \
 
 ex1:
 	java -cp antlr-4.8-complete.jar:. lang/LangCompiler -i ./testes/semantica/certo/teste1.lan
@@ -74,65 +74,65 @@ ex14:
 	java -cp antlr-4.8-complete.jar:. lang/LangCompiler -i ./testes/semantica/certo/teste14.lan
 
 codeTeste0:
-	java -cp antlr-4.8-complete.jar:ST-4.3.1.jar:. lang/LangCompiler -Java ./testes/semantica/certo/teste0.lan -genFile ./codeJava/teste0.java
-	javac ./codeJava/teste0.java
+	java -cp antlr-4.8-complete.jar:ST-4.3.1.jar:. lang/LangCompiler -Java ./testes/semantica/certo/teste0.lan -genFile ./generatedCode/teste0.java
+	javac ./generatedCode/teste0.java
 
 codeTeste1:
-	java -cp antlr-4.8-complete.jar:ST-4.3.1.jar:. lang/LangCompiler -Java ./testes/semantica/certo/teste1.lan -genFile ./codeJava/teste1.java
-	javac ./codeJava/teste1.java
+	java -cp antlr-4.8-complete.jar:ST-4.3.1.jar:. lang/LangCompiler -Java ./testes/semantica/certo/teste1.lan -genFile ./generatedCode/teste1.java
+	javac ./generatedCode/teste1.java
 
 codeTeste1eMeio:
-	java -cp antlr-4.8-complete.jar:ST-4.3.1.jar:. lang/LangCompiler -Java ./testes/semantica/certo/teste1eMeio.lan -genFile ./codeJava/teste1eMeio.java
-	javac ./codeJava/teste1eMeio.java
+	java -cp antlr-4.8-complete.jar:ST-4.3.1.jar:. lang/LangCompiler -Java ./testes/semantica/certo/teste1eMeio.lan -genFile ./generatedCode/teste1eMeio.java
+	javac ./generatedCode/teste1eMeio.java
 
 codeTeste2:
-	java -cp antlr-4.8-complete.jar:ST-4.3.1.jar:. lang/LangCompiler -Java ./testes/semantica/certo/teste2.lan -genFile ./codeJava/teste2.java
-	javac ./codeJava/teste2.java
+	java -cp antlr-4.8-complete.jar:ST-4.3.1.jar:. lang/LangCompiler -Java ./testes/semantica/certo/teste2.lan -genFile ./generatedCode/teste2.java
+	javac ./generatedCode/teste2.java
 
 codeTeste3:
-	java -cp antlr-4.8-complete.jar:ST-4.3.1.jar:. lang/LangCompiler -Java ./testes/semantica/certo/teste3.lan -genFile ./codeJava/teste3.java
-	javac ./codeJava/teste3.java
+	java -cp antlr-4.8-complete.jar:ST-4.3.1.jar:. lang/LangCompiler -Java ./testes/semantica/certo/teste3.lan -genFile ./generatedCode/teste3.java
+	javac ./generatedCode/teste3.java
 
 codeTeste4:
-	java -cp antlr-4.8-complete.jar:ST-4.3.1.jar:. lang/LangCompiler -Java ./testes/semantica/certo/teste4.lan -genFile ./codeJava/teste4.java
-	javac ./codeJava/teste4.java
+	java -cp antlr-4.8-complete.jar:ST-4.3.1.jar:. lang/LangCompiler -Java ./testes/semantica/certo/teste4.lan -genFile ./generatedCode/teste4.java
+	javac ./generatedCode/teste4.java
 
 codeTeste5:
-	java -cp antlr-4.8-complete.jar:ST-4.3.1.jar:. lang/LangCompiler -Java ./testes/semantica/certo/teste5.lan -genFile ./codeJava/teste5.java
-	javac ./codeJava/teste5.java
+	java -cp antlr-4.8-complete.jar:ST-4.3.1.jar:. lang/LangCompiler -Java ./testes/semantica/certo/teste5.lan -genFile ./generatedCode/teste5.java
+	javac ./generatedCode/teste5.java
 
 codeTeste6:
-	java -cp antlr-4.8-complete.jar:ST-4.3.1.jar:. lang/LangCompiler -Java ./testes/semantica/certo/teste6.lan -genFile ./codeJava/teste6.java
-	javac ./codeJava/teste6.java
+	java -cp antlr-4.8-complete.jar:ST-4.3.1.jar:. lang/LangCompiler -Java ./testes/semantica/certo/teste6.lan -genFile ./generatedCode/teste6.java
+	javac ./generatedCode/teste6.java
 
 codeTeste7:
-	java -cp antlr-4.8-complete.jar:ST-4.3.1.jar:. lang/LangCompiler -Java ./testes/semantica/certo/teste7.lan -genFile ./codeJava/teste7.java
-	javac ./codeJava/teste7.java
+	java -cp antlr-4.8-complete.jar:ST-4.3.1.jar:. lang/LangCompiler -Java ./testes/semantica/certo/teste7.lan -genFile ./generatedCode/teste7.java
+	javac ./generatedCode/teste7.java
 
 codeTeste8:
-	java -cp antlr-4.8-complete.jar:ST-4.3.1.jar:. lang/LangCompiler -Java ./testes/semantica/certo/teste8.lan -genFile ./codeJava/teste8.java
-	javac ./codeJava/teste8.java
+	java -cp antlr-4.8-complete.jar:ST-4.3.1.jar:. lang/LangCompiler -Java ./testes/semantica/certo/teste8.lan -genFile ./generatedCode/teste8.java
+	javac ./generatedCode/teste8.java
 
 codeTeste9:
-	java -cp antlr-4.8-complete.jar:ST-4.3.1.jar:. lang/LangCompiler -Java ./testes/semantica/certo/teste9.lan -genFile ./codeJava/teste9.java
-	javac ./codeJava/teste9.java
+	java -cp antlr-4.8-complete.jar:ST-4.3.1.jar:. lang/LangCompiler -Java ./testes/semantica/certo/teste9.lan -genFile ./generatedCode/teste9.java
+	javac ./generatedCode/teste9.java
 
 codeTeste10:
-	java -cp antlr-4.8-complete.jar:ST-4.3.1.jar:. lang/LangCompiler -Java ./testes/semantica/certo/teste10.lan -genFile ./codeJava/teste10.java
-	javac ./codeJava/teste10.java
+	java -cp antlr-4.8-complete.jar:ST-4.3.1.jar:. lang/LangCompiler -Java ./testes/semantica/certo/teste10.lan -genFile ./generatedCode/teste10.java
+	javac ./generatedCode/teste10.java
 
 codeTeste11:
-	java -cp antlr-4.8-complete.jar:ST-4.3.1.jar:. lang/LangCompiler -Java ./testes/semantica/certo/teste11.lan -genFile ./codeJava/teste11.java
-	javac ./codeJava/teste11.java
+	java -cp antlr-4.8-complete.jar:ST-4.3.1.jar:. lang/LangCompiler -Java ./testes/semantica/certo/teste11.lan -genFile ./generatedCode/teste11.java
+	javac ./generatedCode/teste11.java
 
 codeTeste12:
-	java -cp antlr-4.8-complete.jar:ST-4.3.1.jar:. lang/LangCompiler -Java ./testes/semantica/certo/teste12.lan -genFile ./codeJava/teste12.java
-	javac ./codeJava/teste12.java
+	java -cp antlr-4.8-complete.jar:ST-4.3.1.jar:. lang/LangCompiler -Java ./testes/semantica/certo/teste12.lan -genFile ./generatedCode/teste12.java
+	javac ./generatedCode/teste12.java
 
 codeTeste13:
-	java -cp antlr-4.8-complete.jar:ST-4.3.1.jar:. lang/LangCompiler -Java ./testes/semantica/certo/teste13.lan -genFile ./codeJava/teste13.java
-	javac ./codeJava/teste13.java
+	java -cp antlr-4.8-complete.jar:ST-4.3.1.jar:. lang/LangCompiler -Java ./testes/semantica/certo/teste13.lan -genFile ./generatedCode/teste13.java
+	javac ./generatedCode/teste13.java
 
 codeTeste14:
-	java -cp antlr-4.8-complete.jar:ST-4.3.1.jar:. lang/LangCompiler -Java ./testes/semantica/certo/teste14.lan -genFile ./codeJava/teste14.java
-	javac ./codeJava/teste14.java
+	java -cp antlr-4.8-complete.jar:ST-4.3.1.jar:. lang/LangCompiler -Java ./testes/semantica/certo/teste14.lan -genFile ./generatedCode/teste14.java
+	javac ./generatedCode/teste14.java

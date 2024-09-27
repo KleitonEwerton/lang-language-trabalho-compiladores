@@ -4,16 +4,22 @@ program(name, funcs, datas) ::= <<
 import java.util.Scanner;
 
 public class <name> {
-    public Scanner __Scanner = new Scanner(System.in); // Scanner para fazer a leitura de entrada pelo teclado
-
-    <datas; separator="\n\n">
+    public Scanner __Scanner = new Scanner(System.in);
 
     <funcs; separator="\n\n">
+    <datas; separator="\n\n">
 
     public static void main(String args[]) {
         <name> m = new <name>();
         m.main();
     }
+}
+>>
+
+func(type, name, params, decl, stmt) ::= <<
+<type> <name>(<params; separator=", ">) {
+    <if(decl)><decl; separator=";\n">;<endif>
+    <stmt; separator="\n">
 }
 >>
 
@@ -23,20 +29,18 @@ public class <name> {
 };
 >>
 
-func(type, name, params, decl, stmt) ::= <<
-<type> <name>(<params; separator=", ">) {
-    <if(decl)><decl; separator=";\n">;<endif>
-    <stmt; separator="\n">
-}
->>
 param(type, name) ::= "<type> <name>"
-declaration(type, name) ::= "<type> <name>;"    
 
 array_type(type) ::= "<type>[]"
 int_type() ::= "Integer"
 float_type() ::= "Float"
 boolean_type() ::= "Boolean"
 char_type() ::= "Character"
+
+
+
+
+
 data_type(data) ::= "<data>"
 null_type() ::= "null"
 
@@ -67,6 +71,15 @@ if(<expr>) {
 <endif>
 >>
 
+
+declaration(type, name) ::= "<type> <name>;"    
+
+
+
+
+
+
+
 attribution(var, expr) ::= "<var> = <expr>;"
 typeInstanciate(type, expr) ::= <<
 new <type><if(expr)>[<expr>]<else>()<endif>
@@ -83,21 +96,25 @@ int_expr(value) ::= "<value>"
 functionReturn(name, args, expr) ::= <<
 <name><if(expr)>_retorno_0<expr><else><endif>(<args; separator=", ">)
 >>
+
 functionCall(name, args, var1, var2) ::= <<
 <var1> = <name>_retorno_00(<args; separator=", ">);
+
 <if(var2)><var2> = <name>_retorno_01(<args; separator=", ">);<else><endif>
 >>
+
 call(name, args) ::= <<<name>(<args; separator=", ">);>>
 
-mult_expr(left_expr, right_expr) ::= "(<left_expr> * <right_expr>)"
+mul_expr(left_expr, right_expr) ::= "(<left_expr> * <right_expr>)"
 div_expr(left_expr, right_expr) ::= "(<left_expr> / <right_expr>)"
 mod_expr(left_expr, right_expr) ::= "(<left_expr> % <right_expr>)"
 add_expr(left_expr, right_expr) ::= "(<left_expr> + <right_expr>)"
 sub_expr(left_expr, right_expr) ::= "(<left_expr> - <right_expr>)"
 
-lessThan_expr(left_expr, right_expr) ::= "(<left_expr> \< <right_expr>)"
-equallity_expr(left_expr, right_expr) ::= "(<left_expr> == <right_expr>)"
-diff_expr(left_expr, right_expr) ::= "(<left_expr> != <right_expr>)"
+
+lt_expr(left_expr, right_expr) ::= "(<left_expr> \< <right_expr>)"
+equals_expr(left_expr, right_expr) ::= "(<left_expr> == <right_expr>)"
+not_equals_expr(left_expr, right_expr) ::= "(<left_expr> != <right_expr>)"
 and_expr(left_expr, right_expr) ::= "(<left_expr> && <right_expr>)"
 not_expr(expr) ::= "!<expr>"
-minus_expr(expr) ::= "-<expr>"
+neg_expr(expr) ::= "-<expr>"

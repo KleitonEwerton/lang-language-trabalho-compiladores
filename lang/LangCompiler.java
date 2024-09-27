@@ -5,12 +5,12 @@
 package lang;
 
 import lang.ast.*;
-import lang.codeGenerator.JavaVisitor;
 import lang.parser.*;
 import lang.semantic.*;
 import lang.semantic.types.LocalEnv;
 import lang.semantic.types.SemanticType;
 import lang.semantic.types.SemanticTypeEnv;
+import lang.template.JavaVisitor;
 import lang.visitors.*;
 
 import java.io.*;
