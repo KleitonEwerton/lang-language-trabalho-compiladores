@@ -717,13 +717,6 @@ public class JavaVisitor extends Visitor {
         expr = aux;
     }
 
-    // True e False
-    @Override
-    public void visit(BooleanValue b) {
-        expr = groupTemplate.getInstanceOf("boolean_expr");
-        expr.add("value", b.getValue());
-    }
-
     @Override
     public void visit(Null n) {
         expr = groupTemplate.getInstanceOf("null_type");
@@ -919,6 +912,8 @@ public class JavaVisitor extends Visitor {
     @Override
     public void visit(BoolDexp b) {
         System.out.println("Booleano: " + b.getValue());
+        expr = groupTemplate.getInstanceOf("boolean_expr");
+        expr.add("value", b.getValue());
     }
 
 }

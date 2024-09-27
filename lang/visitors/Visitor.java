@@ -100,6 +100,4 @@ public abstract class Visitor {
 
     public abstract void visit(TyInt t);
 
-    public abstract void visit(BooleanValue b);
-
 }

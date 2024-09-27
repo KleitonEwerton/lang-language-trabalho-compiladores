@@ -1440,9 +1440,4 @@ public class InterpretVisitor extends Visitor {
         System.out.println("================================");
     }
 
-    @Override
-    public void visit(BooleanValue b) {
-
-    }
-
 }

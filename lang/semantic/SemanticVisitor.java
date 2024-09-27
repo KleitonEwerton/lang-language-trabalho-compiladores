@@ -1206,11 +1206,6 @@ public class SemanticVisitor extends Visitor {
     public void visit(ID i) {
     }
 
-    @Override
-    public void visit(BooleanValue booleanValue) {
-        types.push(tyBool); // true e false
-    }
-
     /*
      * Funções Auxiliares
      */
