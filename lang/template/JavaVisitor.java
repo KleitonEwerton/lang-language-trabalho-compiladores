@@ -12,66 +12,47 @@ import org.stringtemplate.v4.STGroupFile;
 
 public class JavaVisitor extends Visitor {
 
+    // template
     private STGroup groupTemplate;
-    private ST type, stmt, expr, variavel;
-    private ST template; // Armazena todo o código do programa
-    private List<ST> funcs, params, datas, declarations;
+    private ST type, stmt, expr, template;
+    private List<ST> funcs, params, datas, decls;
+
     private String fileName;
-    private int loopAtual = 0;
+
+    private int loop = 0; // Loop
+    private int ret = 0; // Retorno
 
     SemanticTypeEnv<LocalEnv<SemanticType>> env;
 
-    private HashMap<String, DataAttr> datasAttrib;
-
-    private ArrayList<Func> functionsAST;
-
-    private HashMap<String, Data> datasAST;
-
-    private LocalEnv<SemanticType> funcaoAtualObservada;
-    private int idRetorno = 0;
+    private HashMap<String, DataAttr> datasAttr;
+    private LocalEnv<SemanticType> funcObs;
 
     public JavaVisitor(String fileName, SemanticTypeEnv<LocalEnv<SemanticType>> env,
-            HashMap<String, DataAttr> datasAttrib) {
+            HashMap<String, DataAttr> datasAttr) {
         groupTemplate = new STGroupFile("./lang/template/java.stg");
         this.fileName = fileName;
         this.env = env;
-        this.datasAttrib = datasAttrib;
-        functionsAST = new ArrayList<Func>();
-        datasAST = new HashMap<String, Data>();
-    }
-
-    public String getTemplate() {
-        return template.render();
-    }
-
-    // Retorna o ambiente de geração de código
-    public SemanticTypeEnv<LocalEnv<SemanticType>> getEnv() {
-        return env;
-    }
-
-    // https://www.techiedelight.com/get-current-line-number-java/
-    // Retorna a linha do código fonte ao passar pela instrução
-    public int getLineNumber() {
-        // return new Throwable().getStackTrace()[0].getLineNumber();
-        return Thread.currentThread().getStackTrace()[2].getLineNumber();
+        this.datasAttr = datasAttr;
     }
 
     @Override
-    public void visit(Prog p) {
+    public void visit(Prog prog) {
         template = groupTemplate.getInstanceOf("program").add("name", fileName);
 
         // Inicializa e processa os tipos Data
+        HashMap<String, Data> data = new HashMap<String, Data>();
         datas = new ArrayList<ST>();
-        p.getDatas().forEach(d -> {
-            datasAST.put(d.getId(), d);
+        prog.getDatas().forEach(d -> {
+            data.put(d.getId(), d);
             d.accept(this);
         });
         template.add("datas", datas); // Adiciona datas processados ao template
 
         // Inicializa e processa as funções
+        ArrayList<Func> func = new ArrayList<Func>();
         funcs = new ArrayList<ST>();
-        p.getFunctions().forEach(f -> {
-            functionsAST.add(f);
+        prog.getFunctions().forEach(f -> {
+            func.add(f);
             f.accept(this);
         });
 
@@ -143,203 +124,260 @@ public class JavaVisitor extends Visitor {
 
     @Override
     public void visit(Func func) {
-        ST fun = groupTemplate.getInstanceOf("func");
-        fun.add("name", func.getId());
+        // Cria uma instância da função a partir do template
+        ST functionTemplate = groupTemplate.getInstanceOf("func");
+        functionTemplate.add("name", func.getId());
 
-        // Pega todas as funções que têm o mesmo nome
-        ArrayList<LocalEnv> funcFinded = (ArrayList) env.findFunctions(func.getId());
+        // Lista todas as funções encontradas com o mesmo nome
+        ArrayList<LocalEnv> foundFunctions = (ArrayList) env.findFunctions(func.getId());
 
-        // Função correta encontrada (por padrão, a primeira)
-        LocalEnv<SemanticType> local = (LocalEnv<SemanticType>) funcFinded.get(0);
+        // Inicializa a função correta com a primeira da lista
+        LocalEnv<SemanticType> currentFunctionEnv = foundFunctions.get(0);
 
-        // Verifica se há sobrecarga de função (mais de uma função com o mesmo nome)
-        if (funcFinded.size() > 1) {
-            for (int i = 0; i < funcFinded.size(); i++) {
-                LocalEnv<SemanticType> funcaoBase = funcFinded.get(i);
-                SemanticTypeFunc funcaoBaseTipo = (SemanticTypeFunc) funcaoBase.getFuncType();
+        // Se houver mais de uma função com o mesmo nome (sobrecarga)
+        if (foundFunctions.size() > 1) {
+            for (int i = 0; i < foundFunctions.size(); i++) {
+                LocalEnv<SemanticType> candidateFunction = foundFunctions.get(i);
+                SemanticTypeFunc candidateFuncType = (SemanticTypeFunc) candidateFunction.getFuncType();
 
-                // Verifica se o número de parâmetros da função coincide com a função observada
-                if (funcaoBaseTipo.getParamTypes().length == func.getParams().size()) {
-                    boolean matchingParams = true;
+                // Verifica se o número de parâmetros coincide
+                if (candidateFuncType.getParamTypes().length == func.getParams().size()) {
+                    boolean paramsMatch = true;
 
-                    // Verifica se os tipos dos parâmetros coincidem
-                    for (int j = 0; j < funcaoBaseTipo.getParamTypes().length; j++) {
-                        if (!funcaoBaseTipo.getParamTypes()[j].toString().equals(
+                    // Verifica se os tipos dos parâmetros são os mesmos
+                    for (int j = 0; j < candidateFuncType.getParamTypes().length; j++) {
+                        if (!candidateFuncType.getParamTypes()[j].toString().equals(
                                 ((Type) func.getParams().getSingleType(j)).toString())) {
-                            matchingParams = false;
+                            paramsMatch = false;
                             break;
                         }
                     }
 
-                    // Se todos os parâmetros coincidem, esta é a função correta
-                    if (matchingParams) {
-                        local = (LocalEnv<SemanticType>) funcFinded.get(i);
+                    // Se todos os parâmetros forem compatíveis, seleciona esta função
+                    if (paramsMatch) {
+                        currentFunctionEnv = foundFunctions.get(i);
                         break;
                     }
                 }
             }
         }
 
-        // Variavel que armazena qual função está sendo observada para poder verificar
-        // tipos e valores
-        funcaoAtualObservada = local;
+        // Armazena a função observada
+        funcObs = currentFunctionEnv;
 
+        // Tratamento para funções com um ou nenhum retorno
         if (func.getReturnTypes().size() < 2) {
-            if (func.getReturnTypes().size() == 0) { // void => 0 retornos
-                if (func.getId().equals("main")) { // Função 'main' pra C++ tem retornar valor inteiro
-                    fun.add("type", "int");
+            // Função sem retorno (void)
+            if (func.getReturnTypes().isEmpty()) {
+                if (func.getId().equals("main")) {
+                    functionTemplate.add("type", "int"); // Função 'main' deve retornar int em C++
                 } else {
-                    fun.add("type", "void");
+                    functionTemplate.add("type", "void"); // Outras funções sem retorno
                 }
-            } else if (func.getReturnTypes().size() == 1) { // 1 retorno somente
-                // A função mesmo com somente 1 retorno terá seu nome alterado
-                fun = groupTemplate.getInstanceOf("func");
-                String nomeFuncao = func.getId() + "_retorno_00";
-                fun.add("name", nomeFuncao);
-                func.getReturnTypes().get(0).accept(this); // Empilha o único tipo de retorno que será o tipo da função
-                fun.add("type", type);
+            }
+            // Função com um único retorno
+            else if (func.getReturnTypes().size() == 1) {
+                functionTemplate = groupTemplate.getInstanceOf("func");
+                String functionName = func.getId() + "_0"; // Nome da função modificado
+                functionTemplate.add("name", functionName);
+                func.getReturnTypes().get(0).accept(this); // Obtém o tipo de retorno
+                functionTemplate.add("type", type); // Adiciona o tipo ao template
             }
 
-            // Declaração das variaveis que são usadas no corpo da função
-            Set<String> keys = local.getKeys();
-
-            // Instancia a lista que vai armazenar os comandos da função
+            // Declaração de variáveis locais
+            Set<String> localVars = currentFunctionEnv.getKeys();
             params = new ArrayList<ST>();
 
+            // Processamento dos parâmetros da função
             if (func.getParams() != null) {
+                Param paramList = func.getParams();
+                for (int i = 0; i < paramList.size(); i++) {
+                    SemanticType paramType = ((SemanticTypeFunc) currentFunctionEnv.getFuncType()).getParamTypes()[i];
+                    ST paramTemplate = groupTemplate.getInstanceOf("param");
+                    String paramName = paramList.getSingleId(i);
+                    paramTemplate.add("name", paramName);
 
-                Param paramsList = func.getParams();
+                    // Verifica se o tipo do parâmetro é um array
+                    if (paramType instanceof SemanticArrayType) {
+                        List<ST> arrayTemplates = new ArrayList<ST>();
+                        SemanticType innerType = paramType;
 
-                // Adiciona as variaveis do parametro no escopo local
-                for (int i = 0; i < paramsList.size(); i++) {
-                    SemanticType t = ((SemanticTypeFunc) local.getFuncType()).getParamTypes()[i]; // Pega o tipo do
-                    ST p = groupTemplate.getInstanceOf("param");
-                    String nomeParametro = paramsList.getSingleId(i);
-                    p.add("name", nomeParametro);
-                    if (t instanceof SemanticArrayType) {
-                        adjustSemanticArrayType((SemanticArrayType) t);
+                        // Criação da lista de arrays
+                        while (innerType instanceof SemanticArrayType) {
+                            ST arrayTemplate = groupTemplate.getInstanceOf("array_type");
+                            arrayTemplates.add(arrayTemplate);
+                            innerType = ((SemanticArrayType) innerType).getArg();
+                        }
+
+                        // Processamento do tipo mais interno
+                        processSemanticType(innerType);
+                        arrayTemplates.get(0).add("type", type);
+
+                        // Ajuste dos tipos mais externos
+                        for (int j = 1; j < arrayTemplates.size(); j++) {
+                            ST previousArray = arrayTemplates.get(j - 1);
+                            ST currentArray = arrayTemplates.get(j);
+                            currentArray.add("type", previousArray);
+                        }
+
+                        type = arrayTemplates.get(arrayTemplates.size() - 1);
                     } else {
-                        processSemanticType(t);
+                        processSemanticType(paramType);
                     }
-                    p.add("type", type);
-                    params.add(p);
 
-                    // Remove o parametro da função da lista de variaveis do corpo da função
-                    keys.remove(nomeParametro);
+                    paramTemplate.add("type", type);
+                    params.add(paramTemplate);
+                    localVars.remove(paramName); // Remove o parâmetro da lista de variáveis locais
                 }
             }
-            fun.add("params", params);
+            functionTemplate.add("params", params);
 
-            // Instancia as variaveis antes de usar nas operações presente no corpo da
-            // função
-            for (String key : keys) {
-                SemanticType t = local.get(key);
-                // if(!(t instanceof SemanticArrayType)){ // Se nao for array declara
-                // normalmente
-                ST decl = groupTemplate.getInstanceOf("param");
-                decl.add("name", key);
-                if (t instanceof SemanticArrayType) {
-                    adjustSemanticArrayType((SemanticArrayType) t);
+            // Declaração de variáveis restantes
+            for (String varName : localVars) {
+                SemanticType varType = currentFunctionEnv.get(varName);
+                ST varDeclTemplate = groupTemplate.getInstanceOf("param");
+                varDeclTemplate.add("name", varName);
+
+                if (varType instanceof SemanticArrayType) {
+                    List<ST> arrayTemplates = new ArrayList<ST>();
+                    SemanticType innerType = varType;
+
+                    while (innerType instanceof SemanticArrayType) {
+                        ST arrayTemplate = groupTemplate.getInstanceOf("array_type");
+                        arrayTemplates.add(arrayTemplate);
+                        innerType = ((SemanticArrayType) innerType).getArg();
+                    }
+
+                    processSemanticType(innerType);
+                    arrayTemplates.get(0).add("type", type);
+
+                    for (int j = 1; j < arrayTemplates.size(); j++) {
+                        ST previousArray = arrayTemplates.get(j - 1);
+                        ST currentArray = arrayTemplates.get(j);
+                        currentArray.add("type", previousArray);
+                    }
+
+                    type = arrayTemplates.get(arrayTemplates.size() - 1);
                 } else {
-                    processSemanticType(t);
+                    processSemanticType(varType);
                 }
-                decl.add("type", type);
-                fun.add("decl", decl);
-                // }
+
+                varDeclTemplate.add("type", type);
+                functionTemplate.add("decl", varDeclTemplate);
             }
 
-            for (int i = 0; i < func.getCommands().size(); i++) {
-                Cmd command = func.getCommands().get(i);
+            // Processamento dos comandos da função
+            for (Cmd command : func.getCommands()) {
                 command.accept(this);
-                fun.add("stmt", stmt);
+                functionTemplate.add("stmt", stmt);
             }
 
-            // Adiciona o 'return 0;' na função main do código em C++
+            // Adiciona 'return 0;' no final da função 'main'
             if (func.getId().equals("main")) {
-                stmt = groupTemplate.getInstanceOf("return");
-                stmt.add("expr", 0); // 'return 0;'
-                fun.add("stmt", stmt);
+                ST returnStmt = groupTemplate.getInstanceOf("return");
+                returnStmt.add("expr", 0);
+                functionTemplate.add("stmt", returnStmt);
             }
 
-            funcs.add(fun);
+            funcs.add(functionTemplate);
 
-        } else { // 2 retornos
-            /**
-             * Vai adicionar duas funções da seguinte forma:
-             * Exemplo:
-             * -- Em lang ==> tipo float e int
-             * soma(n :: int, n1 :: int): float, int{
-             * -- Em C++
-             * float soma_retorno_01(int n, int n1) ||| int soma_retorno_02(int n, int n1)
-             */
-            idRetorno = 0;
-            // Para cada tipo de retorno, será criada uma função diferente
+        }
+        // Tratamento para funções com múltiplos retornos
+        else {
+            ret = 0;
+
             for (int j = 0; j < func.getReturnTypes().size(); j++) {
-                fun = groupTemplate.getInstanceOf("func");
-                String nomeFuncao = func.getId() + "_retorno_0" + idRetorno;
-                fun.add("name", nomeFuncao);
+                functionTemplate = groupTemplate.getInstanceOf("func");
+                String functionName = func.getId() + "_" + ret;
+                functionTemplate.add("name", functionName);
 
-                // Empilha o tipo de retorno da função
-                func.getReturnTypes().get(idRetorno).accept(this);
-                fun.add("type", type);
+                func.getReturnTypes().get(ret).accept(this); // Obtém o tipo de retorno
+                functionTemplate.add("type", type);
 
-                // Declaração das variaveis que são usadas no corpo da função
-                Set<String> keys = local.getKeys();
-
-                // Instancia a lista que vai armazenar os comandos da função
+                // Processa os parâmetros e variáveis da mesma forma que funções com um retorno
+                Set<String> localVars = currentFunctionEnv.getKeys();
                 params = new ArrayList<ST>();
 
                 if (func.getParams() != null) {
+                    Param paramList = func.getParams();
+                    for (int i = 0; i < paramList.size(); i++) {
+                        SemanticType paramType = ((SemanticTypeFunc) currentFunctionEnv.getFuncType())
+                                .getParamTypes()[i];
+                        ST paramTemplate = groupTemplate.getInstanceOf("param");
+                        String paramName = paramList.getSingleId(i);
+                        paramTemplate.add("name", paramName);
 
-                    Param paramsList = func.getParams();
+                        if (paramType instanceof SemanticArrayType) {
+                            List<ST> arrayTemplates = new ArrayList<ST>();
+                            SemanticType innerType = paramType;
 
-                    // Adiciona as variaveis do parametro no escopo local
-                    for (int i = 0; i < paramsList.size(); i++) {
-                        SemanticType t = ((SemanticTypeFunc) local.getFuncType()).getParamTypes()[i]; // Pega o tipo do
-                        // parametro
-                        ST p = groupTemplate.getInstanceOf("param");
-                        String nomeParametro = paramsList.getSingleId(i);
-                        p.add("name", nomeParametro);
-                        if (t instanceof SemanticArrayType) {
-                            adjustSemanticArrayType((SemanticArrayType) t);
+                            while (innerType instanceof SemanticArrayType) {
+                                ST arrayTemplate = groupTemplate.getInstanceOf("array_type");
+                                arrayTemplates.add(arrayTemplate);
+                                innerType = ((SemanticArrayType) innerType).getArg();
+                            }
+
+                            processSemanticType(innerType);
+                            arrayTemplates.get(0).add("type", type);
+
+                            for (int k = 1; k < arrayTemplates.size(); k++) {
+                                ST previousArray = arrayTemplates.get(k - 1);
+                                ST currentArray = arrayTemplates.get(k);
+                                currentArray.add("type", previousArray);
+                            }
+
+                            type = arrayTemplates.get(arrayTemplates.size() - 1);
                         } else {
-                            processSemanticType(t);
+                            processSemanticType(paramType);
                         }
-                        p.add("type", type);
-                        params.add(p);
 
-                        // Remove o parametro da função da lista de variaveis do corpo da função
-                        keys.remove(nomeParametro);
+                        paramTemplate.add("type", type);
+                        params.add(paramTemplate);
+                        localVars.remove(paramName);
                     }
                 }
-                fun.add("params", params);
+                functionTemplate.add("params", params);
 
-                // Instancia as variaveis antes de usar nas operações presente no corpo da
-                // função
-                for (String key : keys) {
-                    SemanticType t = local.get(key);
-                    // if(!(t instanceof SemanticArrayType)){ // Se nao for array declara
-                    // normalmente
-                    ST decl = groupTemplate.getInstanceOf("param");
-                    decl.add("name", key);
-                    if (t instanceof SemanticArrayType) {
-                        adjustSemanticArrayType((SemanticArrayType) t);
+                for (String varName : localVars) {
+                    SemanticType varType = currentFunctionEnv.get(varName);
+                    ST varDeclTemplate = groupTemplate.getInstanceOf("param");
+                    varDeclTemplate.add("name", varName);
+
+                    if (varType instanceof SemanticArrayType) {
+                        List<ST> arrayTemplates = new ArrayList<ST>();
+                        SemanticType innerType = varType;
+
+                        while (innerType instanceof SemanticArrayType) {
+                            ST arrayTemplate = groupTemplate.getInstanceOf("array_type");
+                            arrayTemplates.add(arrayTemplate);
+                            innerType = ((SemanticArrayType) innerType).getArg();
+                        }
+
+                        processSemanticType(innerType);
+                        arrayTemplates.get(0).add("type", type);
+
+                        for (int k = 1; k < arrayTemplates.size(); k++) {
+                            ST previousArray = arrayTemplates.get(k - 1);
+                            ST currentArray = arrayTemplates.get(k);
+                            currentArray.add("type", previousArray);
+                        }
+
+                        type = arrayTemplates.get(arrayTemplates.size() - 1);
                     } else {
-                        processSemanticType(t);
+                        processSemanticType(varType);
                     }
-                    decl.add("type", type);
-                    fun.add("decl", decl);
-                    // }
+
+                    varDeclTemplate.add("type", type);
+                    functionTemplate.add("decl", varDeclTemplate);
                 }
 
-                for (int i = 0; i < func.getCommands().size(); i++) {
-                    Cmd command = func.getCommands().get(i);
+                for (Cmd command : func.getCommands()) {
                     command.accept(this);
-                    fun.add("stmt", stmt);
+                    functionTemplate.add("stmt", stmt);
                 }
 
-                funcs.add(fun);
-                idRetorno++;
+                funcs.add(functionTemplate);
+                ret++;
             }
         }
     }
@@ -394,19 +432,19 @@ public class JavaVisitor extends Visitor {
 
     @Override
     public void visit(FuncCallCMD funcCallCMD) {
-        ST auxTemplate = groupTemplate.getInstanceOf("functionCall");
+        ST auxTemplate = groupTemplate.getInstanceOf("funcCall");
         auxTemplate.add("name", funcCallCMD.getId());
 
         // Verifica se há valores atribuídos (retorno de função com valores)
         if (!funcCallCMD.getLValues().isEmpty()) {
             // Processa o primeiro valor atribuído
             funcCallCMD.getLValues().get(0).accept(this);
-            auxTemplate.add("var1", expr);
+            auxTemplate.add("ret1", expr);
 
             // Processa o segundo valor, se existir (caso de múltiplos retornos)
             if (funcCallCMD.getLValues().size() > 1) {
                 funcCallCMD.getLValues().get(1).accept(this);
-                auxTemplate.add("var2", expr);
+                auxTemplate.add("ret2", expr);
             }
         } else {
             // Caso sem valores retornados, muda o template para uma chamada simples
@@ -433,19 +471,19 @@ public class JavaVisitor extends Visitor {
         if1.getExpr().accept(this);
         ifTemplate.add("expr", expr);
 
-        // Verifica se o comando é um bloco de comandos ou um único comando
-        Cmd comando = if1.getCmd();
-        if (comando instanceof BlockCmd) {
-            // Trata uma lista de comandos em um bloco
-            List<Cmd> comandosBloco = ((BlockCmd) comando).getCmds();
+        // Processa o comando do bloco 'if'
+        Cmd comandoIf = if1.getCmd();
+        if (comandoIf instanceof BlockCmd) {
+            List<Cmd> comandosBloco = ((BlockCmd) comandoIf).getCmds();
+            List<String> cmdsIf = new ArrayList<>();
             for (Cmd cmd : comandosBloco) {
                 cmd.accept(this);
-                ifTemplate.add("cmd", stmt);
+                cmdsIf.add(stmt.render());
             }
+            ifTemplate.add("cmd_if", cmdsIf);
         } else {
-            // Trata um único comando
-            comando.accept(this);
-            ifTemplate.add("cmd", stmt);
+            comandoIf.accept(this);
+            ifTemplate.add("cmd_if", stmt.render());
         }
 
         // Atribui o template
@@ -464,26 +502,34 @@ public class JavaVisitor extends Visitor {
         Cmd comandoIf = ifElse.getCmd();
         if (comandoIf instanceof BlockCmd) {
             List<Cmd> comandosIfBloco = ((BlockCmd) comandoIf).getCmds();
+            List<String> cmdsIf = new ArrayList<>();
             for (Cmd cmd : comandosIfBloco) {
                 cmd.accept(this);
-                ifElseTemplate.add("cmd", stmt);
+                cmdsIf.add(stmt.render());
             }
+            ifElseTemplate.add("cmd_if", cmdsIf);
         } else {
             comandoIf.accept(this);
-            ifElseTemplate.add("cmd", stmt);
+            ifElseTemplate.add("cmd_if", stmt.render());
         }
 
         // Processa os comandos do bloco 'else'
         Cmd comandoElse = ifElse.getElseCmd();
-        if (comandoElse instanceof BlockCmd) {
-            List<Cmd> comandosElseBloco = ((BlockCmd) comandoElse).getCmds();
-            for (Cmd cmd : comandosElseBloco) {
-                cmd.accept(this);
-                ifElseTemplate.add("els", stmt);
+        if (comandoElse != null) {
+            if (comandoElse instanceof BlockCmd) {
+                List<Cmd> comandosElseBloco = ((BlockCmd) comandoElse).getCmds();
+                List<String> cmdsElse = new ArrayList<>();
+                for (Cmd cmd : comandosElseBloco) {
+                    cmd.accept(this);
+                    cmdsElse.add(stmt.render());
+                }
+                ifElseTemplate.add("cmd_else", cmdsElse);
+            } else {
+                comandoElse.accept(this);
+                ifElseTemplate.add("cmd_else", stmt.render());
             }
         } else {
-            comandoElse.accept(this);
-            ifElseTemplate.add("els", stmt);
+            ifElseTemplate.add("cmd_else", "// nao ha comando");
         }
 
         // Atribui o template final
@@ -499,14 +545,14 @@ public class JavaVisitor extends Visitor {
     @Override
     public void visit(Iterate iterate) {
         ST iterateTemplate = groupTemplate.getInstanceOf("iterate");
-
         // Processa a expressão condicional do loop
         iterate.getExpr().accept(this);
         iterateTemplate.add("expr", expr);
 
         // Atualiza o índice do loop atual
-        loopAtual++;
-        iterateTemplate.add("loopAtual", String.valueOf(loopAtual));
+        loop++;
+
+        iterateTemplate.add("loopAtual", String.valueOf(loop));
 
         // Processa os comandos do corpo do loop
         Cmd comandoLoop = iterate.getCmd();
@@ -520,9 +566,6 @@ public class JavaVisitor extends Visitor {
             comandoLoop.accept(this);
             iterateTemplate.add("cmd", stmt);
         }
-
-        // Decrementa o índice do loop atual
-        loopAtual--;
 
         // Atribui o template final
         stmt = iterateTemplate;
@@ -544,7 +587,7 @@ public class JavaVisitor extends Visitor {
 
     @Override
     public void visit(LvalueCmd lvalueCmd) {
-        stmt = groupTemplate.getInstanceOf("attribution");
+        stmt = groupTemplate.getInstanceOf("attr");
 
         // Processa a variável que receberá o valor atribuído
         LValue lvalue = lvalueCmd.getlValue();
@@ -630,28 +673,25 @@ public class JavaVisitor extends Visitor {
 
     @Override
     public void visit(Read read) {
+        // Obtém o template para o comando read
         stmt = groupTemplate.getInstanceOf("read");
 
         // Obtém as variáveis no escopo da função
-        Set<String> variaveisEscopo = funcaoAtualObservada.getKeys();
+        Set<String> variaveisEscopo = funcObs.getKeys();
         SemanticType tipoVariavel = null;
 
         // Encontra o tipo da variável
         for (String variavel : variaveisEscopo) {
             if (variavel.equals(read.getlValue().toString())) {
-                tipoVariavel = funcaoAtualObservada.get(variavel);
+                tipoVariavel = funcObs.get(variavel);
                 break;
             }
         }
 
-        // Determina a conversão com base no tipo da variável
-        if (tipoVariavel instanceof SemanticTypeInt) {
-            stmt.add("converteTipo", "Integer.parseInt(__Scanner.nextLine())");
-        } else if (tipoVariavel instanceof SemanticTypeFloat) {
-            stmt.add("converteTipo", "Float.parseFloat(__Scanner.nextLine())");
-        } else if (tipoVariavel instanceof SemanticTypeChar) {
-            stmt.add("converteTipo", "__Scanner.nextLine().charAt(0)");
-        }
+        // Determina as flags de tipo com base no tipo da variável
+        stmt.add("isInt", tipoVariavel instanceof SemanticTypeInt);
+        stmt.add("isFloat", tipoVariavel instanceof SemanticTypeFloat);
+        stmt.add("isChar", tipoVariavel instanceof SemanticTypeChar);
 
         // Processa a expressão e adiciona ao template
         read.getlValue().accept(this);
@@ -668,7 +708,7 @@ public class JavaVisitor extends Visitor {
             return1.getExps().get(0).accept(this);
         } else {
             // Processa a expressão correspondente ao índice de retorno
-            return1.getExps().get(idRetorno).accept(this);
+            return1.getExps().get(ret).accept(this);
         }
 
         // Adiciona a expressão ao template
@@ -706,9 +746,9 @@ public class JavaVisitor extends Visitor {
     }
 
     @Override
-    public void visit(Dot dor) {
+    public void visit(Dot dot) {
         expr = groupTemplate.getInstanceOf("lvalue");
-        expr.add("name", dor.toString());
+        expr.add("name", dot.toString());
     }
 
     @Override
@@ -720,7 +760,7 @@ public class JavaVisitor extends Visitor {
 
         // Processa o índice de retorno
         funcCall.getExpIndex().accept(this);
-        funcReturnTemplate.add("expr", expr);
+        funcReturnTemplate.add("returnExpr", expr);
 
         // Processa os parâmetros da chamada da função
         List<Expr> parametros = funcCall.getFFuncArgss().getExps();
@@ -741,7 +781,7 @@ public class JavaVisitor extends Visitor {
 
     @Override
     public void visit(NewExp newExp) {
-        ST aux = groupTemplate.getInstanceOf("typeInstanciate");
+        ST aux = groupTemplate.getInstanceOf("newExp");
 
         // Verifica se há um tipo associado à expressão
         if (newExp.getTipo() != null) {
@@ -804,16 +844,17 @@ public class JavaVisitor extends Visitor {
     }
 
     @Override
-    public void visit(Data d) {
+    public void visit(Data data) {
         ST dataTemplate = groupTemplate.getInstanceOf("data");
-        dataTemplate.add("name", d.getId()); // Adiciona o nome do tipo data
+        dataTemplate.add("name", data.getId()); // Adiciona o nome do tipo data
 
         // Inicializa a lista de declarações
-        declarations = new ArrayList<>();
+        decls = new ArrayList<>();
 
         // Obtém os atributos do tipo Data
-        DataAttr dataAttributes = datasAttrib.get(d.getId());
-        List<Decl> declsList = d.getDecls();
+
+        DataAttr dataAttributes = datasAttr.get(data.getId());
+        List<Decl> declsList = data.getDecls();
 
         // Processa cada declaração de variável do tipo Data
         int tipoIndex = 0;
@@ -823,21 +864,48 @@ public class JavaVisitor extends Visitor {
 
             // Adiciona o nome da variável e processa o tipo
             declTemplate.add("name", decl.getId());
+
+            // Processamento do tipo, incluindo arrays
             if (tipo instanceof SemanticArrayType) {
-                adjustSemanticArrayType((SemanticArrayType) tipo);
+                List<ST> arrayTemplates = new ArrayList<>();
+                SemanticType innerType = tipo;
+
+                // Criação da lista de templates de arrays
+                while (innerType instanceof SemanticArrayType) {
+                    ST arrayTemplate = groupTemplate.getInstanceOf("array_type");
+                    arrayTemplates.add(arrayTemplate);
+                    innerType = ((SemanticArrayType) innerType).getArg();
+                }
+
+                // Processamento do tipo base (mais interno)
+                processSemanticType(innerType);
+                arrayTemplates.get(0).add("type", type); // O tipo base é adicionado ao array mais interno
+
+                // Ajuste dos tipos mais externos para arrays multidimensionais
+                for (int j = 1; j < arrayTemplates.size(); j++) {
+                    ST previousArray = arrayTemplates.get(j - 1);
+                    ST currentArray = arrayTemplates.get(j);
+                    currentArray.add("type", previousArray);
+                }
+
+                // O tipo completo é atribuído como o tipo do array final
+                type = arrayTemplates.get(arrayTemplates.size() - 1);
             } else {
+                // Processa tipos não array
                 processSemanticType(tipo);
             }
+
+            // Adiciona o tipo da declaração ao template
             declTemplate.add("type", type);
-            declarations.add(declTemplate);
+            decls.add(declTemplate);
 
             tipoIndex++;
         }
 
-        // Adiciona as declarações
-        dataTemplate.add("decl", declarations);
+        // Adiciona as declarações processadas ao template
+        dataTemplate.add("decl", decls);
 
-        // Adiciona o template final
+        // Adiciona o template final à lista de datas
         datas.add(dataTemplate);
     }
 
@@ -858,6 +926,7 @@ public class JavaVisitor extends Visitor {
     /*
      * Funções Auxiliares
      */
+
     private void processSemanticType(SemanticType semanticType) {
         if (semanticType instanceof SemanticTypeInt)
             type = groupTemplate.getInstanceOf("int_type");
@@ -873,24 +942,7 @@ public class JavaVisitor extends Visitor {
         }
     }
 
-    private void adjustSemanticArrayType(SemanticArrayType t) {
-        List<ST> array = new ArrayList<ST>(); // Lista dos arrays
-        SemanticType tipoArray = t; // Utiliza uma cópia de t, pois será atualizado
-        // Adiciona os tipos array em uma lista
-        // Exemplo: mat[][] => adiciona mat[]'[]' => depois mat'[]'[]
-        while (tipoArray instanceof SemanticArrayType) {
-            type = groupTemplate.getInstanceOf("array_type");
-            array.add(type);
-            tipoArray = ((SemanticArrayType) tipoArray).getArg();
-        }
-        // Pega do elemento mais externo para o mais interno que será o tipo do array
-        for (int i = 1; i < array.size(); i++) { // Ajusta o tipo caso tenha array de array
-            ST aux = array.get(i);
-            aux.add("type", array.get(i - 1));
-        }
-        processSemanticType(tipoArray); // Passa o tipo do array ou matriz || Exemplo: Ponto, Char, Int, Float
-        array.get(0).add("type", type); // Adiciona o tipo do array no elemento mais interno
-        type = array.get(array.size() - 1); // O tipo completo será o da ultima posição da lista
+    public String getTemplate() {
+        return template.render();
     }
-
 }

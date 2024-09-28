@@ -4,8 +4,7 @@ program(name, funcs, datas) ::= <<
 import java.util.Scanner;
 
 public class <name> {
-    public Scanner __Scanner = new Scanner(System.in);
-
+    
     <funcs; separator="\n\n">
     <datas; separator="\n\n">
 
@@ -37,73 +36,77 @@ float_type() ::= "Float"
 boolean_type() ::= "Boolean"
 char_type() ::= "Character"
 
-
-
-
-
 data_type(data) ::= "<data>"
 null_type() ::= "null"
 
 print(expr) ::= "System.out.print(<expr>);"
-read(expr, converteTipo) ::=<<
-<expr> = <if(converteTipo)><converteTipo><else>__Scanner.nextLine()<endif>;
->>
-return(expr) ::= "return <expr>;"
 
-iterate(expr, cmd, loopAtual) ::= <<
-for (int _Indice_Loop_<loopAtual> = 0, _Indice_Loop_<loopAtual>_EndLoop = <expr>; _Indice_Loop_<loopAtual> \< _Indice_Loop_<loopAtual>_EndLoop; _Indice_Loop_<loopAtual>++) {
-    <cmd; separator="\n">
-}
->>
-
-if(expr, cmd) ::= <<
-if(<expr>) {
-    <cmd; separator="\n">
-}
->>
-
-if_else(expr, cmd, els) ::= <<
-if(<expr>) {
-    <cmd; separator="\n">
-} <if(els)>else {
-    <els; separator="\n">
-}
+read(expr, isInt, isFloat, isChar) ::= <<
+<if(isInt)>
+<expr> = Integer.parseInt(new Scanner(System.in).nextLine());
+<elseif(isFloat)>
+<expr> = Float.parseFloat(new Scanner(System.in).nextLine());
+<elseif(isChar)>
+<expr> = new Scanner(System.in).nextLine().charAt(0);
+<else>
+<expr> = new Scanner(System.in).nextLine();
 <endif>
 >>
 
+return(expr) ::= "return <expr>;"
+
+iterate(expr, cmd, loopAtual) ::= <<
+int iLoop<loopAtual> = <expr>;
+while (iLoop<loopAtual> > 0) {
+    <cmd; separator="\n">
+    iLoop<loopAtual>--;
+}
+>>
+
+if(expr, cmd_if) ::= <<
+if (<expr>) {
+    <if(cmd_if)><cmd_if; separator="\n"><else>//nenhum comando no bloco <endif>
+}
+>>
+
+if_else(expr, cmd_if, cmd_else) ::= <<
+if (<expr>) {
+    <if(cmd_if)><cmd_if; separator="\n"><else>// nenhum comando no bloco <endif>
+} else {
+    <if(cmd_else)><cmd_else; separator="\n"><else>// nenhum comando no bloco <endif>
+}
+>>
 
 declaration(type, name) ::= "<type> <name>;"    
+attr(var, expr) ::= "<var> = <expr>;"
 
-
-
-
-
-
-
-attribution(var, expr) ::= "<var> = <expr>;"
-typeInstanciate(type, expr) ::= <<
+newExp(type, expr) ::= <<
 new <type><if(expr)>[<expr>]<else>()<endif>
 >>
+
 lvalue(name, array) ::= <<
 <name><if(array)><array><endif>
 >>
+
 array_access(expr) ::= "[<expr>]"
 
 boolean_expr(value) ::= "<value>"
 float_expr(value) ::= "<value>f"
 char_expr(value) ::= "<value>"
 int_expr(value) ::= "<value>"
-functionReturn(name, args, expr) ::= <<
-<name><if(expr)>_retorno_0<expr><else><endif>(<args; separator=", ">)
+
+
+functionReturn(name, args, returnExpr) ::= <<
+<name><if(returnExpr)>_<returnExpr><else><endif>(<args; separator=", ">)
 >>
 
-functionCall(name, args, var1, var2) ::= <<
-<var1> = <name>_retorno_00(<args; separator=", ">);
-
-<if(var2)><var2> = <name>_retorno_01(<args; separator=", ">);<else><endif>
+funcCall(name, args, ret1, ret2) ::= <<
+<ret1> = <name>_0(<args; separator=", ">);<if(ret2)><ret2> = <name>_1(<args; separator=", ">);<else><endif>
 >>
 
-call(name, args) ::= <<<name>(<args; separator=", ">);>>
+call(name, args) ::= <<
+<name>(<args; separator=", ">);
+>>
 
 mul_expr(left_expr, right_expr) ::= "(<left_expr> * <right_expr>)"
 div_expr(left_expr, right_expr) ::= "(<left_expr> / <right_expr>)"

@@ -10,6 +10,7 @@ import lang.semantic.*;
 import lang.semantic.types.LocalEnv;
 import lang.semantic.types.SemanticType;
 import lang.semantic.types.SemanticTypeEnv;
+import lang.template.JavaCodeGenerator;
 import lang.template.JavaVisitor;
 import lang.visitors.*;
 
@@ -67,58 +68,10 @@ public class LangCompiler {
                 System.exit(1);
 
             } else if (args[0].equals("-Java")) {
-
-                System.out.println("Analisando o Arquivo: \"" + args[1] + "\"\n");
-
-                SemanticVisitor v = new SemanticVisitor();
-
-                ((Node) result).accept(v);
-
-                if (v.getNumErrors() != 0) {
-                    System.out.println(" Erros ocorreram durante a Analise Semantica.\nAbortando");
-                    v.printErrors();
-                    System.exit(1);
-                }
-
-                System.out.println("Traduzindo o Arquivo: \"" + args[1] + " para Java\"\n");
-
-                SemanticTypeEnv<LocalEnv<SemanticType>> env = v.getEnv();
-
-                String nomeArquivo = getFileName(args[1]);
-
-                JavaVisitor jv;
-
-                if (args.length > 2) {
-                    if (args.length == 3) {
-                        if (args[2].equals("-genFile")) {
-                            jv = new JavaVisitor(nomeArquivo, env, v.getDatas());
-                            ((Node) result).accept(jv);
-                            String caminhoEArquivo = getPathFile(args[1]) + nomeArquivo + ".java";
-                            System.out.println("Arquivo de codigo em java gerado: \"" + caminhoEArquivo + "\"\n");
-                            writeFile(caminhoEArquivo, jv.getTemplate());
-                        } else {
-                            System.out.println("Parametro \'" + args[2]
-                                    + "\' eh incorreto, o certo eh \'-genFile\' !!!\n");
-                            System.exit(1);
-                        }
-                    } else {
-                        if (args[2].equals("-genFile")) {
-                            jv = new JavaVisitor(nomeArquivo, env, v.getDatas());
-                            ((Node) result).accept(jv);
-                            String caminhoEArquivo = getPathFile(args[3]) + nomeArquivo + ".java";
-                            System.out.println("Arquivo de codigo em java gerado: \"" + caminhoEArquivo + "\"\n");
-                            writeFile(caminhoEArquivo, jv.getTemplate());
-                        } else {
-                            System.out.println("Parametro \'" + args[2]
-                                    + "\' eh incorreto, o certo eh \'-genFile\' !!!\n");
-                            System.exit(1);
-                        }
-                    }
-
-                } else {
-                    System.out.println("Parametro \'-genFile\' nao foi passado, o arquivo nao sera gerado !!!\n");
-                    System.exit(1);
-                }
+                String fileName = getFileName(args[1]);
+                JavaCodeGenerator generator = new JavaCodeGenerator(fileName, args[1], (Node) result,
+                        new SemanticVisitor());
+                generator.generateJavaCode(args);
             }
 
             else if (args[0].equals("-i")) {
@@ -143,25 +96,10 @@ public class LangCompiler {
 
     }
 
-    public static String getPathFile(String path) {
-        String caminhoArquivo = path.substring(0, path.lastIndexOf('/') != -1 ? path.lastIndexOf('/') + 1 : 0);
-        return caminhoArquivo;
-    }
-
     public static String getFileName(String path) {
         String nomeArquivo = path.substring(path.lastIndexOf('/') != -1 ? path.lastIndexOf('/') + 1 : 0,
                 path.lastIndexOf('.') != -1 ? path.lastIndexOf('.') : path.length());
         return nomeArquivo;
     }
 
-    public static void writeFile(String pathFile, String information) {
-        try {
-            FileWriter myWriter = new FileWriter(pathFile);
-            myWriter.write(information);
-            myWriter.close();
-        } catch (IOException e) {
-            System.out.println("Ocorreu um erro no metodo \'writeFile()\'");
-            e.printStackTrace();
-        }
-    }
 }
