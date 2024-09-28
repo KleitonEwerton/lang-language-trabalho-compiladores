@@ -7,7 +7,7 @@ generate:
 	
 
 compile:
-	javac -cp .:antlr-4.8-complete.jar lang/parser/*.java lang/ast/*.java lang/*.java lang/visitors/*.java
+	javac -cp .:antlr-4.8-complete.jar lang/parser/*.java lang/ast/*.java lang/*.java lang/visitors/*.java lang/template/*.java
 
 compile1:
 	javac -cp .:ST-4.3.1.jar lang/template/*.java
@@ -140,3 +140,8 @@ codeTeste13:
 codeTeste14:
 	java -cp antlr-4.8-complete.jar:ST-4.3.1.jar:. lang/LangCompiler -Java ./testes/semantica/certo/teste14.lan -genFile ./generatedCode/teste14.java
 	javac ./generatedCode/teste14.java
+
+
+codeJasmin1:
+	java -cp antlr-4.8-complete.jar:jasmin.jar:. lang/LangCompiler -Jasmin ./testes/semantica/certo/teste1.lan -genFile ./generatedCodeJasmin/teste1.j
+	javac ./generatedCodeJasmin/teste1.j

@@ -10,8 +10,7 @@ import lang.semantic.*;
 import lang.semantic.types.LocalEnv;
 import lang.semantic.types.SemanticType;
 import lang.semantic.types.SemanticTypeEnv;
-import lang.template.JavaCodeGenerator;
-import lang.template.JavaVisitor;
+import lang.template.*;
 import lang.visitors.*;
 
 import java.io.*;
@@ -72,6 +71,12 @@ public class LangCompiler {
                 JavaCodeGenerator generator = new JavaCodeGenerator(fileName, args[1], (Node) result,
                         new SemanticVisitor());
                 generator.generateJavaCode(args);
+
+            } else if (args[0].equals("-Jasmin")) {
+                String fileName = getFileName(args[1]);
+                JasminCodeGenerator generator = new JasminCodeGenerator(fileName, args[1], (Node) result,
+                        new SemanticVisitor());
+                generator.generateJasminCode(args);
             }
 
             else if (args[0].equals("-i")) {

@@ -13,27 +13,37 @@ import org.stringtemplate.v4.STGroupFile;
 public class JasminVisitor extends Visitor {
 
     private STGroup groupTemplate;
-    private ST type, stmt, expr;
+    private ST type, stmt, expr, template;
     private List<ST> funcs, params;
 
     private String fileName;
 
-    SemanticTypeEnv<LocalEnv<Pair<SemanticType, Integer>>> env;
+    private int loop = 0; // Loop
+    private int ret = 0; // Retorno
+
+    SemanticTypeEnv<LocalEnv<SemanticType>> env;
+
     LocalEnv<Pair<SemanticType, Integer>> local;
+
+    private HashMap<String, DataAttr> datasAttr;
+    private LocalEnv<SemanticType> funcObs;
 
     private int label = 0;
 
-    public JasminVisitor(String fileName, SemanticTypeEnv<LocalEnv<Pair<SemanticType, Integer>>> env) {
+    public JasminVisitor(String fileName, SemanticTypeEnv<LocalEnv<SemanticType>> env,
+            HashMap<String, DataAttr> datasAttr) {
 
         groupTemplate = new STGroupFile("./lang/template/jasmin.stg");
         this.fileName = fileName;
+        this.datasAttr = datasAttr;
         this.env = env;
     }
 
     public void visit(Prog p) {
-        ST template = groupTemplate.getInstanceOf("program");
 
-        template.add("name", fileName);
+        System.out.println("Jasmin -> Prog");
+
+        template = groupTemplate.getInstanceOf("program").add("name", fileName);
 
         funcs = new ArrayList<ST>();
 
@@ -46,11 +56,15 @@ public class JasminVisitor extends Visitor {
     }
 
     public void visit(Add e) {
+
+        System.out.println("Jasmin -> Add");
+
         ST aux = null;
 
-        if (e.getType()) {
+        if (e.getType() instanceof SemanticTypeInt) {
             aux = groupTemplate.getInstanceOf("iadd");
         }
+
         e.getLeft().accept(this);
         aux.add("left_expr", expr);
         e.getRight().accept(this);
@@ -59,8 +73,11 @@ public class JasminVisitor extends Visitor {
     }
 
     public void visit(Sub e) {
+
+        System.out.println("Jasmin -> Sub");
+
         ST aux = null;
-        if (e.getType() instanceof STyInt) {
+        if (e.getType() instanceof SemanticTypeInt) {
             aux = groupTemplate.getInstanceOf("isub");
         }
         e.getLeft().accept(this);
@@ -71,8 +88,9 @@ public class JasminVisitor extends Visitor {
     }
 
     public void visit(Mul e) {
+        System.out.println("Jasmin -> Mul");
         ST aux = null;
-        if (e.getType() instanceof STyInt) {
+        if (e.getType() instanceof SemanticTypeInt) {
             aux = groupTemplate.getInstanceOf("imul");
         }
         e.getLeft().accept(this);
@@ -83,8 +101,9 @@ public class JasminVisitor extends Visitor {
     }
 
     public void visit(Div e) {
+        System.out.println("Jasmin -> Div");
         ST aux = null;
-        if (e.getType() instanceof STyInt) {
+        if (e.getType() instanceof SemanticTypeInt) {
             aux = groupTemplate.getInstanceOf("idiv");
         }
         e.getLeft().accept(this);
@@ -95,8 +114,9 @@ public class JasminVisitor extends Visitor {
     }
 
     public void visit(Mod e) {
+        System.out.println("Jasmin -> Mod");
         ST aux = null;
-        if (e.getType() instanceof STyInt) {
+        if (e.getType() instanceof SemanticTypeInt) {
             aux = groupTemplate.getInstanceOf("imod");
         }
         e.getLeft().accept(this);
@@ -107,6 +127,7 @@ public class JasminVisitor extends Visitor {
     }
 
     public void visit(And e) {
+        System.out.println("Jasmin -> And");
         ST aux = groupTemplate.getInstanceOf("and_expr");
         e.getLeft().accept(this);
         aux.add("left_expr", expr);
@@ -116,6 +137,9 @@ public class JasminVisitor extends Visitor {
     }
 
     public void visit(LessThan e) {
+
+        System.out.println("Jasmin -> LessThan");
+
         ST aux = groupTemplate.getInstanceOf("ilt_expr"); // assumi comparação de inteiros
         e.getLeft().accept(this);
         aux.add("left_expr", expr);
@@ -126,8 +150,9 @@ public class JasminVisitor extends Visitor {
     }
 
     public void visit(Equals e) {
+        System.out.println("Jasmin -> Equals");
         ST aux = null;
-        if (e.getType() instanceof STyInt)
+        if (e.getType() instanceof SemanticTypeInt)
             aux = groupTemplate.getInstanceOf("equals_expr");
         e.getLeft().accept(this);
         aux.add("left_expr", expr);
@@ -139,6 +164,7 @@ public class JasminVisitor extends Visitor {
     }
 
     public void visit(Not e) {
+        System.out.println("Jasmin -> Not");
         ST aux = groupTemplate.getInstanceOf("not_expr");
         e.getExpr().accept(this);
         aux.add("expr", expr);
@@ -147,6 +173,7 @@ public class JasminVisitor extends Visitor {
 
     @Override
     public void visit(BoolDexp b) {
+        System.out.println("Jasmin -> BoolDexp");
         if (b.getValue() == true) {
             expr = groupTemplate.getInstanceOf("boolean_true");
             expr.add("value", true);
@@ -160,100 +187,160 @@ public class JasminVisitor extends Visitor {
     }
 
     public void visit(IntDexp i) {
+        System.out.println("Jasmin -> IntDexp");
         expr = groupTemplate.getInstanceOf("int_expr");
         expr.add("value", i.getValue());
     }
 
     public void visit(FloatDexp e) {
+        System.out.println("Jasmin -> FloatDexp");
         expr = groupTemplate.getInstanceOf("float_expr");
         expr.add("value", e.getValue());
     }
 
     public void visit(If e) {
-        ST aux = groupTemplate.getInstanceOf("if");
-        aux.add("num", label++);
-        e.getTeste().accept(this);
-        aux.add("expr", expr);
-        e.getThen().accept(this);
-        aux.add("thn", stmt);
-        Node n = e.getElse();
-        if (n != null) {
-            n.accept(this);
-            aux.add("els", stmt);
+        System.out.println("Jasmin -> If");
+        ST ifTemplate = groupTemplate.getInstanceOf("if");
+
+        ifTemplate.add("num", label++);
+
+        e.getExpr().accept(this);
+
+        ifTemplate.add("expr", expr);
+
+        Cmd comandoIf = e.getCmd();
+
+        if (comandoIf instanceof BlockCmd) {
+
+            System.out.println("Jasmin -> BlockCmd");
+
+            List<Cmd> comandosBloco = ((BlockCmd) comandoIf).getCmds();
+            List<String> cmdsIf = new ArrayList<>();
+            for (Cmd cmd : comandosBloco) {
+                cmd.accept(this);
+                cmdsIf.add(stmt.render());
+            }
+
+            // ifTemplate.add("cmd_if", cmdsIf);
+
+        } else {
+            comandoIf.accept(this);
         }
-        stmt = aux;
+
+        stmt = ifTemplate;
     }
 
     public void visit(Iterate e) {
+        System.out.println("Jasmin -> Iterate");
+
         ST aux = groupTemplate.getInstanceOf("while");
+
         aux.add("num", label++);
-        e.getTeste().accept(this);
+
+        e.getExpr().accept(this);
+
         aux.add("expr", expr);
-        e.getBody().accept(this);
-        aux.add("stmt", stmt);
+
+        e.getCmd().accept(this);
+
+        // aux.add("stmt", stmt);
+
         stmt = aux;
     }
 
     public void visit(Print e) {
-        e.getExpr().accept(this);
-        SType t = e.getExpr().getType();
-        if (t instanceof STyInt) {
+        System.out.println("Jasmin -> Print");
+        e.getExpression().accept(this);
+
+        SemanticType t = e.getExpression().getType();
+
+        if (t instanceof SemanticTypeInt) {
             stmt = groupTemplate.getInstanceOf("iprint");
+            stmt.add("expr", expr);
         }
-        stmt.add("expr", expr);
+
     }
 
     public void visit(Func f) {
-
-        ST fun = groupTemplate.getInstanceOf("func");
-        fun.add("name", f.getID());
+        System.out.println("Jasmin -> Func");
+        ST functionTemplate = groupTemplate.getInstanceOf("func");
+        functionTemplate.add("name", f.getId());
 
         // Variáveis locais da função com informação de tipo
         // * Os parâmetros
         // * Variáveis locais
-        local = env.get(f.getID());
+        // Lista todas as funções encontradas com o mesmo nome
+        ArrayList<LocalEnv> foundFunctions = (ArrayList) env.findFunctions(f.getId());
 
-        fun.add("decls", local.getKeys().size()); // número de váriaveis locais, incluíndo os parâmetros
-        fun.add("stack", 10); // tamanho máximo da pilha. Coloquei 10, mas tem que calcular baseado no tamanho
-                              // das subexpressões
+        // Inicializa a função correta com a primeira da lista
+        LocalEnv<SemanticType> currentFunctionEnv = foundFunctions.get(0);
 
-        f.getTipo().accept(this);
-        fun.add("return", type);
+        System.out.println("Jasmin -> Func -> Local");
+
+        System.out.println(f.getId() + " -> " + local + " -> " + env.get(f.getId()));
+
+        // locais, incluíndo os parâmetros
+        // functionTemplate.add("decls", local.getKeys().size()); // número de váriaveis
+        // !!!! AQUI DEVE SER A QUANTIDADE DE VARIAS DECLARADAS
+        functionTemplate.add("decls", env.getKeys().size()); // número de váriaveis locais, incluíndo os parâmetros
+        functionTemplate.add("stack", 10); // tamanho máximo da pilha. Coloquei 10, mas tem que calcular baseado no
+                                           // tamanho
+        // das subexpressões
 
         params = new ArrayList<ST>();
-        for (Param p : f.getParams()) {
-            p.accept(this);
+
+        if (f.getParams() != null) {
+
+            Param paramList = f.getParams();
+
         }
-        fun.add("params", params);
 
-        f.getBody().accept(this);
-        fun.add("stmt", stmt);
+        functionTemplate.add("params", params);
 
-        funcs.add(fun);
+        for (Cmd command : f.getCommands()) {
+            command.accept(this);
+            // functionTemplate.add("stmt", stmt);
+        }
+
+        // Adiciona 'return 0;' no final da função 'main'
+
+        // Tratamento para funções com múltiplos retornos
+
+        // f.getReturnTypes().accept(this);
+
+        // functionTemplate.add("return", type);
+
+        // functionTemplate.add("stmt", stmt);
+
+        funcs.add(functionTemplate);
 
     }
 
     public void visit(TyInt t) {
+        System.out.println("Jasmin -> TyInt");
         type = groupTemplate.getInstanceOf("int_type");
     }
 
     public void visit(TyFloat t) {
+        System.out.println("Jasmin -> TyFloat");
         type = groupTemplate.getInstanceOf("float_type");
     }
 
     public void visit(TyBool t) {
+        System.out.println("Jasmin -> TyBool");
         type = groupTemplate.getInstanceOf("boolean_type");
     }
 
     public void visit(ArrayType t) {
+        System.out.println("Jasmin -> ArrayType");
         ST aux = groupTemplate.getInstanceOf("array_type");
-        t.getTyArg().accept(this);
+        t.getBaseType().accept(this);
         aux.add("type", type);
         type = aux;
     }
 
     private void processSType(SemanticType t) {
-
+        System.out.println("Jasmin -> processSType");
         if (t instanceof SemanticTypeInt)
             type = groupTemplate.getInstanceOf("int_type");
         else if (t instanceof SemanticTypeBool)
@@ -371,11 +458,7 @@ public class JasminVisitor extends Visitor {
 
     @Override
     public void visit(Param p) {
-        ST aux = groupTemplate.getInstanceOf("param");
-        p.getTipo().accept(this);
-        aux.add("type", type);
-        aux.add("name", p.getID());
-        params.add(aux);
+
     }
 
     @Override
@@ -398,4 +481,7 @@ public class JasminVisitor extends Visitor {
         System.out.println("Jasmim -> TyChar");
     }
 
+    public String getTemplate() {
+        return template.render();
+    }
 }
