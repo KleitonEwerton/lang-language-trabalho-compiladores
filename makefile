@@ -1,15 +1,15 @@
 
 # Rodar tudo
-# make clean && make generate && make compile &&  make testSintatico && make testsInterpretador && make ex1 && make ex2 && make ex3 && make ex4 && make ex5 && make ex6 && make ex7 && make ex8 && make ex8 && make ex9 && make ex10 && make ex11 && make ex12 && make ex13 && make codeTeste0 && make codeTeste1 && make codeTeste1eMeio && make codeTeste2 && make codeTeste3 && make codeTeste4 && make codeTeste5 && make codeTeste6 && make codeTeste7 && make codeTeste8 && make codeTeste9 && make codeTeste10 && make codeTeste11 && make codeTeste12 && make codeTeste13 && make codeTeste14
+# make clean && make generate && make compile
+# make testSintatico && make testsInterpretador && make testSemantic 
+# make ex1 && make ex1eMeio && make ex2 && make ex3 && make ex4 && make ex5 && make ex6 && make ex7 && make ex8 && make ex9 && make ex10 && make ex11 && make ex12 && make ex13 && make ex14
+# make codeTeste0 && make codeTeste1 && make codeTeste1eMeio && make codeTeste2 && make codeTeste3 && make codeTeste4 && make codeTeste5 && make codeTeste6 && make codeTeste7 && make codeTeste8 && make codeTeste9 && make codeTeste10 && make codeTeste11 && make codeTeste12 && make codeTeste13 && make codeTeste14
 
 generate:
 	java -jar antlr-4.8-complete.jar -visitor lang/parser/Lang.g4
 	
-
 compile:
 	javac -cp .:antlr-4.8-complete.jar lang/parser/*.java lang/ast/*.java lang/*.java lang/visitors/*.java lang/template/*.java
-
-compile1:
 	javac -cp .:ST-4.3.1.jar lang/template/*.java
 
 testSintatico:
@@ -45,6 +45,7 @@ clean:
 	lang/template/*.class \
 	generatedCode/*.class \
 	generatedCode/*.java \
+	generatedCodeJasmin/*.j
 
 ex1:
 	java -cp antlr-4.8-complete.jar:. lang/LangCompiler -i ./testes/semantica/certo/teste1.lan

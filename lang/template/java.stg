@@ -1,3 +1,9 @@
+
+ /*  Trabalho da disciplina DCC045 - Teoria dos Compiladores
+  *  Kleiton Ewerton de Oliveira - MAT 202065050C
+  *  Nikolas Oliver Sales Genesio - MAT 202065072C
+  */
+  
 group java;
 
 program(name, funcs, datas) ::= <<
@@ -77,7 +83,7 @@ if (<expr>) {
 }
 >>
 
-declaration(type, name) ::= "<type> <name>;"    
+decl(type, name) ::= "<type> <name>;"    
 attr(var, expr) ::= "<var> = <expr>;"
 
 newExp(type, expr) ::= <<
@@ -96,11 +102,11 @@ char_expr(value) ::= "<value>"
 int_expr(value) ::= "<value>"
 
 
-functionReturn(name, args, returnExpr) ::= <<
+funcCall(name, args, returnExpr) ::= <<
 <name><if(returnExpr)>_<returnExpr><else><endif>(<args; separator=", ">)
 >>
 
-funcCall(name, args, ret1, ret2) ::= <<
+funcCallCMD(name, args, ret1, ret2) ::= <<
 <ret1> = <name>_0(<args; separator=", ">);<if(ret2)><ret2> = <name>_1(<args; separator=", ">);<else><endif>
 >>
 

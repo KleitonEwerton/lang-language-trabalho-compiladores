@@ -565,14 +565,14 @@ public class SemanticVisitor extends Visitor {
         iterate.getExpr().accept(this);
         SemanticType exprType = types.pop();
 
-        // Verifica se a expressão é do tipo booleano ou inteiro
-        if (exprType.match(tyBool) || exprType.match(tyInt)) {
+        // Verifica se a expressão é do tipo inteiro
+        if (exprType.match(tyInt)) {
             // Se a expressão for válida, executa os comandos do bloco
             iterate.getCmd().accept(this);
         } else {
             // Registra um erro caso a expressão não seja dos tipos esperados
             logError.add(iterate.getLine() + ", " + iterate.getColumn()
-                    + ": Expressão de teste do Iterate deve ser do tipo Bool ou Int");
+                    + ": Expressão de teste do Iterate deve ser do tipo Int");
             types.push(tyErr);
         }
     }

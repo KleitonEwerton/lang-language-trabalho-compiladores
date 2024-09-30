@@ -1,3 +1,8 @@
+/*  Trabalho da disciplina DCC045 - Teoria dos Compiladores
+ *  Kleiton Ewerton de Oliveira - MAT 202065050C
+ *  Nikolas Oliver Sales Genesio - MAT 202065072C
+ */
+
 package lang.template;
 
 import lang.ast.*;
@@ -432,7 +437,7 @@ public class JavaVisitor extends Visitor {
 
     @Override
     public void visit(FuncCallCMD funcCallCMD) {
-        ST auxTemplate = groupTemplate.getInstanceOf("funcCall");
+        ST auxTemplate = groupTemplate.getInstanceOf("funcCallCMD");
         auxTemplate.add("name", funcCallCMD.getId());
 
         // Verifica se há valores atribuídos (retorno de função com valores)
@@ -753,7 +758,7 @@ public class JavaVisitor extends Visitor {
 
     @Override
     public void visit(FuncCall funcCall) {
-        ST funcReturnTemplate = groupTemplate.getInstanceOf("functionReturn");
+        ST funcReturnTemplate = groupTemplate.getInstanceOf("funcCall");
 
         // Adiciona o nome da função
         funcReturnTemplate.add("name", funcCall.getId());
@@ -859,7 +864,7 @@ public class JavaVisitor extends Visitor {
         // Processa cada declaração de variável do tipo Data
         int tipoIndex = 0;
         for (Decl decl : declsList) {
-            ST declTemplate = groupTemplate.getInstanceOf("declaration");
+            ST declTemplate = groupTemplate.getInstanceOf("decl");
             SemanticType tipo = dataAttributes.getDataTypes().get(tipoIndex);
 
             // Adiciona o nome da variável e processa o tipo
