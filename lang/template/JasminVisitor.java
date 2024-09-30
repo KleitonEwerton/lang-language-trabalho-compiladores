@@ -67,8 +67,11 @@ public class JasminVisitor extends Visitor {
 
         e.getLeft().accept(this);
         aux.add("left_expr", expr);
+
         e.getRight().accept(this);
+
         aux.add("right_expr", expr);
+
         expr = aux;
     }
 
@@ -357,8 +360,11 @@ public class JasminVisitor extends Visitor {
     }
 
     @Override
-    public void visit(ArrayLValue a) {
-        System.out.println("Jasmim -> ArrayLValue");
+    public void visit(ArrayLValue e) {
+        // stmt = groupTemplate.getInstanceOf("iarray");
+        // e.getType().accept(this);
+        // stmt.add("expr", expr);
+        // stmt.add("num", local.get(e.getId()).second());
     }
 
     @Override
@@ -373,22 +379,55 @@ public class JasminVisitor extends Visitor {
 
     @Override
     public void visit(CharDexp c) {
-        System.out.println("Jasmim -> CharDexp");
+        System.out.println("Jasmin -> CharDexp");
+
+        // Inicializando o template correspondente para expressões de caracteres
+
+        // Pegando o primeiro caractere da string e convertendo para inteiro (valor
+        // ASCII/Unicode)
+        char charValue = c.getOriginalValue().charAt(0);
+        int asciiValue = (int) charValue; // Convertendo o char para seu valor numérico
+
+        expr = groupTemplate.getInstanceOf("char_expr");
+        System.out.println("SJasmin -> CharDexp : " + charValue + " -> " + asciiValue + " " + expr);
+
+        // Adicionando o valor numérico do caractere no template
+        expr.add("value", asciiValue);
+        System.out.println("S2Jasmin -> CharDexp");
+        // A expressão 'expr' será usada posteriormente onde for necessário
     }
 
     @Override
     public void visit(Cmd c) {
-        System.out.println("Jasmim -> Cmd");
+
+        c.accept(this);
+
     }
 
     @Override
     public void visit(BlockCmd c) {
-        System.out.println("Jasmim -> BlockCmd");
+
+        for (Cmd cmd : c.getCmds()) {
+            cmd.accept(this);
+        }
     }
 
     @Override
     public void visit(Data d) {
-        System.out.println("Jasmim -> Data");
+        ST dataTemplate = groupTemplate.getInstanceOf("data_decl");
+        dataTemplate.add("name", d.getId());
+
+        List<ST> fields = new ArrayList<>();
+        for (Decl field : d.getDecls()) {
+            ST fieldDecl = groupTemplate.getInstanceOf("field_decl");
+            fieldDecl.add("type", mapToJasminType(field.getType())); // Função que converte o tipo da linguagem para
+                                                                     // Jasmin
+            fieldDecl.add("name", field.getId());
+            fields.add(fieldDecl);
+        }
+
+        dataTemplate.add("fields", fields);
+        funcs.add(dataTemplate); // Adiciona ao template global
     }
 
     @Override
@@ -403,7 +442,11 @@ public class JasminVisitor extends Visitor {
 
     @Override
     public void visit(FuncCallCMD f) {
-        System.out.println("Jasmim -> FuncCallCMD");
+        System.out.println("Jasmin -> FuncCallCMD");
+
+        f.getFFuncArgss().accept(this); // Processando chamada de função
+        stmt = groupTemplate.getInstanceOf("func_call_cmd");
+        stmt.add("func_call", expr); // Atribui a expressão gerada da função
     }
 
     @Override
@@ -423,7 +466,29 @@ public class JasminVisitor extends Visitor {
 
     @Override
     public void visit(IfElse i) {
-        System.out.println("Jasmim -> IfElse");
+        System.out.println("Jasmin -> IfElse");
+
+        ST ifElseTemplate = groupTemplate.getInstanceOf("if_else");
+        ifElseTemplate.add("num", label++); // Gerar label único para o bloco if
+
+        i.getExpr().accept(this);
+        ifElseTemplate.add("expr", expr); // Expressão condicional
+
+        // Processar comandos do bloco if
+        Cmd cmdIf = i.getCmd();
+
+        cmdIf.accept(this);
+
+        ifElseTemplate.add("cmd_if", stmt.render());
+
+        // Processar comandos do bloco else (se existirem)
+        if (i.getElseCmd() != null) {
+            Cmd cmdElse = i.getElseCmd();
+            cmdElse.accept(this);
+            ifElseTemplate.add("cmd_else", stmt.render());
+        }
+
+        stmt = ifElseTemplate;
     }
 
     @Override
@@ -468,7 +533,16 @@ public class JasminVisitor extends Visitor {
 
     @Override
     public void visit(Return r) {
-        System.out.println("Jasmim -> Return");
+
+        System.out.println("Jasmin -> Return");
+
+        if (r.getExps().size() == 1) {
+            r.getExps().get(0).accept(this); // Avalia a expressão de retorno
+        } else {
+            r.getExps().get(ret).accept(this);
+        }
+        stmt = groupTemplate.getInstanceOf("return");
+        stmt.add("expr", expr);
     }
 
     @Override
@@ -484,4 +558,21 @@ public class JasminVisitor extends Visitor {
     public String getTemplate() {
         return template.render();
     }
+
+    private String mapToJasminType(Type t) {
+        if (t instanceof TyInt) {
+            return "I"; // Tipo Jasmin para inteiros
+        } else if (t instanceof TyFloat) {
+            return "F"; // Tipo Jasmin para floats
+        } else if (t instanceof TyBool) {
+            return "Z"; // Tipo Jasmin para booleanos
+        } else if (t instanceof ArrayType) {
+            // Para arrays, retorna o símbolo de array "[" seguido pelo tipo base
+            return "[" + mapToJasminType(((ArrayType) t).getBaseType());
+        } else if (t instanceof TyChar) {
+            return "C"; // Tipo Jasmin para char
+        }
+        return "V"; // Por padrão, Void para tipos não reconhecidos
+    }
+
 }

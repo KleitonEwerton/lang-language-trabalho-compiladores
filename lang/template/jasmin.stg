@@ -1,17 +1,48 @@
 group jasmin;
 
-program(name, funcs) ::= <<
+program(name, funcs, datas) ::= <<
 .source <name>
 .class public <name>
 .super java/lang/Object
 
-    <funcs; separator="\n\n">
+<datas; separator="\n\n">
 
-    .method public static main([Ljava/lang/String;)V
-        .limit stack 1
-        invokestatic <name>/inicio()I
-        return
-    .end method
+<funcs; separator="\n\n">
+
+.method public static main([Ljava/lang/String;)V
+    .limit stack 1
+    invokestatic <name>/inicio()I
+    return
+.end method
+>>
+
+data(name, fields) ::= <<
+.class public <name>
+.super java/lang/Object
+
+.field public static final serialVersionUID J
+
+<fields; separator="\n">
+
+.method public <name>()V
+    aload_0
+    invokespecial java/lang/Object/<init>()V
+    return
+.end method
+>>
+
+field(name, type) ::= <<
+.field public <name> <type>
+>>
+
+create_data_instance(name) ::= <<
+new <name>
+dup
+invokespecial <name>/<init>()V
+>>
+
+data_field_access(name, field) ::= <<
+getfield <name>/<field>
 >>
 
 func(return, name, params, decls, stack, stmt) ::= <<
@@ -26,6 +57,10 @@ array_type(type) ::= "[<type>"
 int_type() ::= "I"
 float_type() ::= "F"
 boolean_type() ::= "Z"
+
+char_expr(value) ::= <<
+    ldc #<value>
+>>
 
 stmt_list(stmt1, stmt2) ::= <<
 <stmt1>

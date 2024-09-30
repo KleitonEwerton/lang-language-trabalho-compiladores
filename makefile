@@ -142,6 +142,10 @@ codeTeste14:
 	javac ./generatedCode/teste14.java
 
 
+codeJasmin0:
+	java -cp antlr-4.8-complete.jar:jasmin.jar:. lang/LangCompiler -Jasmin ./testes/semantica/certo/teste0.lan -genFile ./generatedCodeJasmin/teste0.j
+	javac ./generatedCodeJasmin/teste0.j
+
 codeJasmin1:
 	java -cp antlr-4.8-complete.jar:jasmin.jar:. lang/LangCompiler -Jasmin ./testes/semantica/certo/teste1.lan -genFile ./generatedCodeJasmin/teste1.j
 	javac ./generatedCodeJasmin/teste1.j
