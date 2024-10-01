@@ -175,7 +175,7 @@ public class JavaVisitor extends Visitor {
             // Função sem retorno (void)
             if (func.getReturnTypes().isEmpty()) {
                 if (func.getId().equals("main")) {
-                    functionTemplate.add("type", "int"); // Função 'main' deve retornar int em C++
+                    functionTemplate.add("type", "int"); // Função 'main' deve retornar
                 } else {
                     functionTemplate.add("type", "void"); // Outras funções sem retorno
                 }
